@@ -36,7 +36,7 @@ public class CartController {
     }
 
     @RequestMapping(name = "/getcartall", value = "/getcartall", method = RequestMethod.GET)
-    public List<Cart> getCartAll(@Valid @RequestBody Cart cart) {
+    public List<Cart> getCartAll() {
         return cartService.getCartAll();
     }
 

@@ -36,7 +36,7 @@ public class BrandController {
     }
 
     @RequestMapping(name = "/getbrandall", value = "/getbrandall", method = RequestMethod.GET)
-    public List<Brand> getBrandAll(@Valid @RequestBody Brand brand) {
+    public List<Brand> getBrandAll() {
         return brandService.getBrandAll();
     }
 

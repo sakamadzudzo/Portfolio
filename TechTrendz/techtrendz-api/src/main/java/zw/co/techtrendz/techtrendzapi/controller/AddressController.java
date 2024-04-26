@@ -36,7 +36,7 @@ public class AddressController {
     }
 
     @RequestMapping(name = "/getaddressall", value = "/getaddressall", method = RequestMethod.GET)
-    public List<Address> getAddressAll(@Valid @RequestBody Address address) {
+    public List<Address> getAddressAll() {
         return addressService.getAddressAll();
     }
 

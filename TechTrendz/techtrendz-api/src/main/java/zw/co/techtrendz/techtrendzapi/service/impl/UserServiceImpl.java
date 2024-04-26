@@ -24,12 +24,12 @@ import zw.co.techtrendz.techtrendzapi.service.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    
     @Autowired
     private UserDao userDao;
 
     public User saveUser(User user) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setUsername(user.getUsername());
 
         String encodedPassword = passwordEncoder.encode(user.getPassword());

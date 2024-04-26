@@ -44,17 +44,18 @@ public class Product {
     private String description;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "brand.id")
+    @JoinColumn(name = "brand.id", nullable = false)
     @NotNull
-    @Column(nullable = false)
     private Brand brand;
 
+    @OneToOne(fetch = FetchType.LAZY)
     @NotNull
-    @Column(nullable = false)
+    @JoinColumn(name = "productType.id", nullable = false)
     private ProductType productType;
 
+    @OneToOne(fetch = FetchType.LAZY)
     @NotNull
-    @Column(nullable = false)
+    @JoinColumn(name = "productStatus.id", nullable = false)
     private ProductStatus productStatus;
 
     @NotNull

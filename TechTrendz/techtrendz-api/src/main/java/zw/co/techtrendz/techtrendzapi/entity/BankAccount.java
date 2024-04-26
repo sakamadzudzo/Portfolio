@@ -11,13 +11,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -55,8 +51,7 @@ public class BankAccount {
     private String ifscCode;
 
     @ManyToOne
-    @JoinColumn(name = "accountHolderAddress")
-    @Column(nullable = false)
+    @JoinColumn(name = "accountHolderAddress", nullable = false)
     private Address address;
 
     @Column(nullable = false)

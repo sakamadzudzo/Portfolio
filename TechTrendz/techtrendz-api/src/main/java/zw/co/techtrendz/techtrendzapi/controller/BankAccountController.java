@@ -36,7 +36,7 @@ public class BankAccountController {
     }
 
     @RequestMapping(name = "/getbankaccountall", value = "/getbankaccountall", method = RequestMethod.GET)
-    public List<BankAccount> getBankAccountAll(@Valid @RequestBody BankAccount bankAccount) {
+    public List<BankAccount> getBankAccountAll() {
         return bankAccountService.getBankAccountAll();
     }
 

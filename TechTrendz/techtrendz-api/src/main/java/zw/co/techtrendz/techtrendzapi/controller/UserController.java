@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @RequestMapping(name = "/getuserall", value = "/getuserall", method = RequestMethod.GET)
-    public List<User> getUserAll(@Valid @RequestBody User user) {
+    public List<User> getUserAll() {
         return userService.getUserAll();
     }
 
