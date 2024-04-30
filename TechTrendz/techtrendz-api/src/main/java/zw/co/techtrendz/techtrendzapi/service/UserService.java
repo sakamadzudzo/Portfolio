@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import zw.co.techtrendz.techtrendzapi.entity.Role;
-import zw.co.techtrendz.techtrendzapi.entity.User;
+import zw.co.techtrendz.techtrendzapi.entity.Users;
 
 /**
  *
@@ -17,11 +17,11 @@ import zw.co.techtrendz.techtrendzapi.entity.User;
 @Service
 public interface UserService {
 
-    public User saveUser(User user);
+    public Users saveUser(Users user);
 
-    public Optional<User> getUserById(long id);
+    public Optional<Users> getUserById(long id);
 
-    public List<User> getUserAll();
+    public List<Users> getUserAll();
 
-    public List<User> getUserByRole(Role role);
+    public List<Users> getUserByRole(Role role);
 }

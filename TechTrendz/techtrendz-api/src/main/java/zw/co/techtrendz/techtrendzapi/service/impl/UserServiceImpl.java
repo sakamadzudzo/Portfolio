@@ -13,7 +13,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import zw.co.techtrendz.techtrendzapi.entity.Role;
-import zw.co.techtrendz.techtrendzapi.entity.User;
+import zw.co.techtrendz.techtrendzapi.entity.Users;
 import zw.co.techtrendz.techtrendzapi.repository.UserDao;
 import zw.co.techtrendz.techtrendzapi.service.UserService;
 
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
-    public User saveUser(User user) {
+    public Users saveUser(Users user) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setUsername(user.getUsername());
 
@@ -38,16 +38,16 @@ public class UserServiceImpl implements UserService {
         return userDao.save(user);
     }
 
-    public Optional<User> getUserById(long id) {
+    public Optional<Users> getUserById(long id) {
         return userDao.findById(id);
     }
 
-    public List<User> getUserAll() {
+    public List<Users> getUserAll() {
         return userDao.findAll();
     }
 
-    public List<User> getUserByRole(Role role) {
-        User user = new User();
+    public List<Users> getUserByRole(Role role) {
+        Users user = new Users();
         Set<Role> roles = new HashSet<Role>();
         roles.add(role);
         user.setRoles(roles);
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
 //                .withIncludeNullValues()
 //                .withStringMatcher(StringMatcher.ENDING);
 //        Example<Person> example = Example.of(person, matcher);
-        Example<User> userExample = Example.of(user);
+        Example<Users> userExample = Example.of(user);
         return userDao.findAll(userExample);
     }
 

@@ -60,7 +60,7 @@ public class Address {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "userAddress",
-            joinColumns = @JoinColumn(name = "address.id"),
-            inverseJoinColumns = @JoinColumn(name = "user.id"))
-    private Set<User> users;
+            joinColumns = @JoinColumn(name = "address_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<Users> users;
 }

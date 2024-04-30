@@ -6,13 +6,13 @@ package zw.co.techtrendz.techtrendzapi.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import zw.co.techtrendz.techtrendzapi.entity.User;
+import zw.co.techtrendz.techtrendzapi.entity.Users;
 
 /**
  *
  * @author smadzudzo
  */
 @Repository
-public interface UserDao extends JpaRepository<User, Long> {
+public interface UserDao extends JpaRepository<Users, Long> {
 
 }

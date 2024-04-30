@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import zw.co.techtrendz.techtrendzapi.entity.Role;
-import zw.co.techtrendz.techtrendzapi.entity.User;
+import zw.co.techtrendz.techtrendzapi.entity.Users;
 import zw.co.techtrendz.techtrendzapi.service.UserService;
 
 /**
@@ -27,22 +27,22 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(name = "/saveuser", value = "/saveuser", method = RequestMethod.POST)
-    public User saveUser(@Valid @RequestBody User user) {
+    public Users saveUser(@Valid @RequestBody Users user) {
         return userService.saveUser(user);
     }
 
     @RequestMapping(name = "/getuserbyid", value = "/getuserbyid", method = RequestMethod.GET)
-    public Optional<User> getUserById(@Valid @RequestBody User user) {
+    public Optional<Users> getUserById(@Valid @RequestBody Users user) {
         return userService.getUserById(user.getId());
     }
 
     @RequestMapping(name = "/getuserall", value = "/getuserall", method = RequestMethod.GET)
-    public List<User> getUserAll() {
+    public List<Users> getUserAll() {
         return userService.getUserAll();
     }
 
     @RequestMapping(name = "/getuserbyrole", value = "/getuserbyrole", method = RequestMethod.GET)
-    public List<User> getUserByRole(@Valid @RequestBody Role role) {
+    public List<Users> getUserByRole(@Valid @RequestBody Role role) {
         return userService.getUserByRole(role);
     }
 

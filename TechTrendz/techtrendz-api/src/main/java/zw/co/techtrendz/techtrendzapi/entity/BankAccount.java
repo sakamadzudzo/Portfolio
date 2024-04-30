@@ -36,7 +36,7 @@ public class BankAccount {
 
     @NotBlank
     @Column(unique = true, nullable = false)
-    private String accountNumber;
+    private Long accountNumber;
 
     @NotBlank
     @Column(nullable = false)
@@ -59,5 +59,5 @@ public class BankAccount {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
-    private User user;
+    private Users user;
 }

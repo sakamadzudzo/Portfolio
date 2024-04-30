@@ -12,6 +12,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import java.util.Set;
@@ -43,19 +45,19 @@ public class Product {
 
     private String description;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "brand.id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id", nullable = false)
     @NotNull
     private Brand brand;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
-    @JoinColumn(name = "productType.id", nullable = false)
+    @JoinColumn(name = "productType_id", nullable = false)
     private ProductType productType;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
-    @JoinColumn(name = "productStatus.id", nullable = false)
+    @JoinColumn(name = "productStatus_id", nullable = false)
     private ProductStatus productStatus;
 
     @NotNull

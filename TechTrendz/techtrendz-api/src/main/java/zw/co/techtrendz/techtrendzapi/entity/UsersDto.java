@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserDto {
+public class UsersDto {
 
     @NotNull
     private String username;

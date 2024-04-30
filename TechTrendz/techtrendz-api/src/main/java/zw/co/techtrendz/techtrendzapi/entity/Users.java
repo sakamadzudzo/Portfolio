@@ -28,7 +28,7 @@ import org.hibernate.envers.Audited;
 @Data
 @Entity
 @Audited
-public class User {
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
