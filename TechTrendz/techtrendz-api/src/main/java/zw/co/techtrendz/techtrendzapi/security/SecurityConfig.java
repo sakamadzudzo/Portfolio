@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.security;
 
+import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,6 +16,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
 
 /**
  *
@@ -24,10 +26,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @ComponentScan("zw.co.techtrendz.techtrendzapi")
 public class SecurityConfig {
-
+    
     @Autowired
     private CustomAuthenticationProvider authProvider;
-
+    
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder
@@ -35,7 +37,7 @@ public class SecurityConfig {
         authenticationManagerBuilder.authenticationProvider(authProvider);
         return authenticationManagerBuilder.build();
     }
-
+    
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable().authorizeHttpRequests(request -> request
@@ -48,7 +50,14 @@ public class SecurityConfig {
                 )
                 .logout((logout) -> logout.permitAll())
                 .httpBasic(Customizer.withDefaults())
-                .headers(headers -> headers .frameOptions(FrameOptionsConfig::disable))
+                .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable))
+                .cors(cors -> cors.configurationSource(request -> {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowedOrigins(Arrays.asList("*"));
+            configuration.setAllowedMethods(Arrays.asList("*"));
+            configuration.setAllowedHeaders(Arrays.asList("*"));
+            return configuration;
+        }))
                 .build();
     }
 
