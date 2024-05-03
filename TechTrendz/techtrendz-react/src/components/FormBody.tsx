@@ -7,7 +7,7 @@ const FormBody = ({
     className?: string
     children?: ReactNode
 }) => {
-    return <div className={`grow w-full overflow-auto ${className}`}>
+    return <div className={`grow overflow-auto ${className}`}>
         {children}
     </div>
 }

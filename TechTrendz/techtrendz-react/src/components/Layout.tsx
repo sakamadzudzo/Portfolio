@@ -24,7 +24,7 @@ const Layout = () => {
                 pauseOnFocusLoss={false}
                 draggable={false}
             />
-            <div className={`relative h-screen w-full ${dark ? 'dark' : ''}`} style={{ backgroundImage: `url(${bg})` }}>
+            <div className={`relative h-screen w-full ${dark ? 'dark' : ''}`}>
                 <button className="absolute top-2 right-2 sun dark:moon focus:outline-none" onClick={() => setDark(!dark)}>
                     <div className="flex gap-1 h-7 border border-picton-500 px-1 rounded-lg">
                         <div className="shadow-inner dark:shadow-none">
@@ -36,6 +36,7 @@ const Layout = () => {
                         </div>
                     </div>
                 </button>
+                <div className="opacity-90 -z-50 absolute top-0 left-0 h-full w-full"  style={{ backgroundImage: `url(${bg})` }}></div>
                 <Outlet />
             </div>
         </>

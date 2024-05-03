@@ -6,8 +6,8 @@ const FormInput = ({
     label?: string
 }) => {
     return <div className="relative">
-        <input className={`border borders ${className}`} />
-        <div className="absolute -top-3.5 text-xs">{label}</div>
+        <input className={`border border-t-0 rounded-tl-none borders bg-transparent rounded-md focus:outline-picton-500 px-3 text-white dark:text-picton-500 ${className}`} />
+        <div className="absolute -top-3 text-xs text-white dark:text-picton-500">{label}</div>
     </div>
 }
 
