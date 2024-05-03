@@ -1,8 +1,8 @@
-import useFetch from "http-react";
-import fetcher from "../components/utils/fetcher";
+// import useFetch from "http-react";
+// import fetcher from "../components/utils/fetcher";
 import sebas from "./../assets/img/Sebas_001.webp";
-import xbox from "./../assets/img/Xbox series X.jpg"
 import cat1 from "./../assets/img/cat1.webp"
+import { toast } from "react-toastify"
 
 const Examples = () => {
     // const { data, loading, error, responseTime } = useFetch('http://localhost:3006/getuserall', {
@@ -15,6 +15,8 @@ const Examples = () => {
     // if (error) return <p>An error ocurred</p>
 
     // if (error) console.log(error)
+
+    toast.success("Testing toastify")
 
     return (
         <div className="h-screen w-full flex justify-center items-center">
@@ -63,14 +65,31 @@ const Examples = () => {
                         </div>
                     </div>
                 </div>
-                <div className="border border-picton-950/20 h-96 w-[19.2rem] rounded-2xl text-white dark:text-black text-sm font-medium shadow-sm bg-[url('./../img/cat1.webp')]">
-                    <div className="h-full bg-gradient-to-t from-picton-600 relative">
-                        <img src={cat1} alt="A portrait of a cat" className="object-fill opacity-30 absolute" />
-                        <div className="text-lg z-10">
+                <div className="h-96 w-[19.2rem] rounded-2xl text-white dark:text-black text-sm font-medium shadow-sm overflow-hidden" style={{ backgroundImage: `url(${cat1})` }}>
+                    <div className="h-full bg-gradient-to-t from-picton-950 relative">
+                        <div className="text-4xl px-5 absolute bottom-5">
                             <div className="text-picton-50">Create</div>
-                            <div>color scales</div>
+                            <div className="text-picton-200">color scales</div>
                             <div className="text-picton-50">in seconds</div>
                         </div>
+                    </div>
+                </div>
+                <div className="h-96 w-[19.2rem] rounded-2xl text-white dark:text-black text-sm font-medium shadow-sm overflow-hidden" style={{ backgroundImage: `url(${cat1})` }}>
+                    <div className="h-full w-full relative">
+                        <div className="text-4xl absolute bottom-2 left-2 w-[95%] px-4 py-3 bg-picton-900/90 rounded-2xl">
+                            <div className="text-picton-50">Create</div>
+                            <div className="text-picton-200">color scales</div>
+                            <div className="text-picton-50">in seconds</div>
+                        </div>
+                    </div>
+                </div>
+                <div className="border border-picton-950/20 h-96 w-[19.2rem] rounded-2xl p-3 text-white dark:text-black text-sm font-medium shadow-sm">
+                    <div className="text-black/70 font-bold">Buttons - Flat</div><br />
+                    <div className="space-y-2">
+                        <button className="h-10 w-[17rem] flex justify-center items-center text-lg rounded-lg bg-picton-500 hover:bg-picton-600 active:bg-picton-700 disabled:bg-picton-100 disabled:text-picton-400 cursor-pointer disabled:cursor-not-allowed">Default</button>
+                        <button disabled className="h-10 w-[17rem] flex justify-center items-center text-lg rounded-lg bg-picton-500 hover:bg-picton-600 active:bg-picton-700 disabled:bg-picton-100 disabled:text-picton-400 cursor-pointer disabled:cursor-not-allowed">Disabled</button>
+                        <button className="h-10 w-[17rem] flex justify-center items-center text-lg rounded-lg border border-picton-500 text-picton-500 hover:border-picton-600 hover:text-picton-600 active:border-picton-700 active:text-picton-700 disabled:border-picton-100 disabled:text-picton-100 cursor-pointer disabled:cursor-not-allowed">Default</button>
+                        <button disabled className="h-10 w-[17rem] flex justify-center items-center text-lg rounded-lg border border-picton-500 text-picton-500 hover:border-picton-600 hover:text-picton-600 active:border-picton-700 active:text-picton-700 disabled:border-picton-100 disabled:text-picton-100 cursor-pointer disabled:cursor-not-allowed">Disabled</button>
                     </div>
                 </div>
             </div>

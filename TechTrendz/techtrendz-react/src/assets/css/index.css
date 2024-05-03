@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .borders {
+        @apply border-picton-200
+    }
+
+    .btn-primary {
+        @apply h-7 w-20 flex justify-center items-center rounded-lg bg-picton-500 hover:bg-picton-700 active:bg-picton-900 disabled:bg-picton-100 disabled:text-picton-400 cursor-pointer disabled:cursor-not-allowed
+    }
+
+    .btn-hollow {
+        @apply h-7 w-20 flex justify-center items-center rounded-lg border border-picton-500 text-picton-500 hover:border-picton-700 hover:text-picton-700 active:border-picton-900 active:text-picton-900 disabled:border-picton-100 disabled:text-picton-100 cursor-pointer disabled:cursor-not-allowed
+    }
+}

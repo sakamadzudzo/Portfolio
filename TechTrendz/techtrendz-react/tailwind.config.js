@@ -8,6 +8,7 @@ module.exports = {
     theme: {
         extend: {
             colors: {
+                'picton-blue': '#03A9F4',
                 picton: {
                     '50': '#eff9ff',
                     '100': '#def2ff',
