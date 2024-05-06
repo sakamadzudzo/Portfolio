@@ -36,8 +36,10 @@ const Layout = () => {
                         </div>
                     </div>
                 </button>
-                <div className="opacity-90 -z-50 absolute top-0 left-0 h-full w-full"  style={{ backgroundImage: `url(${bg})` }}></div>
-                <Outlet />
+                <div className="opacity-90 -z-50 absolute top-0 left-0 h-full w-full" style={{ backgroundImage: `url(${bg})` }}></div>
+                <div className="h-full w-full bg-picton-600/50 dark:bg-picton-950/50 text-white dark:text-picton-500">
+                    <Outlet />
+                </div>
             </div>
         </>
     )

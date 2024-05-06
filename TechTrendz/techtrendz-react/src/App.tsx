@@ -6,12 +6,13 @@ import Login from './pages/login';
 import './assets/css/index.css';
 import Examples from './pages/examples';
 import { FetchConfig } from 'http-react';
+import Product from './pages/product';
 
 function App() {
   return (
     <>
       <FetchConfig
-        // baseUrl='localhost:3006/'
+        baseUrl='localhost:3006/'
         // refresh={30}
         // headers={{ Authorization: 'Token' }}
         headers={{ "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept" }}
@@ -21,6 +22,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path='login' element={<Login />} />
             <Route path='examples' element={<Examples />} />
+            <Route path='products' element={<Product />} />
           </Route>
         </Routes>
       </FetchConfig>

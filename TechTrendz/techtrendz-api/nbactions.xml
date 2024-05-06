@@ -10,4 +10,14 @@
                 <Env.JAVA_HOME>C:\Oracle\Java\jdk-17</Env.JAVA_HOME>
             </properties>
         </action>
+        <action>
+            <actionName>CUSTOM-mvn spring-boot:run</actionName>
+            <displayName>mvn spring-boot:run</displayName>
+            <goals>
+                <goal>spring-boot:run</goal>
+            </goals>
+            <properties>
+                <Env.JAVA_HOME>C:\Oracle\Java\jdk-17</Env.JAVA_HOME>
+            </properties>
+        </action>
     </actions>
