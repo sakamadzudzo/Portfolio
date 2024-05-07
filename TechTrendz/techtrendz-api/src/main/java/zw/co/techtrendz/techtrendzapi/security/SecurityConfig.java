@@ -44,10 +44,10 @@ public class SecurityConfig {
                 .requestMatchers("/testtobemade", "/resources/**", "/images/**", "/*.css", "/webjars/**").permitAll()
                 .anyRequest()
                 .authenticated())
-                .formLogin((form) -> form
-                //                .loginPage("/loginform")
-                .permitAll()
-                )
+//                .formLogin((form) -> form
+//                //                .loginPage("/loginform")
+//                .permitAll()
+//                )
                 .logout((logout) -> logout.permitAll())
                 .httpBasic(Customizer.withDefaults())
                 .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable))

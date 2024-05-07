@@ -12,7 +12,7 @@ function App() {
   return (
     <>
       <FetchConfig
-        baseUrl='localhost:3006/'
+        baseUrl='http://localhost:3006/'
         // refresh={30}
         // headers={{ Authorization: 'Token' }}
         headers={{ "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept" }}

@@ -4,25 +4,42 @@ import FormBody from "../components/FormBody";
 import FormFooter from "../components/FormFooter";
 import FormHeader from "../components/FormHeader";
 import FormInput from "../components/FormInput";
-import useFetch from "http-react";
+import useFetch, { usePOST, revalidate } from 'http-react'
 import fetcher from "../components/utils/fetcher";
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const { data, loading, error, responseTime } = useFetch('getuserall', {
-        // refresh: '30 sec',
+    const { data: loginResponse, id: login, loading: loggingIn, error: loginError, responseTime: loginRunTime } = usePOST("login", {
+        auto: false,
+        body: {
+            username: username,
+            password: password
+        },
+        headers: {},
+        method: "POST",
         fetcher
     });
 
-    if (loading) return <p>Loading</p>
+    const { data, id: getUsers, loading, error, responseTime } = useFetch("getuserall", {
+        auto: false,
+        headers: {},
+        method: "GET",
+        fetcher
+    });
 
-    if (error) return <p>An error ocurred</p>
+    // if (loading) return <p>Loading</p>
+
+    // if (error) return <p>An error ocurred</p>
 
     if (data) console.log(data)
-        
+
+    if (loginResponse) console.log(loginResponse)
+
     if (error) console.error(error)
+
+    if (loginError) console.error(loginError)
 
     return (
         <div className="h-full w-full flex justify-center items-center">
@@ -38,11 +55,12 @@ const Login = () => {
                     </FormBody>
                     <FormFooter className="justify-end p-2">
                         <button className={`btn-hollow`}>Cancel</button>
-                        <button className={`btn-hollow`}>Login</button>
+                        <button className={`btn-hollow`} onClick={() => revalidate(login)}> Login</button>
+                        <button className={`btn-hollow`} onClick={() => revalidate(getUsers)}> Login2</button>
                     </FormFooter>
                 </Form>
             </div>
-        </div>
+        </div >
     )
 }
 
