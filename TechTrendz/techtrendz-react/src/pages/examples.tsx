@@ -16,10 +16,10 @@ const Examples = () => {
 
     // if (error) console.log(error)
 
-    toast.success("Testing toastify")
+    // toast.success("Testing toastify")
 
     return (
-        <div className="h-screen w-full flex justify-center items-center">
+        <div className="wrapper">
             <div className="h-full w-full grid grid-cols-2 p-3 gap-y-9">
                 <div className="bg-gradient-to-br from-picton-500/95 to to-picton-800 border border-picton-600 h-96 w-[19.2rem] rounded-2xl p-3 text-white dark:text-black shadow-sm">
                     <div className="font-semibold">Customers</div><br /><br /><br /><br />
@@ -90,6 +90,15 @@ const Examples = () => {
                         <button disabled className="h-10 w-[17rem] flex justify-center items-center text-lg rounded-lg bg-picton-500 hover:bg-picton-600 active:bg-picton-700 disabled:bg-picton-100 disabled:text-picton-400 cursor-pointer disabled:cursor-not-allowed">Disabled</button>
                         <button className="h-10 w-[17rem] flex justify-center items-center text-lg rounded-lg border border-picton-500 text-picton-500 hover:border-picton-600 hover:text-picton-600 active:border-picton-700 active:text-picton-700 disabled:border-picton-100 disabled:text-picton-100 cursor-pointer disabled:cursor-not-allowed">Default</button>
                         <button disabled className="h-10 w-[17rem] flex justify-center items-center text-lg rounded-lg border border-picton-500 text-picton-500 hover:border-picton-600 hover:text-picton-600 active:border-picton-700 active:text-picton-700 disabled:border-picton-100 disabled:text-picton-100 cursor-pointer disabled:cursor-not-allowed">Disabled</button>
+                    </div>
+                </div>
+                <div className="border h-96 w-[19.2rem] rounded-2xl p-3 text-sm font-medium shadow-sm">
+                    <div className="font-bold">Buttons - Themed</div><br />
+                    <div className="space-y-2">
+                        <button className="h-10 w-[17rem] flex justify-center items-center text-lg rounded-lg cursor-pointer disabled:cursor-not-allowed bg-light-950 disabled:bg-light-200 hover:bg-light-900 active:bg-light-800 text-light-50 disabled:text-light-950 dark:bg-dark-950 dark:disabled:bg-dark-200 dark:hover:bg-dark-900 dark:active:bg-dark-800 dark:text-dark-50 dark:disabled:text-dark-950">Default</button>
+                        <button disabled className="h-10 w-[17rem] flex justify-center items-center text-lg rounded-lg cursor-pointer disabled:cursor-not-allowed bg-light-950 disabled:bg-light-200 hover:bg-light-900 active:bg-light-800 text-light-50 disabled:text-light-950 dark:bg-dark-950 dark:disabled:bg-dark-200 dark:hover:bg-dark-900 dark:active:bg-dark-800 dark:text-dark-50 dark:disabled:text-dark-950">Disabled</button>
+                        <button className="h-10 w-[17rem] flex justify-center items-center text-lg rounded-lg cursor-pointer disabled:cursor-not-allowed border text-light-950 border-light-950 disabled:border-light-200 disabled:text-light-200 hover:border-light-900 hover:text-light-900 active:border-light-700 active:text-light-700 dark:text-dark-950 dark:border-dark-950 dark:disabled:border-dark-200 dark:disabled:text-dark-200 dark:hover:border-dark-800 dark:hover:text-dark-800 dark:active:border-dark-700 dark:active:text-dark-700">Default</button>
+                        <button disabled className="h-10 w-[17rem] flex justify-center items-center text-lg rounded-lg cursor-pointer disabled:cursor-not-allowed border text-light-950 border-light-950 disabled:border-light-200 disabled:text-light-200 hover:border-light-900 hover:text-light-900 active:border-light-700 active:text-light-700 dark:text-dark-950 dark:border-dark-950 dark:disabled:border-dark-200 dark:disabled:text-dark-200 dark:hover:border-dark-800 dark:hover:text-dark-800 dark:active:border-dark-700 dark:active:text-dark-700">Disabled</button>
                     </div>
                 </div>
             </div>

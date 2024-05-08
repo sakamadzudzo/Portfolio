@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,10 +27,10 @@ import org.springframework.web.cors.CorsConfiguration;
 @EnableWebSecurity
 @ComponentScan("zw.co.techtrendz.techtrendzapi")
 public class SecurityConfig {
-    
+
     @Autowired
     private CustomAuthenticationProvider authProvider;
-    
+
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder
@@ -37,17 +38,18 @@ public class SecurityConfig {
         authenticationManagerBuilder.authenticationProvider(authProvider);
         return authenticationManagerBuilder.build();
     }
-    
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable().authorizeHttpRequests(request -> request
                 .requestMatchers("/testtobemade", "/resources/**", "/images/**", "/*.css", "/webjars/**").permitAll()
                 .anyRequest()
                 .authenticated())
-//                .formLogin((form) -> form
-//                //                .loginPage("/loginform")
-//                .permitAll()
-//                )
+                //                .formLogin((form) -> form
+                //                //                .loginPage("/loginform")
+                //                .permitAll()
+                //                )
+                .formLogin((form) -> form.disable())
                 .logout((logout) -> logout.permitAll())
                 .httpBasic(Customizer.withDefaults())
                 .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable))

@@ -24,22 +24,20 @@ const Layout = () => {
                 pauseOnFocusLoss={false}
                 draggable={false}
             />
-            <div className={`relative h-screen w-full ${dark ? 'dark' : ''}`}>
-                <button className="absolute top-2 right-2 sun dark:moon focus:outline-none" onClick={() => setDark(!dark)}>
-                    <div className="flex gap-1 h-7 border border-picton-500 px-1 rounded-lg">
-                        <div className="shadow-inner dark:shadow-none">
-                            <IconSun className="fill-picton-500 dark:fill-picton-800 h-full py-1" />
+            <div className={`relative h-screen w-full ${dark ? 'dark' : ''} bg-light-50 dark:bg-dark-50`}>
+                <button className="absolute top-2 right-2 focus:outline-none" onClick={() => setDark(!dark)}>
+                    <div className="flex h-7 border rounded-lg overflow-hidden">
+                        <div className="bg-light-200 dark:bg-transparent">
+                            <IconSun className="h-full py-1 px-1" />
                         </div>
-                        <div className="border border-picton-500"></div>
-                        <div className="shadow-none dark:shadow-inner">
-                            <IconMoon className="fill-picton-700 dark:fill-picton-400 h-full py-1 -rotate-45" />
+                        <div className="border"></div>
+                        <div className="bg-transparent dark:bg-dark-100">
+                            <IconMoon className="h-full py-1 px-1 -rotate-45" />
                         </div>
                     </div>
                 </button>
-                <div className="opacity-90 -z-50 absolute top-0 left-0 h-full w-full" style={{ backgroundImage: `url(${bg})` }}></div>
-                <div className="h-full w-full bg-picton-600/50 dark:bg-picton-950/50 text-white dark:text-picton-500">
-                    <Outlet />
-                </div>
+                {/* <div className="opacity-90 -z-50 absolute top-0 left-0 h-full w-full" style={{ backgroundImage: `url(${bg})` }}></div> */}
+                <Outlet />
             </div>
         </>
     )

@@ -14,7 +14,7 @@ const Product = () => {
     if (error) console.log(error)
 
     return (
-        <div className="h-full w-full flex justify-center items-center">
+        <div className="wrapper">
             Products here + data size is: {data.length}
         </div>
     )
