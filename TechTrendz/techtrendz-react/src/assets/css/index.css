@@ -21,6 +21,6 @@
     }
 
     .wrapper {
-        @apply h-full w-full flex justify-center items-center overflow-y-scroll
+        @apply h-full w-full flex justify-center items-center overflow-y-auto
     }
 }
