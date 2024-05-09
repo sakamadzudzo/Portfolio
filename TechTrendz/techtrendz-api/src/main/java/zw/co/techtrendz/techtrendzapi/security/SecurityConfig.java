@@ -15,7 +15,9 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -41,8 +43,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable().authorizeHttpRequests(request -> request
-                .requestMatchers("/testtobemade", "/resources/**", "/images/**", "/*.css", "/webjars/**").permitAll()
+        return http.authorizeHttpRequests(request -> request
+                .requestMatchers("/signin", "/test", "/resources/**", "/images/**", "/*.css", "/webjars/**").permitAll()
                 .anyRequest()
                 .authenticated())
                 //                .formLogin((form) -> form
@@ -60,6 +62,9 @@ public class SecurityConfig {
             configuration.setAllowedHeaders(Arrays.asList("*"));
             return configuration;
         }))
+                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .httpBasic(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
 

@@ -7,7 +7,7 @@
     *,
     ::before,
     ::after {
-        @apply border-light-950 disabled:border-light-200 dark:border-dark-950 disabled:dark:border-dark-200 text-light-950 dark:text-dark-950 fill-light-950 dark:fill-dark-950
+        @apply border-light-950 disabled:border-light-200 dark:border-dark-950 disabled:dark:border-dark-200 text-light-950 dark:text-dark-950 fill-light-950 dark:fill-dark-950 focus:outline-none
     }
 }
 

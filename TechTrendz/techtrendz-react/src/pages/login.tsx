@@ -4,20 +4,31 @@ import FormBody from "../components/FormBody";
 import FormFooter from "../components/FormFooter";
 import FormHeader from "../components/FormHeader";
 import FormInput from "../components/FormInput";
-import useFetch, { usePOST, revalidate } from 'http-react'
+import usePOST, { revalidate } from 'http-react'
 import fetcher from "../components/utils/fetcher";
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const { data: loginResponse, id: login, loading: loggingIn, error: loginError, responseTime: loginRunTime } = usePOST("login", {
+    // const { data: loginResponse, id: login, loading: loggingIn, error: loginError, responseTime: loginRunTime } = usePOST("http://localhost:3006/signin", {
+    //     auto: false,
+    //     body: {
+    //         username: username,
+    //         password: password
+    //     },
+    //     // headers: {},
+    //     // method: "POST",
+    //     fetcher
+    // });
+
+    const { data: loginResponse, id: login, loading: loggingIn, error: loginError, responseTime: loginRunTime } = usePOST("test", {
         auto: false,
         body: {
             username: username,
             password: password
         },
-        headers: {},
+        // headers: {},
         method: "POST",
         fetcher
     });
