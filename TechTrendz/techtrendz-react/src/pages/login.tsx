@@ -4,38 +4,25 @@ import FormBody from "../components/FormBody";
 import FormFooter from "../components/FormFooter";
 import FormHeader from "../components/FormHeader";
 import FormInput from "../components/FormInput";
-import usePOST, { revalidate } from 'http-react'
-import fetcher from "../components/utils/fetcher";
+import axios from "axios";
+import API from "../components/utils/constants";
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    // const { data: loginResponse, id: login, loading: loggingIn, error: loginError, responseTime: loginRunTime } = usePOST("http://localhost:3006/signin", {
-    //     auto: false,
-    //     body: {
-    //         username: username,
-    //         password: password
-    //     },
-    //     // headers: {},
-    //     // method: "POST",
-    //     fetcher
-    // });
-
-    const { data: loginResponse, id: login, loading: loggingIn, error: loginError, responseTime: loginRunTime } = usePOST("test", {
-        auto: false,
-        body: {
-            username: username,
-            password: password
-        },
-        // headers: {},
-        method: "POST",
-        fetcher
-    });
-
-    if (loginResponse) console.log(loginResponse)
-
-    if (loginError) console.error(loginError)
+    const doLogin = () => {
+        axios.post(API + "signin", {
+            username: "ssmadzudzo",
+            password: "test"
+        })
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
     return (
         <div className="wrapper">
@@ -51,7 +38,7 @@ const Login = () => {
                     </FormBody>
                     <FormFooter className="justify-end p-2">
                         <button className={`btn-hollow`}>Cancel</button>
-                        <button className={`btn-hollow`} onClick={() => revalidate(login)}> Login</button>
+                        <button className={`btn-hollow`} onClick={() => doLogin()}> Login</button>
                     </FormFooter>
                 </Form>
             </div>
