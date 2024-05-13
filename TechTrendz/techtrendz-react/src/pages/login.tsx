@@ -13,6 +13,7 @@ const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const token = authToken
+    const token1 = useAppSelector((state) => state.auth.token)
     const user = authUser
     const dispatch = useAppDispatch()
 
@@ -36,7 +37,7 @@ const Login = () => {
     const getPrincipal = async () => {
         await axios.get(API + "getprincipal", {
             headers: {
-                Authorization: token
+                Authorization: token1
             }
         })
             .then((response) => {
