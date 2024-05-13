@@ -4,17 +4,21 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import zw.co.techtrendz.techtrendzapi.entity.Users;
 import zw.co.techtrendz.techtrendzapi.service.AuthenticationService;
 import zw.co.techtrendz.techtrendzapi.service.TokenService;
+import zw.co.techtrendz.techtrendzapi.service.UserService;
 
 /**
  *
@@ -27,6 +31,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private UserService userService;
 
     public String authenticate(String username, String password) {
         try {
@@ -39,5 +45,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid User or Password");
         }
+    }
+
+    public UserDetails getPrincipal(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = tokenService.getTokenFrom(authorizationHeader);
+        String userEmail = tokenService.getSubjectFrom(token);
+        UserDetails user = userService.loadUserByUsername(userEmail);
+        return user;
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,6 +40,8 @@ public class SecurityConfig {
     private CustomAuthenticationProvider authProvider;
     @Autowired
     private UserService userService;
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 //    @Autowired
 //    private PasswordEncoder passwordEncoder;
 
@@ -52,7 +55,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(request -> request
-                .requestMatchers("/signin", "/test", "/login", "/resources/**", "/images/**", "/*.css", "/webjars/**").permitAll()
+                .requestMatchers("/signin", "/login", "/resources/**", "/images/**", "/*.css", "/webjars/**").permitAll()
                 .anyRequest()
                 .authenticated())
                 //                .formLogin((form) -> form
@@ -61,8 +64,8 @@ public class SecurityConfig {
                 //                )
                 .formLogin((form) -> form.disable())
                 .logout((logout) -> logout.permitAll())
-                .httpBasic(Customizer.withDefaults())
-                .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable))
+                //                .httpBasic(Customizer.withDefaults())
+                //                .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable))
                 .cors(cors -> cors.configurationSource(request -> {
             CorsConfiguration configuration = new CorsConfiguration();
             configuration.setAllowedOrigins(Arrays.asList("*"));
@@ -74,6 +77,7 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .httpBasic(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

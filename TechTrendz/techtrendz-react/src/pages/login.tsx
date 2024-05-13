@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useAppSelector, useAppDispatch } from "./../types/reduxTypes";
+import { setUser, setToken, authToken, authUser } from "../components/utils/slices/authSlice";
 import Form from "../components/Form";
 import FormBody from "../components/FormBody";
 import FormFooter from "../components/FormFooter";
@@ -10,17 +12,40 @@ import API from "../components/utils/constants";
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const token = authToken
+    const user = authUser
+    const dispatch = useAppDispatch()
 
-    const doLogin = () => {
-        axios.post(API + "signin", {
+    const doLogin = async () => {
+        setToken("");
+        await axios.post(API + "signin", {
             username: "ssmadzudzo",
             password: "test"
         })
-            .then((response) => {
-                console.log(response);
+            .then(async (response) => {
+                // console.log(response);
+                // setToken("Bearer " + response.data);
+                dispatch(setToken("Bearer " + response.data));
+                await getPrincipal();
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
+            });
+    }
+
+    const getPrincipal = async () => {
+        await axios.get(API + "getprincipal", {
+            headers: {
+                Authorization: token
+            }
+        })
+            .then((response) => {
+                // setPrincipal(response.data);
+                dispatch(setUser(response.data));
+                console.log(token);
+            })
+            .catch((error) => {
+                console.error(error);
             });
     }
 
@@ -39,6 +64,7 @@ const Login = () => {
                     <FormFooter className="justify-end p-2">
                         <button className={`btn-hollow`}>Cancel</button>
                         <button className={`btn-hollow`} onClick={() => doLogin()}> Login</button>
+                        <button className={`btn-hollow`} onClick={() => getPrincipal()}> Auth</button>
                     </FormFooter>
                 </Form>
             </div>

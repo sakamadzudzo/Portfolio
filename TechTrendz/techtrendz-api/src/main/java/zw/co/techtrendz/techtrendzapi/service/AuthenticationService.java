@@ -4,6 +4,8 @@
  */
 package zw.co.techtrendz.techtrendzapi.service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,4 +16,6 @@ import org.springframework.stereotype.Service;
 public interface AuthenticationService {
 
     public String authenticate(String email, String password);
+
+    public UserDetails getPrincipal(HttpServletRequest request);
 }
