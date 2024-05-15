@@ -27,6 +27,8 @@ public class TokenServiceImpl implements TokenService {
 
     @Value("${secret.key}")
     private String secret;
+    @Value("${jwt.expiration}")
+    private int expiration;
 
     public String getTokenFrom(String bearerToken) {
         final String bearer = "Bearer ";
@@ -46,12 +48,13 @@ public class TokenServiceImpl implements TokenService {
 
     public String generateToken(Users user) {
         Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
-        Instant expiration = generateExpirationTimeIn(10);  // expires in 10 min
+        Instant expiration = generateExpirationTimeIn(this.expiration);  // expires in 10 min
         String roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.joining(","));
         String token = JWT.create()
                 .withSubject(user.getUsername())
+                .withIssuedAt(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())
                 .withExpiresAt(expiration)
-                .withIssuer("Books-API")
+                .withIssuer("TechTrendz-API")
                 .withClaim("roles", roles)
                 .sign(algorithm);
         return token;

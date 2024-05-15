@@ -162,17 +162,17 @@ INSERT INTO producttype( id, description, name ) VALUES ( 3, 'LEPTOP', 'LAPTOP')
 INSERT INTO producttype( id, description, name ) VALUES ( 4, 'SMARTPHONE', 'SMARTPHONE');
 INSERT INTO producttype( id, description, name ) VALUES ( 5, 'PRINTER', 'PRINTER');
 
-INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 1, 'Erick', 'Leonard', 'Abraham', 'test', 'elabraham');
-INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 2, 'Gretchen', null, 'Proctor', 'test', 'gproctor');
-INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 3, 'Robbie', 'Wilkins', 'Erich', 'test', 'rwerich');
-INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 4, 'Heath', 'Dickson', 'Cherie', 'test', 'hdcherie');
-INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 5, 'Brandie', 'Finley', 'Arthur', 'test', 'bfarthur');
-INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 6, 'Robinson', null, 'Lara', 'test', 'rlara');
-INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 7, 'Randal', null, 'Dickerson', 'test', 'rdickerson');
-INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 8, 'Keri', null, 'Lesley', 'test', 'klesley');
-INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 9, 'Roberta', null, 'Morse', 'test', 'rmorse');
-INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 10, 'Cornelius', 'Herring', 'Emily', 'test', 'chemily');
-INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 11, 'Saka', 'Shingirai', 'Madzudzo', 'test', 'ssmadzudzo');
+-- INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 1, 'Erick', 'Leonard', 'Abraham', 'test', 'elabraham');
+-- INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 2, 'Gretchen', null, 'Proctor', 'test', 'gproctor');
+-- INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 3, 'Robbie', 'Wilkins', 'Erich', 'test', 'rwerich');
+-- INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 4, 'Heath', 'Dickson', 'Cherie', 'test', 'hdcherie');
+-- INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 5, 'Brandie', 'Finley', 'Arthur', 'test', 'bfarthur');
+-- INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 6, 'Robinson', null, 'Lara', 'test', 'rlara');
+-- INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 7, 'Randal', null, 'Dickerson', 'test', 'rdickerson');
+-- INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 8, 'Keri', null, 'Lesley', 'test', 'klesley');
+-- INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 9, 'Roberta', null, 'Morse', 'test', 'rmorse');
+-- INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 10, 'Cornelius', 'Herring', 'Emily', 'test', 'chemily');
+-- INSERT INTO users( id, forename, lastname, otherNames, password, username ) VALUES ( 11, 'Saka', 'Shingirai', 'Madzudzo', 'test', 'ssmadzudzo');
 
 INSERT INTO users_roles( users_id, roles_id ) VALUES ( 1, 1 );
 INSERT INTO users_roles( users_id, roles_id ) VALUES ( 2, 1 );
