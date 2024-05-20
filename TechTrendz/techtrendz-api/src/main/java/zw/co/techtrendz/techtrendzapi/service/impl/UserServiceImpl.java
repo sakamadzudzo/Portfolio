@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -28,28 +29,28 @@ import zw.co.techtrendz.techtrendzapi.service.UserService;
  */
 @Service
 public class UserServiceImpl implements UserService {
-    
+
     @Autowired
     private UserDao userDao;
-    
+
     public Users saveUser(Users user) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setUsername(user.getUsername());
-        
+
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        
+
         return userDao.save(user);
     }
-    
+
     public Optional<Users> getUserById(long id) {
         return userDao.findById(id);
     }
-    
+
     public List<Users> getUserAll() {
         return userDao.findAll();
     }
-    
+
     public List<Users> getUserByRole(Role role) {
         Users user = new Users();
         Set<Role> roles = new HashSet<Role>();
@@ -64,7 +65,7 @@ public class UserServiceImpl implements UserService {
         Example<Users> userExample = Example.of(user);
         return userDao.findAll(userExample);
     }
-    
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users user = new Users();
@@ -76,7 +77,7 @@ public class UserServiceImpl implements UserService {
         if (requestUser.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
-        
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////HACK TO WORK WITH UNENCODED PASSWORDS//////////////////////////////////////////
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -84,5 +85,22 @@ public class UserServiceImpl implements UserService {
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         return requestUser.isPresent() ? requestUser.get() : null;
     }
-    
+
+    private void insertDummyUsers() {
+        List<Users> users = Arrays.asList(
+                new Users(null, "Erick", "Leonard", "Abraham", "test", "elabraham", null, null, null),
+                new Users(null, "Gretchen", null, "Proctor", "test", "gproctor", null, null, null),
+                new Users(null, "Robbie", "Wilkins", "Erich", "test", "rwerich", null, null, null),
+                new Users(null, "Heath", "Dickson", "Cherie", "test", "hdcherie", null, null, null),
+                new Users(null, "Brandie", "Finley", "Arthur", "test", "bfarthur", null, null, null),
+                new Users(null, "Robinson", null, "Lara", "test", "rlara", null, null, null),
+                new Users(null, "Randal", null, "Dickerson", "test", "rdickerson", null, null, null),
+                new Users(null, "Keri", null, "Lesley", "test", "klesley", null, null, null),
+                new Users(null, "Roberta", null, "Morse", "test", "rmorse", null, null, null),
+                new Users(null, "Cornelius", "Herring", "Emily", "test", "chemily", null, null, null),
+                new Users(null, "Saka", "Shingirai", "Madzudzo", "test", "ssmadzudzo", null, null, null)
+        );
+        userDao.saveAll(users);
+    }
+
 }
