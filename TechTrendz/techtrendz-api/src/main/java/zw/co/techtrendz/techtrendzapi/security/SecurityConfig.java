@@ -40,7 +40,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(request -> request
-                .requestMatchers("/signin", "/login", "/resources/**", "/images/**", "/*.css", "/webjars/**").permitAll()
+                .requestMatchers("/signin", "/login", "/resources/**", "/images/**", "/*.css", "/webjars/**", "/error/**").permitAll()
                 .anyRequest()
                 .authenticated())
                 .formLogin((form) -> form.disable())
