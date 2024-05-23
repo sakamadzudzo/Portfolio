@@ -20,18 +20,18 @@ import zw.co.techtrendz.techtrendzapi.service.ProductTypeService;
 public class ProductTypeServiceImpl implements ProductTypeService {
 
     @Autowired
-    private ProductTypeDao addressDao;
+    private ProductTypeDao productTypeDao;
 
     public ProductType saveProductType(ProductType address) {
-        return addressDao.save(address);
+        return productTypeDao.save(address);
     }
 
     public Optional<ProductType> getProductTypeById(long id) {
-        return addressDao.findById(id);
+        return productTypeDao.findById(id);
     }
 
     public List<ProductType> getProductTypeAll() {
-        return addressDao.findAll();
+        return productTypeDao.findAll();
     }
 
 }

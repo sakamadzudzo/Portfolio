@@ -20,6 +20,8 @@ public interface UserService extends UserDetailsService {
 
     public Users saveUser(Users user);
 
+    public List<Users> saveUsers(List<Users> users);
+
     public Optional<Users> getUserById(long id);
 
     public List<Users> getUserAll();
@@ -27,5 +29,4 @@ public interface UserService extends UserDetailsService {
     public List<Users> getUserByRole(Role role);
 
 //    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
-
 }

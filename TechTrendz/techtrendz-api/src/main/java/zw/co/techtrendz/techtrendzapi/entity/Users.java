@@ -4,7 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -51,7 +51,7 @@ public class Users implements UserDetails {
 
     @NotNull
     @Column(nullable = false)
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @ManyToMany
@@ -86,5 +86,27 @@ public class Users implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getName() {
+        String name = "";
+        if (!this.forename.equals("")) {
+            name += this.forename;
+        }
+        if (!this.otherNames.equals("")) {
+            if (!name.equals("")) {
+                name += this.otherNames;
+            } else {
+                name += " " + this.otherNames;
+            }
+        }
+        if (!this.lastname.equals("")) {
+            if (!name.equals("")) {
+                name += this.lastname;
+            } else {
+                name += " " + this.lastname;
+            }
+        }
+        return name;
     }
 }
