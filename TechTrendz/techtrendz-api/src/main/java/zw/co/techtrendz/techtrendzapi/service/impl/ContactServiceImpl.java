@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Service;
 import zw.co.techtrendz.techtrendzapi.entity.Contact;
 import zw.co.techtrendz.techtrendzapi.entity.ContactType;
 import zw.co.techtrendz.techtrendzapi.entity.Users;
@@ -18,6 +19,7 @@ import zw.co.techtrendz.techtrendzapi.service.ContactService;
  *
  * @author smadzudzo
  */
+@Service
 public class ContactServiceImpl implements ContactService {
 
     @Autowired

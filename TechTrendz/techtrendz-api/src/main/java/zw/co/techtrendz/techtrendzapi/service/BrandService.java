@@ -18,6 +18,8 @@ public interface BrandService {
 
     public Brand saveBrand(Brand brand);
 
+    public List<Brand> saveBrands(List<Brand> brands);
+
     public Optional<Brand> getBrandById(long id);
 
     public List<Brand> getBrandAll();

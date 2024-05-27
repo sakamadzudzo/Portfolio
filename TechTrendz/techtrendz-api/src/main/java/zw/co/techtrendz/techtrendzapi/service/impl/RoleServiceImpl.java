@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,15 @@ public class RoleServiceImpl implements RoleService {
 
     public Role saveRole(Role address) {
         return addressDao.save(address);
+    }
+
+    public List<Role> saveRoles(List<Role> roles) {
+        List<Role> savedRoles = new ArrayList<>();
+        for (Role role : roles) {
+            Role savedRole = this.saveRole(role);
+            savedRoles.add(savedRole);
+        }
+        return savedRoles;
     }
 
     public Optional<Role> getRoleById(long id) {

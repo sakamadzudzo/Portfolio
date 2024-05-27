@@ -18,6 +18,8 @@ public interface RoleService {
 
     public Role saveRole(Role address);
 
+    public List<Role> saveRoles(List<Role> roles);
+
     public Optional<Role> getRoleById(long id);
 
     public List<Role> getRoleAll();

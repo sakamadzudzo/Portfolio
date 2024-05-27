@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import zw.co.techtrendz.techtrendzapi.entity.Contact;
-import zw.co.techtrendz.techtrendzapi.entity.ContactType;
-import zw.co.techtrendz.techtrendzapi.entity.Users;
 
 /**
  *

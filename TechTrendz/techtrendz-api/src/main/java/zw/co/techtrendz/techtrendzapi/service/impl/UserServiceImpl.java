@@ -5,8 +5,6 @@
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +12,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -91,8 +88,8 @@ public class UserServiceImpl implements UserService {
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////HACK TO WORK WITH UNENCODED PASSWORDS//////////////////////////////////////////
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        requestUser.get().setPassword(passwordEncoder.encode(requestUser.get().getPassword()));
+        // BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        // requestUser.get().setPassword(passwordEncoder.encode(requestUser.get().getPassword()));
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         return requestUser.isPresent() ? requestUser.get() : null;
     }

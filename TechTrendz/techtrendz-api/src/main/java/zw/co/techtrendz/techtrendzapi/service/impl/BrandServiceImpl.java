@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,15 @@ public class BrandServiceImpl implements BrandService {
 
     public Brand saveBrand(Brand address) {
         return addressDao.save(address);
+    }
+
+    public List<Brand> saveBrands(List<Brand> brands) {
+        List<Brand> savedBrands = new ArrayList<>();
+        for (Brand brand : brands) {
+            Brand savedBrand = this.saveBrand(brand);
+            savedBrands.add(savedBrand);
+        }
+        return savedBrands;
     }
 
     public Optional<Brand> getBrandById(long id) {
