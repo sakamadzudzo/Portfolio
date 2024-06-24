@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "./../types/reduxTypes";
 import { setUser, setToken, authToken, authUser } from "../components/utils/slices/authSlice";
 import Form from "../components/Form";
@@ -10,24 +10,26 @@ import axios from "axios";
 import API from "../components/utils/constants";
 
 const Login = () => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const token = authToken
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+    const [token, setLocalToken] = useState("")
     const token1 = useAppSelector((state) => state.auth.token)
     const user = authUser
     const dispatch = useAppDispatch()
+    const [disableLogin, setDisableLogin] = useState(true)
+    const [state, setState] = useState({});
 
     const doLogin = async () => {
         setToken("");
         await axios.post(API + "signin", {
-            username: "ssmadzudzo",
-            password: "test"
+            username: username,
+            password: password
         })
             .then(async (response) => {
                 // console.log(response);
                 // setToken("Bearer " + response.data);
                 dispatch(setToken("Bearer " + response.data));
-                await getPrincipal();
+                // await getPrincipal();
             })
             .catch((error) => {
                 console.error(error);
@@ -37,18 +39,32 @@ const Login = () => {
     const getPrincipal = async () => {
         await axios.get(API + "getprincipal", {
             headers: {
-                Authorization: token1
+                Authorization: token
             }
         })
             .then((response) => {
                 // setPrincipal(response.data);
                 dispatch(setUser(response.data));
-                console.log(token);
+                // console.log(token);
             })
             .catch((error) => {
                 console.error(error);
             });
     }
+
+    useEffect(() => {
+        if (username === "") {
+            setDisableLogin(true)
+        } else if (password === "") {
+            setDisableLogin(true)
+        } else {
+            setDisableLogin(false)
+        }
+    }, [username, password])
+
+    useEffect(() => {
+        setLocalToken(useAppSelector((state) => state.auth.token))
+    }, [state])
 
     return (
         <div className="wrapper">
@@ -64,7 +80,7 @@ const Login = () => {
                     </FormBody>
                     <FormFooter className="justify-end p-2">
                         <button className={`btn-hollow`}>Cancel</button>
-                        <button className={`btn-hollow`} onClick={() => doLogin()}> Login</button>
+                        <button className={`btn-hollow`} disabled={disableLogin} onClick={async () => { await doLogin(); await getPrincipal() }}> Login</button>
                         <button className={`btn-hollow`} onClick={() => getPrincipal()}> Auth</button>
                     </FormFooter>
                 </Form>

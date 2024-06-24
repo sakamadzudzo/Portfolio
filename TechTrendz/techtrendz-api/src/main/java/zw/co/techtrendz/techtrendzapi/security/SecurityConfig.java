@@ -40,7 +40,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(request -> request
-                .requestMatchers("/signin", "/login", "/resources/**", "/images/**", "/*.css", "/webjars/**", "/error/**").permitAll()
+                .requestMatchers("/signin", "/login", "/h2-console/**", "/resources/**", "/images/**", "/*.css", "/webjars/**", "/error/**").permitAll()
                 .anyRequest()
                 .authenticated())
                 .formLogin((form) -> form.disable())
@@ -55,6 +55,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .httpBasic(Customizer.withDefaults())
+                .headers(headers -> {
+                    headers.frameOptions(frameOptions -> frameOptions.disable());
+                    headers.httpStrictTransportSecurity(hsts -> hsts.disable());
+                })
                 .csrf(csrf -> csrf.disable())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

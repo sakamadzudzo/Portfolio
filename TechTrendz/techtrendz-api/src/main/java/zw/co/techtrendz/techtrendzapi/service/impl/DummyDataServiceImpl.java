@@ -122,17 +122,17 @@ public class DummyDataServiceImpl {
         orderStatusService.saveOrderStatus(new OrderStatus(5L, "Purchase successful", "PURCHASED"));
 
         List<Users> users = Arrays.asList(
-                new Users(null, new Salutation(1L), "Erick", "Leonard", "Abraham", "test", "elabraham", null, null, null),
-                new Users(null, new Salutation(1L), "Gretchen", null, "Proctor", "test", "gproctor", null, null, null),
-                new Users(null, new Salutation(1L), "Robbie", "Wilkins", "Erich", "test", "rwerich", null, null, null),
-                new Users(null, new Salutation(1L), "Heath", "Dickson", "Cherie", "test", "hdcherie", null, null, null),
-                new Users(null, new Salutation(1L), "Brandie", "Finley", "Arthur", "test", "bfarthur", null, null, null),
-                new Users(null, new Salutation(1L), "Robinson", null, "Lara", "test", "rlara", null, null, null),
-                new Users(null, new Salutation(1L), "Randal", null, "Dickerson", "test", "rdickerson", null, null, null),
-                new Users(null, new Salutation(2L), "Keri", null, "Lesley", "test", "klesley", null, null, null),
-                new Users(null, new Salutation(1L), "Roberta", null, "Morse", "test", "rmorse", null, null, null),
-                new Users(null, new Salutation(1L), "Cornelius", "Herring", "Emily", "test", "chemily", null, null, null),
-                new Users(null, new Salutation(1L), "Saka", "Shingirai", "Madzudzo", "test", "ssmadzudzo", null, null, null)
+                new Users(null, new Salutation(1L), "Erick", "Leonard", "Abraham", "elabraham", "test", null, null, null),
+                new Users(null, new Salutation(1L), "Gretchen", null, "Proctor", "gproctor", "test", null, null, null),
+                new Users(null, new Salutation(1L), "Robbie", "Wilkins", "Erich", "rwerich", "test", null, null, null),
+                new Users(null, new Salutation(1L), "Heath", "Dickson", "Cherie", "hdcherie", "test", null, null, null),
+                new Users(null, new Salutation(1L), "Brandie", "Finley", "Arthur", "bfarthur", "test", null, null, null),
+                new Users(null, new Salutation(1L), "Robinson", null, "Lara", "rlara", "test", null, null, null),
+                new Users(null, new Salutation(1L), "Randal", null, "Dickerson", "rdickerson", "test", null, null, null),
+                new Users(null, new Salutation(2L), "Keri", null, "Lesley", "klesley", "test", null, null, null),
+                new Users(null, new Salutation(1L), "Roberta", null, "Morse", "rmorse", "test", null, null, null),
+                new Users(null, new Salutation(1L), "Cornelius", "Herring", "Emily", "chemily", "test", null, null, null),
+                new Users(null, new Salutation(1L), "Saka", "Shingirai", "Madzudzo", "ssmadzudzo", "test", null, null, null)
         );
         userService.saveUsers(users);
 
