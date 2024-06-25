@@ -23,4 +23,8 @@
     .wrapper {
         @apply h-full w-full flex justify-center items-center overflow-y-auto
     }
+
+    .error-div {
+        @apply w-full bg-red-100 border border-red-200 text-red-600 dark:bg-red-950/30 dark:border-red-900/30 dark:text-red-800 rounded-md py-1 flex justify-center
+    }
 }

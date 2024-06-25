@@ -40,11 +40,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
-        String username1 = "smadzudzo";
-        String password1 = "test";
         final String username = authentication.getName();
         final String password = authentication.getCredentials().toString();
-        if (username.equalsIgnoreCase(username1) && password.equals(password1)) {
+        if (username.equalsIgnoreCase(username) && password.equals(password)) {
             return DBAuthentication(username, password);
         } else {
             throw new BadCredentialsException("Invalid username or password");

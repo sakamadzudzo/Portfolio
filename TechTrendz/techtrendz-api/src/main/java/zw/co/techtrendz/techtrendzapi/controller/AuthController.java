@@ -28,8 +28,9 @@ public class AuthController {
 
     @RequestMapping(name = "/signin", value = "/signin", method = RequestMethod.POST)
     public ResponseEntity<String> login(@RequestBody @Valid UsersDto user) {
-        var token = authenticationService.authenticate(user.getUsername(), user.getPassword());
-        return ResponseEntity.ok(token);
+//        var token = authenticationService.authenticate(user.getUsername(), user.getPassword());
+//        return ResponseEntity.ok(token);
+        return authenticationService.authenticate(user.getUsername(), user.getPassword());
     }
 
     @RequestMapping(name = "/getprincipal", value = "/getprincipal", method = RequestMethod.GET)

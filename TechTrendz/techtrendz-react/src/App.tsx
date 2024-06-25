@@ -5,8 +5,13 @@ import Login from './pages/login';
 import './assets/css/index.css';
 import Examples from './pages/examples';
 import Product from './pages/product';
+import setAuthToken from './components/utils/setAuthToken';
 
 function App() {
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
+  
   return (
     <>
       <Routes>

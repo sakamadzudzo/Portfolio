@@ -8,12 +8,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import zw.co.techtrendz.techtrendzapi.entity.Users;
 import zw.co.techtrendz.techtrendzapi.service.AuthenticationService;
@@ -34,17 +36,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private UserService userService;
 
-    public String authenticate(String username, String password) {
+    public ResponseEntity<String> authenticate(String username, String password) {
+        String error = "";
         try {
+            var checkUser = userService.loadUserByUsername(username);
+            if (checkUser == null) {
+                return ResponseEntity.badRequest().body("User not found");
+            }
             // The authentication manager provides secure authentication and throws exception if it fails
             var authToken = new UsernamePasswordAuthenticationToken(username, password);
             Authentication authenticate = authenticationManager.authenticate(authToken);
             var user = (Users) authenticate.getPrincipal();
             String token = tokenService.generateToken(user);
-            return token;
+            return ResponseEntity.ok(token);
+        } catch (UsernameNotFoundException e) {
+//            return ResponseEntity.badRequest().body("User not found");
+            error = "User not found";
         } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid User or Password");
+            error = "Invalid password";
         }
+        return ResponseEntity.badRequest().body(error);
     }
 
     public UserDetails getPrincipal(HttpServletRequest request) {
