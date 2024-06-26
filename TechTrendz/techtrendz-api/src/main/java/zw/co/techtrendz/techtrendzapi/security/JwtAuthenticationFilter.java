@@ -61,13 +61,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             error.put("error", ex.getMessage());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             new ObjectMapper().writeValue(response.getOutputStream(), error);
-        } catch(UsernameNotFoundException ex) {
-            response.setHeader("error", ex.getMessage());
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            Map<String, String> error = new HashMap<>();
-            error.put("error", ex.getMessage());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            new ObjectMapper().writeValue(response.getOutputStream(), error);
         }
     }
 

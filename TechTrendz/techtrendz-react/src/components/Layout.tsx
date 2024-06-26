@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-import bg from "../assets/img/3d-network-particle-flow-background.jpg"
 import IconSun from './icons/IconSun';
 import IconMoon from './icons/IconMoon';
 
@@ -26,7 +25,7 @@ const Layout = () => {
                 localStorage.setItem("theme", "0")
             }
         }
-    }, [dark])
+    }, [dark, loaded])
 
     return (
         <>
