@@ -37,4 +37,9 @@ public class AuthController {
     public UserDetails getPrincipal(HttpServletRequest request) {
         return authenticationService.getPrincipal(request);
     }
+
+    @RequestMapping(name = "/signout", value = "/signout", method = RequestMethod.POST)
+    public ResponseEntity<String> signout(HttpServletRequest request) {
+        return authenticationService.signout(request);
+    }
 }

@@ -19,4 +19,6 @@ public interface AuthenticationService {
     public ResponseEntity<String> authenticate(String email, String password);
 
     public UserDetails getPrincipal(HttpServletRequest request);
+
+    public ResponseEntity<String> signout(HttpServletRequest request);
 }

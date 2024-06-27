@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import zw.co.techtrendz.techtrendzapi.service.TokenBlacklistService;
 import zw.co.techtrendz.techtrendzapi.service.TokenService;
 import zw.co.techtrendz.techtrendzapi.service.UserService;
 
@@ -38,6 +39,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private TokenService tokenService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -48,6 +51,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         try {
             String token = tokenService.getTokenFrom(authorizationHeader);
+            if (tokenBlacklistService.isBlacklisted(token)) {
+                throw new JWTVerificationException("Token signed out");
+            }
             String userEmail = tokenService.getSubjectFrom(token);
             UserDetails user = userService.loadUserByUsername(userEmail);
             var authenticationToken = new UsernamePasswordAuthenticationToken(userEmail, null, user.getAuthorities());
@@ -57,6 +63,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } catch (JWTVerificationException ex) {
             response.setHeader("error", ex.getMessage());
             response.setStatus(HttpStatus.FORBIDDEN.value());
+            if (ex.getMessage().equals("Token signed out")) {
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            }
             Map<String, String> error = new HashMap<>();
             error.put("error", ex.getMessage());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);

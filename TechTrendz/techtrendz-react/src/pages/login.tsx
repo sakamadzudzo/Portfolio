@@ -6,8 +6,8 @@ import FormHeader from "../components/FormHeader";
 import FormInput from "../components/FormInput";
 import { useNavigate } from "react-router-dom";
 import { login } from "../components/utils/authService";
-import { setToken } from "../components/utils/authSlice";
-import { useDispatch } from "react-redux";
+import { AuthState, setToken } from "../components/utils/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
     const [username, setUsername] = useState("")
@@ -16,13 +16,15 @@ const Login = () => {
     const [disableLogin, setDisableLogin] = useState(true)
     const navigate = useNavigate()
     const [error, setError] = useState("")
+    const referer = useSelector((state: AuthState) => state.auth ? state.auth.referer : "/")
 
     const doLogin = async () => {
         setError("")
         const data = await login(username, password)
         if (data.includes("Bearer ")) {
             dispatch(setToken(data))
-            navigate("/")
+            // navigate("/")
+            navigate(referer!)
         } else {
             setError(data)
         }

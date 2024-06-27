@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import API from './components/utils/constants';
 import axios from 'axios';
 import { AuthState, clearToken, clearUser, setReferer, setUser } from './components/utils/authSlice';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
 function App() {
   const dispatch = useDispatch();
@@ -18,17 +18,17 @@ function App() {
   const navigate = useNavigate()
   const { pathname } = useLocation();
   const isLogin = matchPath("/login", pathname) !== null
-  const referer = useSelector((state: AuthState) => state.auth ? state.auth.referer : "/")
-  const [loaded, setLoaded] = useState(false)
+  // const referer = useSelector((state: AuthState) => state.auth ? state.auth.referer : "/")
+  // const [loaded, setLoaded] = useState(false)
 
   if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
 
   const getPrincipal = useCallback(async () => {
-    if (!isLogin) {
-      dispatch(setReferer(pathname))
-    }
+    // if (!isLogin) {
+    //   dispatch(setReferer(pathname))
+    // }
     // if (!loaded) {
     if (token !== "") {
       await axios.get(API + "getprincipal", {
@@ -38,13 +38,15 @@ function App() {
       })
         .then((response) => {
           dispatch(setUser(response.data));
-          navigate(referer!)
+          console.clear();
+          // navigate(referer!)
         })
         .catch((error) => {
-          console.error(error);
+          // console.error(error);
           if (error.response.data.error === "Unauthorized") {
             if (!isLogin) {
               navigate("/login")
+              dispatch(setReferer(pathname))
             }
           }
           if (error.response.data.error.includes("The Token has expired")) {
@@ -56,9 +58,9 @@ function App() {
     } else {
       navigate("/login")
     }
-    setLoaded(true)
+    // setLoaded(true)
     // }
-  }, [dispatch, isLogin, navigate, pathname, referer, token])
+  }, [dispatch, isLogin, navigate, pathname, token])
 
   useEffect(() => {
     if (pathname) { }

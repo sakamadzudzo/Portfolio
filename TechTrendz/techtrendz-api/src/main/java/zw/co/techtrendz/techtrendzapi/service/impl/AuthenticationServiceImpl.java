@@ -6,11 +6,9 @@ package zw.co.techtrendz.techtrendzapi.service.impl;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -19,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import zw.co.techtrendz.techtrendzapi.entity.Users;
 import zw.co.techtrendz.techtrendzapi.service.AuthenticationService;
+import zw.co.techtrendz.techtrendzapi.service.TokenBlacklistService;
 import zw.co.techtrendz.techtrendzapi.service.TokenService;
 import zw.co.techtrendz.techtrendzapi.service.UserService;
 
@@ -35,6 +34,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private TokenService tokenService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService;
 
     public ResponseEntity<String> authenticate(String username, String password) {
         String error = "";
@@ -64,5 +65,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String userEmail = tokenService.getSubjectFrom(token);
         UserDetails user = userService.loadUserByUsername(userEmail);
         return user;
+    }
+
+    public ResponseEntity<String> signout(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = tokenService.getTokenFrom(authorizationHeader);
+        tokenBlacklistService.addToBlacklist(token);
+
+        // Clear any session-related data if necessary
+        return ResponseEntity.ok("Logged out successfully");
     }
 }
