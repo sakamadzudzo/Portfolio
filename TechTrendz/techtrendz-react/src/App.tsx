@@ -18,7 +18,7 @@ function App() {
   const navigate = useNavigate()
   const { pathname } = useLocation();
   const isLogin = matchPath("/login", pathname) !== null
-  // const referer = useSelector((state: AuthState) => state.auth ? state.auth.referer : "/")
+  const referer = useSelector((state: AuthState) => state.auth ? state.auth.referer : "/")
   // const [loaded, setLoaded] = useState(false)
 
   if (localStorage.token) {
@@ -39,7 +39,9 @@ function App() {
         .then((response) => {
           dispatch(setUser(response.data));
           console.clear();
-          // navigate(referer!)
+          if (isLogin) {
+            navigate(referer!)
+          }
         })
         .catch((error) => {
           // console.error(error);
