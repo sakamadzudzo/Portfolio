@@ -10,7 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import API from './components/utils/constants';
 import axios from 'axios';
 import { AuthState, clearToken, clearUser, setReferer, setUser } from './components/utils/authSlice';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const dispatch = useDispatch();
@@ -19,7 +21,12 @@ function App() {
   const { pathname } = useLocation();
   const isLogin = matchPath("/login", pathname) !== null
   const referer = useSelector((state: AuthState) => state.auth ? state.auth.referer : "/")
-  // const [loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(false)
+  const params = referer ? new URLSearchParams(referer) : null
+  const param = params ? parseInt(params.get("authenticated")!) : null
+  // const param = null
+
+  console.log(referer)
 
   if (localStorage.token) {
     setAuthToken(localStorage.token);
@@ -29,40 +36,42 @@ function App() {
     // if (!isLogin) {
     //   dispatch(setReferer(pathname))
     // }
-    // if (!loaded) {
-    if (token !== "") {
-      await axios.get(API + "getprincipal", {
-        headers: {
-          Authorization: token
-        }
-      })
-        .then((response) => {
-          dispatch(setUser(response.data));
-          console.clear();
-          if (isLogin) {
-            navigate(referer!)
+    if (!isLogin || !param) {
+      if (token !== "") {
+        await axios.get(API + "getprincipal", {
+          headers: {
+            Authorization: token
           }
         })
-        .catch((error) => {
-          // console.error(error);
-          if (error.response.data.error === "Unauthorized") {
-            if (!isLogin) {
-              navigate("/login")
-              dispatch(setReferer(pathname))
+          .then((response) => {
+            dispatch(setUser(response.data));
+            console.clear();
+            if (isLogin) {
+              navigate(referer!)
+            }
+          })
+          .catch((error) => {
+            // console.error(error);
+            if (error.response.data.error === "Unauthorized") {
+              if (!isLogin) {
+                dispatch(setReferer(pathname + "?authenticated=0"))
+                navigate("/login")
+              }
+            }
+            toast.error(error.response.data.error)
+            if (error.response.data.error.includes("The Token has expired")) {
+              dispatch(clearToken())
+              dispatch(clearUser())
+              if (!isLogin) {
+                dispatch(setReferer(pathname + "?authenticated=0"))
+                navigate("/login")
+              }
             }
           }
-          if (error.response.data.error.includes("The Token has expired")) {
-            dispatch(clearToken())
-            dispatch(clearUser())
-          }
-        }
-        );
-    } else {
-      navigate("/login")
+          );
+      }
     }
-    // setLoaded(true)
-    // }
-  }, [dispatch, isLogin, navigate, pathname, token])
+  }, [param, token, dispatch, isLogin, navigate, referer, pathname])
 
   useEffect(() => {
     if (pathname) { }

@@ -46,8 +46,8 @@ public class ProductController {
     @RequestMapping(name = "/getproductallpaged", value = "/getproductallpaged", method = RequestMethod.GET)
     public Page<Product> getProductAllPaged(@RequestParam(defaultValue = "1", required = false) Integer pageNumber,
             @RequestParam(defaultValue = "25", required = false) Integer pageSize,
-            @RequestParam String[] sortFields,
-            @RequestParam Sort.Direction sortDirection) {
+            @RequestParam(defaultValue = "name", required = false) String[] sortFields,
+            @RequestParam(defaultValue = "ASC", required = false) Sort.Direction sortDirection) {
         return productService.getProductAllPaged(pageNumber, pageSize, sortFields, sortDirection);
     }
 

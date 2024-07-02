@@ -45,17 +45,17 @@ public class Product {
 
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     @NotNull
     private Brand brand;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @NotNull
     @JoinColumn(name = "productType_id", nullable = false)
     private ProductType productType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @NotNull
     @JoinColumn(name = "productStatus_id", nullable = false)
     private ProductStatus productStatus;

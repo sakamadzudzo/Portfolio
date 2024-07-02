@@ -57,7 +57,7 @@ public class BankAccount {
     @Column(nullable = false)
     private LocalDateTime dateTimeOpened = LocalDateTime.now();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private Users user;
 }

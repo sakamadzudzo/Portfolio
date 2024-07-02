@@ -55,7 +55,7 @@ public class Address {
 
     private String postalCode;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
             name = "userAddress",
             joinColumns = @JoinColumn(name = "address_id"),

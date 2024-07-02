@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify'
+import { Slide, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import IconSun from './icons/IconSun';
 import IconMoon from './icons/IconMoon';
@@ -55,6 +55,19 @@ const Layout = () => {
                 </button>
                 {/* <div className="opacity-90 -z-50 absolute top-0 left-0 h-full w-full" style={{ backgroundImage: `url(${bg})` }}></div> */}
                 <Outlet />
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop
+                    closeOnClick={true}
+                    rtl={false}
+                    pauseOnFocusLoss={false}
+                    draggable
+                    pauseOnHover={false}
+                    theme={dark ? "dark" : "light"}
+                    transition={Slide}
+                />
             </div>
         </>
     )

@@ -37,11 +37,11 @@ public class Contact {
     @Column(nullable = false)
     private String value;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private Users user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "contactTypeId", nullable = false)
     private ContactType contactType;
 }

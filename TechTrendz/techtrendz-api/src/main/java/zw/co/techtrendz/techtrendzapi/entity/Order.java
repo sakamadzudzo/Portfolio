@@ -41,7 +41,7 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "productId"))
     private Set<Product> products;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private Users user;
 }
