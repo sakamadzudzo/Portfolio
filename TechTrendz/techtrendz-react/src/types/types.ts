@@ -11,3 +11,7 @@ export interface AuthState {
 export interface AppState {
   auth: AuthState;
 }
+
+export interface Props {
+  children: React.ReactNode;
+}

@@ -16,3 +16,24 @@ export const login = async (username: string, password: string) => {
         })
     return res
 };
+
+export const getPrincipal = async (token: string) => {
+    let res: any = null
+    await axios.get(API + "getprincipal", {
+        headers: {
+            Authorization: token
+        }
+    })
+        .then((response) => {
+            res = response.data
+        })
+        .catch((error) => {
+            // console.error(error);
+            res = null
+        }
+        )
+        .finally(() => {
+            return res
+        });
+    return res
+}
