@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import zw.co.techtrendz.techtrendzapi.entity.PagedProductsRequestDto;
 import zw.co.techtrendz.techtrendzapi.entity.Product;
 import zw.co.techtrendz.techtrendzapi.service.ProductService;
 
@@ -43,12 +44,9 @@ public class ProductController {
         return productService.getProductAll();
     }
 
-    @RequestMapping(name = "/getproductallpaged", value = "/getproductallpaged", method = RequestMethod.GET)
-    public Page<Product> getProductAllPaged(@RequestParam(defaultValue = "1", required = false) Integer pageNumber,
-            @RequestParam(defaultValue = "25", required = false) Integer pageSize,
-            @RequestParam(defaultValue = "name", required = false) String[] sortFields,
-            @RequestParam(defaultValue = "ASC", required = false) Sort.Direction sortDirection) {
-        return productService.getProductAllPaged(pageNumber, pageSize, sortFields, sortDirection);
+    @RequestMapping(name = "/getproductallpaged", value = "/getproductallpaged", method = RequestMethod.POST)
+    public Page<Product> getProductAllPaged(@RequestBody PagedProductsRequestDto pagedProductsRequestDto) {
+        return productService.getProductAllPaged(pagedProductsRequestDto);
     }
 
 }

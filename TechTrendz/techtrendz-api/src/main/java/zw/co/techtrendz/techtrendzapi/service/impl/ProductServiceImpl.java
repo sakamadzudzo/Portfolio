@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import zw.co.techtrendz.techtrendzapi.entity.PagedProductsRequestDto;
 import zw.co.techtrendz.techtrendzapi.entity.Product;
 import zw.co.techtrendz.techtrendzapi.repository.ProductDao;
 import zw.co.techtrendz.techtrendzapi.service.ProductService;
@@ -39,9 +41,19 @@ public class ProductServiceImpl implements ProductService {
         return productDao.findAll();
     }
 
-    public Page<Product> getProductAllPaged(int pageNumber, int pageSize, String[] sortFields, Sort.Direction sortDirection) {
-        Pageable sortedPage = PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortFields));
-        return productDao.findAll(sortedPage);
+    public Page<Product> getProductAllPaged(PagedProductsRequestDto pagedProductsRequestDto) {
+        List<String> sortFields = pagedProductsRequestDto.getSortFields();
+        if (sortFields.isEmpty()) {
+            sortFields.add("name");
+        }
+        String[] sortFieldsArray = sortFields.toArray(new String[sortFields.size()]);
+        Pageable sortedPage = PageRequest.of(pagedProductsRequestDto.getPageNumber(), pagedProductsRequestDto.getPageSize(), Sort.by(pagedProductsRequestDto.getSortDirection(), sortFieldsArray));
+        if (pagedProductsRequestDto.getExampleProduct() != null) {
+            Example<Product> exampleProduct = Example.of(pagedProductsRequestDto.getExampleProduct());
+            return productDao.findAll(exampleProduct, sortedPage);
+        } else {
+            return productDao.findAll(sortedPage);
+        }
     }
 
 }

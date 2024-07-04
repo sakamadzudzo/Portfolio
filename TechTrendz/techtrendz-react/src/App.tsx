@@ -4,7 +4,7 @@ import Layout from './components/Layout';
 import Login from './pages/login';
 import './assets/css/index.css';
 import Examples from './pages/examples';
-import Product from './pages/product';
+import Products from './pages/products';
 import setAuthToken from './components/utils/setAuthToken';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './components/utils/authContext';
@@ -24,7 +24,7 @@ function App() {
               <Route index element={<Home />} />
               <Route path='login' element={<Login />} />
               <Route path='examples' element={<Examples />} />
-              <Route path='products' element={<Product />} />
+              <Route path='products' element={<Products />} />
             </Route>
           </Routes>
         </RouteGuard>

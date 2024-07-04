@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getPrincipal } from './authService';
+import { checkAuth } from './authService';
 import { useDispatch, useSelector } from 'react-redux';
 import { AuthState, setReferer } from './authSlice';
 import { Props } from '../../types/types';
@@ -13,7 +13,7 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     const checkAuthentication = async () => {
-      const isAuth = await getPrincipal(token!);
+      const isAuth = await checkAuth(token!);
       if (!isAuth && location.pathname !== '/login') {
         dispatch(setReferer(location.pathname))
         navigate('/login');

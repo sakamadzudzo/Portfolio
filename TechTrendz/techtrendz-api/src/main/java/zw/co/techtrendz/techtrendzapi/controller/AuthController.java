@@ -42,4 +42,9 @@ public class AuthController {
     public ResponseEntity<String> signout(HttpServletRequest request) {
         return authenticationService.signout(request);
     }
+
+    @RequestMapping(name = "/checkauth", value = "/checkauth", method = RequestMethod.GET)
+    public ResponseEntity checkAuth(HttpServletRequest request) {
+        return ResponseEntity.ok().build();
+    }
 }

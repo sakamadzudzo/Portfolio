@@ -8,8 +8,12 @@ export const login = async (username: string, password: string) => {
             res = "Bearer " + response.data
         })
         .catch((error) => {
-            console.log(error.response.data)
-            res = error.response.data
+            if (error.response) {
+                // console.log(error.response.data)
+                res = error.response.data
+            } else {
+                res = ""
+            }
         })
         .finally(() => {
             return res
@@ -36,4 +40,31 @@ export const getPrincipal = async (token: string) => {
             return res
         });
     return res
+}
+
+export const checkAuth = async (token: string) => {
+    let res: boolean = false
+    await axios.get(API + "checkauth", {
+        headers: {
+            Authorization: token
+        }
+    }).then((response) => {
+        if (response.status === 200) {
+            res = true
+        } else {
+            res = false
+        }
+    }).catch(() => {
+        res = false
+    }).finally(() => {
+        return res
+    })
+    return res
+}
+
+export const authOrReload = async (token: string) => {
+    const isAuth = await checkAuth(token!);
+    if (!isAuth) {
+        window.location.reload()
+    }
 }

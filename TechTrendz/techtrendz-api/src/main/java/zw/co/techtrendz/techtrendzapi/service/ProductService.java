@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import zw.co.techtrendz.techtrendzapi.entity.PagedProductsRequestDto;
 import zw.co.techtrendz.techtrendzapi.entity.Product;
 
 /**
@@ -24,5 +25,5 @@ public interface ProductService {
 
     public List<Product> getProductAll();
 
-    public Page<Product> getProductAllPaged(int pageNumber, int pageSize, String[] sortFields, Sort.Direction sortDirection);
+    public Page<Product> getProductAllPaged(PagedProductsRequestDto pagedProductsRequestDto);
 }

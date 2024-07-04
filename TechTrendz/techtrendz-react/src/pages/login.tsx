@@ -6,7 +6,7 @@ import FormHeader from "../components/FormHeader";
 import FormInput from "../components/FormInput";
 import { useNavigate } from "react-router-dom";
 import { getPrincipal, login } from "../components/utils/authService";
-import { AuthState, setToken } from "../components/utils/authSlice";
+import { AuthState, setToken, setUser } from "../components/utils/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../components/utils/authContext";
 
@@ -24,12 +24,17 @@ const Login = () => {
     const doLogin = async () => {
         setError("")
         const data = await login(username, password)
-        if (data.includes("Bearer ")) {
-            dispatch(setToken(data))
-            // navigate("/")
-            navigate(referer!)
+        if (data !== "") {
+            if (data.includes("Bearer ")) {
+                dispatch(setToken(data))
+                const principal = await getPrincipal(data!);
+                dispatch(setUser(principal))
+                navigate(referer!)
+            } else {
+                setError(data)
+            }
         } else {
-            setError(data)
+            setError("Network issue. Contact administrator.")
         }
     }
 
@@ -71,7 +76,7 @@ const Login = () => {
                                 <div className="error-div">{error}</div>
                             </div>
                             : <></>}
-                        <FormInput className="w-full" label="Username" onChange={(value: string) => { setUsername(value) }} value={username} />
+                        <FormInput className="w-full" label="Username" onChange={(value: string) => { setUsername(value) }} value={username} autoFocus={true} />
                         <FormInput className="w-full" label="Password" onChange={(value: string) => { setPassword(value) }} value={password} />
                     </FormBody>
                     <FormFooter className="justify-end p-2">
