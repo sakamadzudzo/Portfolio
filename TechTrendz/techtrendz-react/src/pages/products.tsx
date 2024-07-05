@@ -33,26 +33,44 @@ const Products = () => {
         }
     }, [pageNumber, pageSize, sortFields, token])
 
+    const getStatus = (status: string) => {
+        let colorClass = "bg-green-600";
+        if (status === "CARTED") colorClass = "bg-yellow-500"
+        if (status === "ORDERED") colorClass = "bg-orange-500"
+        if (status === "PURCHASED") colorClass = "bg-red-500"
+        return colorClass
+    }
+
     useEffect(() => {
         getProducts()
     }, [getProducts, token])
 
+    useEffect(() => {
+        document.title = 'TechBrandz - Products';
+    }, []);
+
     return (
-        <div className="wrapper grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-2 lg:gap-5 p-2">
-            {products && products.length > 0 && products.map((product: any) =>
-                <div key={product.id} className={"min:w-30 rounded-md p-1 hover:shadow-md shadow-white border"}>
-                    <img src={cat} alt="Cat 1" className="aspect-square px-1 py-1" />
-                    <div>{product.name}</div>
-                    <div className="flex gap-1">
-                        <div className="font-bold">Brand:</div>
-                        <div>{product.brand.name}</div>
-                    </div>
-                    <div className="flex gap-1">
-                        <div className="font-bold">Type:</div>
-                        <div className="lowercase">{product.productType.name}</div>
-                    </div>
+        <div className="wrapper p-2">
+            <div className="h-full w-full">
+                <div className="w-full">Controls</div>
+                <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-2 lg:gap-5">
+                    {products && products.length > 0 && products.map((product: any) =>
+                        <div key={product.id} className={"min:w-30 rounded-md p-1 hover:dark:bg-white/10 focus:dark:bg-white/10 hover:bg-black/10 focus:bg-black/10  border relative"}>
+                            <img src={cat} alt="Cat 1" className="aspect-square px-1 py-1" />
+                            <div>{product.name}</div>
+                            <div className="flex gap-1">
+                                <div className="font-bold">Brand:</div>
+                                <div>{product.brand.name}</div>
+                            </div>
+                            <div className="flex gap-1">
+                                <div className="font-bold">Type:</div>
+                                <div>{product.productType.description}</div>
+                            </div>
+                            <div className={`absolute top-3 left-3 w-4 aspect-square rounded-full ${getStatus(product.productStatus.name)}`}></div>
+                        </div>
+                    )}
                 </div>
-            )}
+            </div>
         </div>
     )
 }

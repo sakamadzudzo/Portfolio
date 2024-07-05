@@ -111,13 +111,13 @@ INSERT INTO Address (houseNumber, city, country, line1, line2, postalCode, provi
 (889, 'Hwange', 'Zimbabwe', '889 Fifty-Third Lane', 'Matabeleland North', '82093', 'Matabeleland North', 'Matabeleland North', 'Fifty-Third Lane'),
 (900, 'Kariba', 'Zimbabwe', '900 Fifty-Fourth Avenue', 'Mashonaland West', '64093', 'Mashonaland West', 'Mashonaland West', 'Fifty-Fourth Avenue');
 
-INSERT INTO productstatus( id, description, name ) VALUES ( 1, 'Product is free', 'FREE');
+INSERT INTO productstatus( id, description, name ) VALUES ( 1, 'Product is available', 'FREE');
 INSERT INTO productstatus( id, description, name ) VALUES ( 2, 'Product has been put in a cart', 'CARTED');
 INSERT INTO productstatus( id, description, name ) VALUES ( 3, 'Product has been ordered by someone', 'ORDERED');
 INSERT INTO productstatus( id, description, name ) VALUES ( 4, 'Product has been purchased', 'PURCHASED');
 
-INSERT INTO producttype( id, description, name ) VALUES ( 1, 'REFRIDGERATOR', 'REFRIDGERATOR');
-INSERT INTO producttype( id, description, name ) VALUES ( 2, 'TELEVISION', 'TELEVISION');
-INSERT INTO producttype( id, description, name ) VALUES ( 3, 'LEPTOP', 'LAPTOP');
-INSERT INTO producttype( id, description, name ) VALUES ( 4, 'SMARTPHONE', 'SMARTPHONE');
-INSERT INTO producttype( id, description, name ) VALUES ( 5, 'PRINTER', 'PRINTER');
+INSERT INTO producttype( id, description, name ) VALUES ( 1, 'Refridgerator', 'REFRIDGERATOR');
+INSERT INTO producttype( id, description, name ) VALUES ( 2, 'Television', 'TELEVISION');
+INSERT INTO producttype( id, description, name ) VALUES ( 3, 'Laptop', 'LAPTOP');
+INSERT INTO producttype( id, description, name ) VALUES ( 4, 'Smartphone', 'SMARTPHONE');
+INSERT INTO producttype( id, description, name ) VALUES ( 5, 'Printer', 'PRINTER');

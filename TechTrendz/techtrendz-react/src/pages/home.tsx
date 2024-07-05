@@ -1,6 +1,10 @@
+import { useEffect } from "react";
 
 const Home = () => {
-    
+
+    useEffect(() => {
+        document.title = 'TechBrandz - Home';
+    }, []);
 
     return (
         <>

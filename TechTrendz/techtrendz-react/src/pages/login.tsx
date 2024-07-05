@@ -62,6 +62,10 @@ const Login = () => {
         }
     }, [isAuthenticated, setIsAuthenticated, navigate, token, referer]);
 
+    useEffect(() => {
+        document.title = 'TechBrandz - Login';
+    }, []);
+
     return (
         <div className="wrapper">
             <div className="border w-64 h-80 rounded-lg">
