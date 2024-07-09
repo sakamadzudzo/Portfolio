@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zw.co.techtrendz.techtrendzapi.entity.Address;
 import zw.co.techtrendz.techtrendzapi.service.AddressService;
@@ -31,8 +32,8 @@ public class AddressController {
     }
 
     @RequestMapping(name = "/getaddressbyid", value = "/getaddressbyid", method = RequestMethod.GET)
-    public Optional<Address> getAddressById(@Valid @RequestBody Address address) {
-        return addressService.getAddressById(address.getId());
+    public Optional<Address> getAddressById(@RequestParam(required = true) Long id) {
+        return addressService.getAddressById(id);
     }
 
     @RequestMapping(name = "/getaddressall", value = "/getaddressall", method = RequestMethod.GET)

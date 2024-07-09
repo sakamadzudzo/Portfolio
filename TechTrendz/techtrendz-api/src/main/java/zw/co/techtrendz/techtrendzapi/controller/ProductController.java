@@ -35,8 +35,8 @@ public class ProductController {
     }
 
     @RequestMapping(name = "/getproductbyid", value = "/getproductbyid", method = RequestMethod.GET)
-    public Optional<Product> getProductById(@Valid @RequestBody Product product) {
-        return productService.getProductById(product.getId());
+    public Optional<Product> getProductById(@RequestParam(required = true) Long id) {
+        return productService.getProductById(id);
     }
 
     @RequestMapping(name = "/getproductall", value = "/getproductall", method = RequestMethod.GET)

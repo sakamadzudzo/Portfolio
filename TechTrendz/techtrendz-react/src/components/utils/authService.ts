@@ -6,6 +6,7 @@ export const login = async (username: string, password: string) => {
     await axios.post(API + "signin", { username, password })
         .then((response) => {
             res = "Bearer " + response.data
+            console.clear()
         })
         .catch((error) => {
             if (error.response) {

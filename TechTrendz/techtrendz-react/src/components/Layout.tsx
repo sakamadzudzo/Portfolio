@@ -42,15 +42,15 @@ const Layout = () => {
                 draggable={false}
             />
             <div className={`relative h-screen w-full ${dark ? 'dark' : ''} bg-light-50 dark:bg-dark-50`}>
-                <button className="absolute top-2 right-2 focus:outline-none z-50" onClick={() => setDark(!dark)}>
-                    <div className="flex h-7 border rounded-lg overflow-hidden">
-                        <div className="bg-light-200 dark:bg-transparent">
-                            <IconSun className="h-full py-1 px-1" />
-                        </div>
-                        <div className="border"></div>
-                        <div className="bg-transparent dark:bg-dark-100">
-                            <IconMoon className="h-full py-1 px-1 -rotate-45" />
-                        </div>
+                <button className="absolute top-0 right-0 focus:outline-none z-50" onClick={() => setDark(!dark)}>
+                    <div className="flex h-7 border rounded-lg rounded-tr-none overflow-hidden">
+                        {!dark ?
+                            <div className="bg-transparent dark:bg-dark-100">
+                                <IconMoon className="h-full py-1 px-1 -rotate-45" />
+                            </div> :
+                            <div className="bg-light-200 dark:bg-transparent">
+                                <IconSun className="h-full py-1 px-1" />
+                            </div>}
                     </div>
                 </button>
                 {/* <div className="opacity-90 -z-50 absolute top-0 left-0 h-full w-full" style={{ backgroundImage: `url(${bg})` }}></div> */}

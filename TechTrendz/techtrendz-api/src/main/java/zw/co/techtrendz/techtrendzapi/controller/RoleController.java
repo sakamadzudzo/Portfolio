@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zw.co.techtrendz.techtrendzapi.entity.Role;
 import zw.co.techtrendz.techtrendzapi.service.RoleService;
@@ -31,8 +32,8 @@ public class RoleController {
     }
 
     @RequestMapping(name = "/getrolebyid", value = "/getrolebyid", method = RequestMethod.GET)
-    public Optional<Role> getRoleById(@Valid @RequestBody Role role) {
-        return roleService.getRoleById(role.getId());
+    public Optional<Role> getRoleById(@RequestParam(required = true) Long id) {
+        return roleService.getRoleById(id);
     }
 
     @RequestMapping(name = "/getroleall", value = "/getroleall", method = RequestMethod.GET)

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zw.co.techtrendz.techtrendzapi.entity.BankAccount;
 import zw.co.techtrendz.techtrendzapi.service.BankAccountService;
@@ -31,8 +32,8 @@ public class BankAccountController {
     }
 
     @RequestMapping(name = "/getbankaccountbyid", value = "/getbankaccountbyid", method = RequestMethod.GET)
-    public Optional<BankAccount> getBankAccountById(@Valid @RequestBody BankAccount bankAccount) {
-        return bankAccountService.getBankAccountById(bankAccount.getId());
+    public Optional<BankAccount> getBankAccountById(@RequestParam(required = true) Long id) {
+        return bankAccountService.getBankAccountById(id);
     }
 
     @RequestMapping(name = "/getbankaccountall", value = "/getbankaccountall", method = RequestMethod.GET)

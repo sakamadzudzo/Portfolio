@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zw.co.techtrendz.techtrendzapi.entity.Brand;
 import zw.co.techtrendz.techtrendzapi.service.BrandService;
@@ -31,8 +32,8 @@ public class BrandController {
     }
 
     @RequestMapping(name = "/getbrandbyid", value = "/getbrandbyid", method = RequestMethod.GET)
-    public Optional<Brand> getBrandById(@Valid @RequestBody Brand brand) {
-        return brandService.getBrandById(brand.getId());
+    public Optional<Brand> getBrandById(@RequestParam(required = true) Long id) {
+        return brandService.getBrandById(id);
     }
 
     @RequestMapping(name = "/getbrandall", value = "/getbrandall", method = RequestMethod.GET)

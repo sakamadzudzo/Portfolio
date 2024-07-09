@@ -9,6 +9,8 @@ import setAuthToken from './components/utils/setAuthToken';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './components/utils/authContext';
 import RouteGuard from './components/utils/routeGuard';
+import { Product } from './pages/product';
+import { NotFound } from './pages/404';
 
 function App() {
   if (localStorage.token) {
@@ -25,6 +27,8 @@ function App() {
               <Route path='login' element={<Login />} />
               <Route path='examples' element={<Examples />} />
               <Route path='products' element={<Products />} />
+              <Route path='product/:id' element={<Product />} />
+              <Route path='*' element={<NotFound />} />
             </Route>
           </Routes>
         </RouteGuard>

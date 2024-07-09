@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zw.co.techtrendz.techtrendzapi.entity.ProductType;
 import zw.co.techtrendz.techtrendzapi.service.ProductTypeService;
@@ -31,8 +32,8 @@ public class ProductTypeController {
     }
 
     @RequestMapping(name = "/getproducttypebyid", value = "/getproducttypebyid", method = RequestMethod.GET)
-    public Optional<ProductType> getProductTypeById(@Valid @RequestBody ProductType productType) {
-        return productTypeService.getProductTypeById(productType.getId());
+    public Optional<ProductType> getProductTypeById(@RequestParam(required = true) Long id) {
+        return productTypeService.getProductTypeById(id);
     }
 
     @RequestMapping(name = "/getproducttypeall", value = "/getproducttypeall", method = RequestMethod.GET)

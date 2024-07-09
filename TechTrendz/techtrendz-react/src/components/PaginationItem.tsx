@@ -1,16 +1,18 @@
 export const PaginationItem = ({
     page,
-    active
+    active,
+    setPage
 }: {
     page: number,
-    active: boolean
+    active: boolean,
+    setPage: Function
 }) => {
     return (
         <>
-            <div className={`flex ${active ? 'border rounded-md px-1' : ''}`}>
+            <div className={`flex cursor-pointer ${active ? 'border rounded-md px-1' : ''}`}>
                 {page < 0 ?
                     <div>...</div> :
-                    <div>{page}</div>}
+                    <div onClick={() => { setPage(page - 1) }}>{page}</div>}
             </div>
         </>
     )

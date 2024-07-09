@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zw.co.techtrendz.techtrendzapi.entity.Cart;
 import zw.co.techtrendz.techtrendzapi.service.CartService;
@@ -31,8 +32,8 @@ public class CartController {
     }
 
     @RequestMapping(name = "/getcartbyid", value = "/getcartbyid", method = RequestMethod.GET)
-    public Optional<Cart> getCartById(@Valid @RequestBody Cart cart) {
-        return cartService.getCartById(cart.getId());
+    public Optional<Cart> getCartById(@RequestParam(required = true) Long id) {
+        return cartService.getCartById(id);
     }
 
     @RequestMapping(name = "/getcartall", value = "/getcartall", method = RequestMethod.GET)

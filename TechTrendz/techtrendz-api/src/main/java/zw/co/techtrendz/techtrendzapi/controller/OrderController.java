@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zw.co.techtrendz.techtrendzapi.entity.Order;
 import zw.co.techtrendz.techtrendzapi.service.OrderService;
@@ -31,8 +32,8 @@ public class OrderController {
     }
 
     @RequestMapping(name = "/getorderbyid", value = "/getorderbyid", method = RequestMethod.GET)
-    public Optional<Order> getOrderById(@Valid @RequestBody Order order) {
-        return orderService.getOrderById(order.getId());
+    public Optional<Order> getOrderById(@RequestParam(required = true) Long id) {
+        return orderService.getOrderById(id);
     }
 
     @RequestMapping(name = "/getorderall", value = "/getorderall", method = RequestMethod.GET)

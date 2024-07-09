@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zw.co.techtrendz.techtrendzapi.entity.Role;
 import zw.co.techtrendz.techtrendzapi.entity.Users;
@@ -32,8 +33,8 @@ public class UserController {
     }
 
     @RequestMapping(name = "/getuserbyid", value = "/getuserbyid", method = RequestMethod.GET)
-    public Optional<Users> getUserById(@Valid @RequestBody Users user) {
-        return userService.getUserById(user.getId());
+    public Optional<Users> getUserById(@RequestParam(required = true) Long id) {
+        return userService.getUserById(id);
     }
 
     @RequestMapping(name = "/getuserall", value = "/getuserall", method = RequestMethod.GET)

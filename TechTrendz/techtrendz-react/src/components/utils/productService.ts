@@ -24,3 +24,28 @@ export const getProductAllPaged = async (token: string, pagedProductsRequestDto:
         })
     return data
 }
+
+export const getProductById = async (token: string, id: string) => {
+    authOrReload(token)
+    let data: any = null
+    await axios.get(API + "getproductbyid", {
+        params: {
+            id: id
+        },
+        headers: {
+            Authorization: token
+        }
+    })
+        .then((response) => {
+            data = response.data
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+            data = null
+        })
+        .finally(() => {
+            return data;
+        })
+    return data
+}

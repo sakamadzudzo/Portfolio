@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zw.co.techtrendz.techtrendzapi.entity.ProductStatus;
 import zw.co.techtrendz.techtrendzapi.service.ProductStatusService;
@@ -31,8 +32,8 @@ public class ProductStatusController {
     }
 
     @RequestMapping(name = "/getproductstatusbyid", value = "/getproductstatusbyid", method = RequestMethod.GET)
-    public Optional<ProductStatus> getProductStatusById(@Valid @RequestBody ProductStatus productStatus) {
-        return productStatusService.getProductStatusById(productStatus.getId());
+    public Optional<ProductStatus> getProductStatusById(@RequestParam(required = true) Long id) {
+        return productStatusService.getProductStatusById(id);
     }
 
     @RequestMapping(name = "/getproductstatusall", value = "/getproductstatusall", method = RequestMethod.GET)
