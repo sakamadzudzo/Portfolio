@@ -41,12 +41,24 @@ const Products = () => {
         }
     }, [pageNumber, pageSize, sortFields, token])
 
-    const getStatus = (status: string) => {
-        let colorClass = "bg-green-600";
-        if (status === "CARTED") colorClass = "bg-yellow-500"
-        if (status === "ORDERED") colorClass = "bg-orange-500"
-        if (status === "PURCHASED") colorClass = "bg-red-500"
-        return colorClass
+    const getStatus = (items: any[]) => {
+        let free = items.filter(item => item.productStatus.name === "FREE");
+        let carted = items.filter(item => item.productStatus.name === "CARTED");
+        let orderd = items.filter(item => item.productStatus.name === "ORDERED");
+        let purchased = items.filter(item => item.productStatus.name === "PURCHASED");
+        if (free.length > 0) {
+            return "bg-green-600"
+        } else if (carted.length > 0) {
+            return "bg-yellow-500"
+        }
+        else if (orderd.length > 0) {
+            return "bg-orange-500"
+        }
+        else if (purchased.length > 0) {
+            return "bg-red-500"
+        } else {
+            return "bg-gray-700"
+        }
     }
 
     const nextPage = () => {
@@ -86,31 +98,40 @@ const Products = () => {
                         nextPage={nextPage} prevPage={prevPage} firstPage={firstPage} lastPage={lastPage} setSize={setPageSize}
                         setPage={setPageNumber} setName={setSortFields} />
                 </div>
-                <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 lg:gap-7 overflow-y-auto h-[95%] md:h-[93.5%]">
-                    {products && !empty && products.map((product: any) =>
-                        <div key={product.id} className={"min:w-30 rounded-sm p-1 hover:dark:bg-white/10 focus:dark:bg-white/10 hover:bg-black/10 focus:bg-black/10  border relative"}
-                            onClick={() => { openProduct(product.id) }}>
-                            <img src={cat} alt="Cat 1" className="aspect-square px-1 py-1" />
-                            <div>{product.name}</div>
-                            <div className="flex gap-1">
-                                <div className="font-bold">Brand:</div>
-                                <div>{product.brand.name}</div>
+                <div className="w-full h-[95%] md:h-[93.5%] overflow-y-auto">
+                    <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 lg:gap-7 h-full">
+                        {products && !empty && products.map((product: any) =>
+                            <div key={product.id} className={"min:w-30 rounded-sm p-1 hover:dark:bg-white/10 focus:dark:bg-white/10 hover:bg-black/10 focus:bg-black/10 h-fit border relative"}
+                                onClick={() => { openProduct(product.id) }}>
+                                <img src={cat} alt="Cat 1" className="aspect-square px-1 py-1" />
+                                <div>{product.name}</div>
+                                <div className="flex gap-1">
+                                    <div className="font-bold">Brand:</div>
+                                    <div>{product.brand.name}</div>
+                                </div>
+                                <div className="flex gap-1">
+                                    <div className="font-bold">Product:</div>
+                                    <div>{product.productType.description}</div>
+                                </div>
+                                <div className="flex gap-1">
+                                    <div className="font-bold">Price:</div>
+                                    <div>${product.price}</div>
+                                </div>
+                                <div className={`absolute top-3 left-3 w-5 aspect-square rounded-full border-2 border-white dark:border-black ${product.productItems ? getStatus(product.productItems) : getStatus([])}`}></div>
+                                {/* <div>{product.tags && product.tags.map((tag: any) =>
+                                <div key={tag.id}>{tag.name}</div>
+                            )}</div> */}
                             </div>
-                            <div className="flex gap-1">
-                                <div className="font-bold">Type:</div>
-                                <div>{product.productType.description}</div>
-                            </div>
-                            <div className={`absolute top-3 left-3 w-4 aspect-square rounded-full ${getStatus(product.productStatus.name)}`}></div>
-                        </div>
-                    )}
-                    {empty && <div>No products retrieved</div>}
+                        )}
+                        {empty && <div>No products retrieved</div>}
+                    </div>
                 </div>
-                <div className="w-full">
+                {/* <div className="w-full">
                     <Pagination first={first} last={last} offset={offset} entries={offsetLast} size={pageSize}
                         total={totalElements} pages={totalPages} currentPage={pageNumber + 1} key={`products-pagination`}
                         nextPage={nextPage} prevPage={prevPage} firstPage={firstPage} lastPage={lastPage} setSize={setPageSize}
                         setPage={setPageNumber} setName={setSortFields} />
-                </div>
+                </div> */}
             </div>
         </div>
     )

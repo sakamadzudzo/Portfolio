@@ -29,10 +29,10 @@ public class BrandServiceImpl implements BrandService {
 
     public List<Brand> saveBrands(List<Brand> brands) {
         List<Brand> savedBrands = new ArrayList<>();
-        for (Brand brand : brands) {
+        brands.forEach(brand -> {
             Brand savedBrand = this.saveBrand(brand);
             savedBrands.add(savedBrand);
-        }
+        });
         return savedBrands;
     }
 

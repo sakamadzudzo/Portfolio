@@ -36,4 +36,8 @@ public class Role {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    public Role(long id) {
+        this.id = id;
+    }
 }

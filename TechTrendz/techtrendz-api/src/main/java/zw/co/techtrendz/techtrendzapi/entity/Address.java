@@ -61,4 +61,8 @@ public class Address {
             joinColumns = @JoinColumn(name = "address_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<Users> users;
+
+    public Address(long id) {
+        this.id = id;
+    }
 }

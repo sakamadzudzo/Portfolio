@@ -29,10 +29,10 @@ public class RoleServiceImpl implements RoleService {
 
     public List<Role> saveRoles(List<Role> roles) {
         List<Role> savedRoles = new ArrayList<>();
-        for (Role role : roles) {
+        roles.forEach(role -> {
             Role savedRole = this.saveRole(role);
             savedRoles.add(savedRole);
-        }
+        });
         return savedRoles;
     }
 

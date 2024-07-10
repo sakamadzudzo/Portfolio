@@ -21,6 +21,8 @@ public interface ProductService {
 
     public Product saveProduct(Product product);
 
+    public List<Product> saveProducts(List<Product> products);
+
     public Optional<Product> getProductById(long id);
 
     public List<Product> getProductAll();

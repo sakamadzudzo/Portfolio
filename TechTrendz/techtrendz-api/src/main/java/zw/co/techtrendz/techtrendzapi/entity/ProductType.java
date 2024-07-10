@@ -36,4 +36,8 @@ public class ProductType {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    public ProductType(long id) {
+        this.id = id;
+    }
 }

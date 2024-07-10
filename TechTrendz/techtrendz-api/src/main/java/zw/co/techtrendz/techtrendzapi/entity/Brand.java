@@ -36,4 +36,8 @@ public class Brand {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    public Brand(long id) {
+        this.id = id;
+    }
 }

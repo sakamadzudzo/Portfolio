@@ -78,7 +78,7 @@ export const Pagination = ({
                 <button className={`btn-hollow w-auto h-auto border-0 -mt-0.5`} disabled={last} onClick={() => { lastPage(); }}>&gt;&gt;</button>
                 {/* <FormInput label="Go to page" key={`go-to`} className="" autoFocus={false} onChange={} value={currentPage.toString()} /> */}
             </div>
-            <div>Sort By: <div onClick={() => { setName(["name"]) }}>Name</div></div>
+            <div className="flex">Sort By: <div onClick={() => { setName(["name"]) }}>Name</div></div>
         </>
     )
 }

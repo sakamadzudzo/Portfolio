@@ -43,11 +43,10 @@ public class UserServiceImpl implements UserService {
 
     public List<Users> saveUsers(List<Users> users) {
         List<Users> savedUsers = new ArrayList<>();
-        for (Users user : users) {
+        users.forEach(user -> {
             Users savedUser = this.saveUser(user);
             savedUsers.add(savedUser);
-        }
-
+        });
         return savedUsers;
     }
 

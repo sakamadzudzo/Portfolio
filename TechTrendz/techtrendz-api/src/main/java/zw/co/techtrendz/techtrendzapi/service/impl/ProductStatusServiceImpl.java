@@ -20,18 +20,18 @@ import zw.co.techtrendz.techtrendzapi.service.ProductStatusService;
 public class ProductStatusServiceImpl implements ProductStatusService {
 
     @Autowired
-    private ProductStatusDao addressDao;
+    private ProductStatusDao productStatusDao;
 
     public ProductStatus saveProductStatus(ProductStatus address) {
-        return addressDao.save(address);
+        return productStatusDao.save(address);
     }
 
     public Optional<ProductStatus> getProductStatusById(long id) {
-        return addressDao.findById(id);
+        return productStatusDao.findById(id);
     }
 
     public List<ProductStatus> getProductStatusAll() {
-        return addressDao.findAll();
+        return productStatusDao.findAll();
     }
 
 }

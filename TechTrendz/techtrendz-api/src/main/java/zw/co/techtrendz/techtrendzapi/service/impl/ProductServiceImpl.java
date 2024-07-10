@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,6 +32,15 @@ public class ProductServiceImpl implements ProductService {
 
     public Product saveProduct(Product address) {
         return productDao.save(address);
+    }
+
+    public List<Product> saveProducts(List<Product> products) {
+        List<Product> savedProducts = new ArrayList<>();
+        products.forEach(product -> {
+            Product savedProduct = this.saveProduct(product);
+            savedProducts.add(savedProduct);
+        });
+        return savedProducts;
     }
 
     public Optional<Product> getProductById(long id) {

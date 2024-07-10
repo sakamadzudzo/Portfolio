@@ -31,11 +31,10 @@ public class ContactTypeServiceImpl implements ContactTypeService {
 
     public List<ContactType> saveContactTypes(List<ContactType> contactTypes) {
         List<ContactType> savedContactTypes = new ArrayList<>();
-        for (ContactType contactType : contactTypes) {
+        contactTypes.forEach(contactType -> {
             ContactType savedContactType = this.saveContactType(contactType);
             savedContactTypes.add(savedContactType);
-        }
-
+        });
         return savedContactTypes;
     }
 

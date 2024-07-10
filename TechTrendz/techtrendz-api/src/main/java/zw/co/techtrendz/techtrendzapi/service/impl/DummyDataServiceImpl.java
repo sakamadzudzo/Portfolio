@@ -5,26 +5,39 @@
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
 import jakarta.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Service;
+import zw.co.techtrendz.techtrendzapi.entity.Address;
 import zw.co.techtrendz.techtrendzapi.entity.Brand;
 import zw.co.techtrendz.techtrendzapi.entity.ContactType;
 import zw.co.techtrendz.techtrendzapi.entity.OrderStatus;
+import zw.co.techtrendz.techtrendzapi.entity.Product;
+import zw.co.techtrendz.techtrendzapi.entity.ProductItem;
+import zw.co.techtrendz.techtrendzapi.entity.ProductStatus;
+import zw.co.techtrendz.techtrendzapi.entity.ProductType;
 import zw.co.techtrendz.techtrendzapi.entity.Role;
 import zw.co.techtrendz.techtrendzapi.entity.Salutation;
+import zw.co.techtrendz.techtrendzapi.entity.Tag;
 import zw.co.techtrendz.techtrendzapi.entity.Users;
 import zw.co.techtrendz.techtrendzapi.service.AddressService;
 import zw.co.techtrendz.techtrendzapi.service.BrandService;
 import zw.co.techtrendz.techtrendzapi.service.ContactTypeService;
 import zw.co.techtrendz.techtrendzapi.service.OrderStatusService;
+import zw.co.techtrendz.techtrendzapi.service.ProductService;
+import zw.co.techtrendz.techtrendzapi.service.ProductStatusService;
+import zw.co.techtrendz.techtrendzapi.service.ProductTypeService;
 import zw.co.techtrendz.techtrendzapi.service.RoleService;
 import zw.co.techtrendz.techtrendzapi.service.SalutationService;
+import zw.co.techtrendz.techtrendzapi.service.TagService;
 import zw.co.techtrendz.techtrendzapi.service.UserService;
 
 /**
@@ -49,6 +62,16 @@ public class DummyDataServiceImpl {
     @Autowired
     private AddressService addressService;
     @Autowired
+    private ProductStatusService productStatusService;
+    @Autowired
+    private ProductTypeService productTypeService;
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private ProductItemService productItemService;
+    @Autowired
+    private TagService tagService;
+    @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private record UsersRole(int userId, int roleId) {
@@ -61,10 +84,10 @@ public class DummyDataServiceImpl {
 
     @PostConstruct
     private void insertDummyData() {
-        salutationService.saveSalutation(new Salutation(null, "Mr", "Mr"));
-        salutationService.saveSalutation(new Salutation(null, "Miss", "Miss"));
-        salutationService.saveSalutation(new Salutation(null, "Mrs", "Mrs"));
-        salutationService.saveSalutation(new Salutation(null, "Dr", "Dr"));
+        salutationService.saveSalutation(new Salutation(1L, "Mr", "Mr"));
+        salutationService.saveSalutation(new Salutation(2L, "Miss", "Miss"));
+        salutationService.saveSalutation(new Salutation(3L, "Mrs", "Mrs"));
+        salutationService.saveSalutation(new Salutation(4L, "Dr", "Dr"));
 
         List<Brand> brands = Arrays.asList(
                 new Brand(1L, "Sony", "Sony"),
@@ -95,16 +118,94 @@ public class DummyDataServiceImpl {
                 new Brand(26L, "Garmin", "Garmin"),
                 new Brand(27L, "Logitech", "Logitech"),
                 new Brand(28L, "Canon", "Canon"),
-                new Brand(29L, "MSI", "MSI")
+                new Brand(29L, "MSI", "MSI"),
+                new Brand(30l, "Hisense", "Hisense"),
+                new Brand(31L, "Russell Hobbs", "Russell Hobbs")
         );
         brandService.saveBrands(brands);
 
+        List<Tag> tags = Arrays.asList(
+                new Tag(1L, "Television", "Television"),
+                new Tag(2L, "TV", "Television"),
+                new Tag(3L, "32", "Television"),
+                new Tag(4L, "32inch", "Television"),
+                new Tag(5L, "LG", "Brand name"),
+                new Tag(6L, "5G", "Network band"),
+                new Tag(7L, "Xiomi", "Brand name"),
+                new Tag(8L, "Redmi", "Make name"),
+                new Tag(9L, "Smartphone", "Product type"),
+                new Tag(10L, "Android", "OS"),
+                new Tag(11L, "iOS", "OS"),
+                new Tag(12L, "Apple", "Brand name"),
+                new Tag(13L, "iPhone", "Brand name"),
+                new Tag(14L, "HP", "Brand name"),
+                new Tag(15L, "Lenovo", "Lenovo"),
+                new Tag(16L, "Microwave", "Microwave"),
+                new Tag(17L, "Laptop", "Product type"),
+                new Tag(18L, "Dell", "Brand name")
+        );
+        tagService.saveTags(tags);
+
+        productStatusService.saveProductStatus(new ProductStatus(1L, "FREE", "Product is available"));
+        productStatusService.saveProductStatus(new ProductStatus(2L, "CARTED", "Product has been put in a cart"));
+        productStatusService.saveProductStatus(new ProductStatus(3L, "ORDERED", "Product has been ordered by someone"));
+        productStatusService.saveProductStatus(new ProductStatus(4L, "PURCHASED", "Product has been purchased"));
+
+        productTypeService.saveProductType(new ProductType(1L, "REFRIDGERATOR", "Refridgerator"));
+        productTypeService.saveProductType(new ProductType(2L, "TELEVISION", "Television"));
+        productTypeService.saveProductType(new ProductType(3L, "LAPTOP", "Laptop"));
+        productTypeService.saveProductType(new ProductType(4L, "SMARTPHONE", "Smartphone"));
+        productTypeService.saveProductType(new ProductType(5L, "PRINTER", "Printer"));
+        productTypeService.saveProductType(new ProductType(6L, "MICROWAVE", "Microwave"));
+
+        List<Product> products = Arrays.asList(
+                new Product(1L, "LG 32inch", "32inch LCD flat screen TV", new Brand(2l), new ProductType(2l), null, null, makeTags(new long[]{1L, 2L, 3L, 4L, 5L}), new BigDecimal(95)),
+                new Product(2L, "Xiomi Redmi Note 12 pro 5G", "A very fast Xiomi smartphone", new Brand(16L), new ProductType(4L), null, null, makeTags(new long[]{6L, 7L, 8L, 9L, 10L}), new BigDecimal(250)),
+                new Product(3L, "iPhone 14 Pro", "Apple's latest smartphone with advanced features and improved camera.", new Brand(8L), new ProductType(4L), null, null, makeTags(new long[]{9L, 11L, 12L, 13L}), new BigDecimal(800)),
+                new Product(4L, "Samsung Galaxy S22", "Samsung's flagship smartphone with stunning display and powerful performance.", new Brand(3L), new ProductType(4L), null, null, makeTags(new long[]{9L, 10L}), new BigDecimal(899.99)),
+                new Product(5L, "Xiomi Mi 11", "Xiomi's high-performance smartphone with excellent value for money.", new Brand(16L), new ProductType(4L), null, null, makeTags(new long[]{7L, 9L, 10L}), new BigDecimal(599.99)),
+                new Product(6L, "HP Spectre x360", "HP's premium 2-in-1 laptop with high-end specifications and sleek design.", new Brand(13L), new ProductType(3L), null, null, makeTags(new long[]{14L, 17L}), new BigDecimal(1299.99)),
+                new Product(7L, "Lenovo ThinkPad X1 Carbon", "Lenovo's lightweight and durable laptop, perfect for business professionals.", new Brand(14L), new ProductType(3L), null, null, makeTags(new long[]{15L, 17L}), new BigDecimal(1499.99)),
+                new Product(8L, "Dell XPS 13", "Dell's ultra-portable laptop with stunning display and powerful performance.", new Brand(15L), new ProductType(3L), null, null, makeTags(new long[]{17L, 18L}), new BigDecimal(1199.99)),
+                new Product(9L, "LG OLED TV", "LG's premium OLED television with stunning picture quality and smart features.", new Brand(2L), new ProductType(2L), null, null, makeTags(new long[]{1L, 2L, 5L}), new BigDecimal(1999.99)),
+                new Product(10L, "Hisense 4K UHD TV", "Hisense's affordable 4K television with excellent value for money.", new Brand(30L), new ProductType(2L), null, null, makeTags(new long[]{1L, 2L}), new BigDecimal(499.99)),
+                new Product(11L, "LG NanoCell TV", "LG's advanced NanoCell technology for enhanced color and clarity.", new Brand(2L), new ProductType(2L), null, null, makeTags(new long[]{1L, 2L, 5L}), new BigDecimal(999.99)),
+                new Product(12L, "Russell Hobbs Microwave", "Russell Hobbs microwave oven with multiple cooking functions and stylish design.", new Brand(31L), new ProductType(6L), null, null, makeTags(new long[]{16L}), new BigDecimal(79.99)),
+                new Product(13L, "Samsung Microwave Oven", "Samsung's high-quality microwave oven with advanced features and easy controls.", new Brand(3L), new ProductType(6L), null, null, makeTags(new long[]{16L}), new BigDecimal(99.99)),
+                new Product(14L, "LG NeoChef Microwave", "LG's innovative microwave oven with smart inverter technology.", new Brand(2L), new ProductType(6L), null, null, makeTags(new long[]{16L}), new BigDecimal(129.99)),
+                new Product(15L, "iPhone 13 Mini", "Compact version of Apple's iPhone 13 with high-end features.", new Brand(8L), new ProductType(4L), null, null, makeTags(new long[]{9L, 11L, 12L, 13L}), new BigDecimal(699.99)),
+                new Product(16L, "Samsung Galaxy Note 20", "Samsung's high-end smartphone with stylus support and large display.", new Brand(3L), new ProductType(4L), null, null, makeTags(new long[]{9L, 10L}), new BigDecimal(1099.99)),
+                new Product(17L, "Xiomi Redmi Note 10", "Affordable smartphone from Xiomi with good performance and battery life.", new Brand(16L), new ProductType(4L), null, null, makeTags(new long[]{6L, 7L, 8L, 9L, 10L}), new BigDecimal(299.99)),
+                new Product(18L, "HP Pavilion Gaming Laptop", "HP's gaming laptop with powerful graphics and high-speed performance.", new Brand(13L), new ProductType(3L), null, null, makeTags(new long[]{14L, 17L}), new BigDecimal(899.99)),
+                new Product(19L, "Lenovo Yoga 7i", "Lenovo's versatile 2-in-1 laptop with long battery life and sleek design.", new Brand(14L), new ProductType(3L), null, null, makeTags(new long[]{15L, 17L}), new BigDecimal(1049))
+        );
+
+        productService.saveProducts(products);
+
+        List<ProductItem> productItems = Arrays.asList(
+                new ProductItem(1l, new ProductStatus(1L), new Product(1L), "9PQ67890MNA01"),
+                new ProductItem(2l, new ProductStatus(1L), new Product(1L), "9PQ67890MNA02"),
+                new ProductItem(3l, new ProductStatus(2L), new Product(1L), "9PQ67890MNA03"),
+                new ProductItem(4l, new ProductStatus(1L), new Product(1L), "9PQ67890MNA04"),
+                new ProductItem(5l, new ProductStatus(1L), new Product(1L), "9PQ67890MNA05"),
+                new ProductItem(6l, new ProductStatus(1L), new Product(1L), "9PQ67890MNA06"),
+                new ProductItem(7l, new ProductStatus(1L), new Product(1L), "9PQ67890MNA07"),
+                new ProductItem(8l, new ProductStatus(1L), new Product(1L), "9PQ67890MNA08"),
+                new ProductItem(9l, new ProductStatus(1L), new Product(1L), "9PQ67890MNA09"),
+                new ProductItem(10l, new ProductStatus(1L), new Product(1L), "9PQ67890MNA010"),
+                new ProductItem(11l, new ProductStatus(1L), new Product(1L), "9PQ67890MNA011"),
+                new ProductItem(12l, new ProductStatus(1L), new Product(1L), "9PQ67890MNA012"),
+                new ProductItem(13l, new ProductStatus(1L), new Product(1L), "9PQ67890MNA013")
+        );
+
+        productItemService.saveProductItems(productItems);
+
         List<ContactType> contactTypes = Arrays.asList(
-                new ContactType(null, "EMAIL", "Email address"),
-                new ContactType(null, "MESSENGER", "Instant messenger"),
-                new ContactType(null, "PHONE", "Phone number (with country code)"),
-                new ContactType(null, "SKYPE", "Skype ID"),
-                new ContactType(null, "WHATSAPP", "WhatsApp number")
+                new ContactType(1L, "EMAIL", "Email address"),
+                new ContactType(2L, "MESSENGER", "Instant messenger"),
+                new ContactType(3L, "PHONE", "Phone number (with country code)"),
+                new ContactType(4L, "SKYPE", "Skype ID"),
+                new ContactType(5L, "WHATSAPP", "WhatsApp number")
         );
         contactTypeService.saveContactTypes(contactTypes);
 
@@ -122,65 +223,19 @@ public class DummyDataServiceImpl {
         orderStatusService.saveOrderStatus(new OrderStatus(5L, "Purchase successful", "PURCHASED"));
 
         List<Users> users = Arrays.asList(
-                new Users(null, new Salutation(1L), "Erick", "Leonard", "Abraham", "elabraham", "test", null, null, null),
-                new Users(null, new Salutation(1L), "Gretchen", null, "Proctor", "gproctor", "test", null, null, null),
-                new Users(null, new Salutation(1L), "Robbie", "Wilkins", "Erich", "rwerich", "test", null, null, null),
-                new Users(null, new Salutation(1L), "Heath", "Dickson", "Cherie", "hdcherie", "test", null, null, null),
-                new Users(null, new Salutation(1L), "Brandie", "Finley", "Arthur", "bfarthur", "test", null, null, null),
-                new Users(null, new Salutation(1L), "Robinson", null, "Lara", "rlara", "test", null, null, null),
-                new Users(null, new Salutation(1L), "Randal", null, "Dickerson", "rdickerson", "test", null, null, null),
-                new Users(null, new Salutation(2L), "Keri", null, "Lesley", "klesley", "test", null, null, null),
-                new Users(null, new Salutation(1L), "Roberta", null, "Morse", "rmorse", "test", null, null, null),
-                new Users(null, new Salutation(1L), "Cornelius", "Herring", "Emily", "chemily", "test", null, null, null),
-                new Users(null, new Salutation(1L), "Saka", "Shingirai", "Madzudzo", "ssmadzudzo", "test", null, null, null)
+                new Users(null, new Salutation(1L), "Erick", "Leonard", "Abraham", "elabraham", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{34, 68, 75, 87}), null),
+                new Users(null, new Salutation(1L), "Gretchen", null, "Proctor", "gproctor", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{72}), null),
+                new Users(null, new Salutation(1L), "Robbie", "Wilkins", "Erich", "rwerich", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{58}), null),
+                new Users(null, new Salutation(1L), "Heath", "Dickson", "Cherie", "hdcherie", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{18, 31}), null),
+                new Users(null, new Salutation(1L), "Brandie", "Finley", "Arthur", "bfarthur", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{26}), null),
+                new Users(null, new Salutation(1L), "Robinson", null, "Lara", "rlara", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{62}), null),
+                new Users(null, new Salutation(1L), "Randal", null, "Dickerson", "rdickerson", "test", makeRoles(new long[]{1}), null, null),
+                new Users(null, new Salutation(2L), "Keri", null, "Lesley", "klesley", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{73}), null),
+                new Users(null, new Salutation(1L), "Roberta", null, "Morse", "rmorse", "test", makeRoles(new long[]{1}), null, null),
+                new Users(null, new Salutation(1L), "Cornelius", "Herring", "Emily", "chemily", "test", makeRoles(new long[]{1}), null, null),
+                new Users(null, new Salutation(1L), "Saka", "Shingirai", "Madzudzo", "ssmadzudzo", "test", makeRoles(new long[]{1, 2, 3}), makeAddresses(new long[]{72, 84}), null)
         );
         userService.saveUsers(users);
-
-        StringBuilder usersRoleSql = new StringBuilder("INSERT INTO users_roles( users_id, roles_id ) VALUES ( :userId, :roleId )");
-        StringBuilder usersAddressSql = new StringBuilder("INSERT INTO useraddress( address_id, user_id ) VALUES ( :addressId, :userId )");
-        List<UsersRole> usersRoles = new ArrayList<>();
-        usersRoles.add(new UsersRole(1, 1));
-        usersRoles.add(new UsersRole(2, 1));
-        usersRoles.add(new UsersRole(3, 1));
-        usersRoles.add(new UsersRole(4, 1));
-        usersRoles.add(new UsersRole(5, 1));
-        usersRoles.add(new UsersRole(6, 1));
-        usersRoles.add(new UsersRole(7, 1));
-        usersRoles.add(new UsersRole(8, 1));
-        usersRoles.add(new UsersRole(9, 1));
-        usersRoles.add(new UsersRole(10, 1));
-        usersRoles.add(new UsersRole(11, 1));
-        usersRoles.add(new UsersRole(11, 2));
-        usersRoles.add(new UsersRole(11, 3));
-
-        List<UsersAddress> usersAddresses = new ArrayList<>();
-        usersAddresses.add(new UsersAddress(34, 1));
-        usersAddresses.add(new UsersAddress(68, 1));
-        usersAddresses.add(new UsersAddress(75, 1));
-        usersAddresses.add(new UsersAddress(87, 1));
-        usersAddresses.add(new UsersAddress(72, 2));
-        usersAddresses.add(new UsersAddress(58, 3));
-        usersAddresses.add(new UsersAddress(18, 4));
-        usersAddresses.add(new UsersAddress(31, 4));
-        usersAddresses.add(new UsersAddress(26, 5));
-        usersAddresses.add(new UsersAddress(62, 6));
-        usersAddresses.add(new UsersAddress(73, 8));
-        usersAddresses.add(new UsersAddress(72, 11));
-        usersAddresses.add(new UsersAddress(84, 11));
-
-        usersRoles.forEach(item -> {
-            SqlParameterSource namedParameters = new MapSqlParameterSource()
-                    .addValue("userId", item.userId)
-                    .addValue("roleId", item.roleId);
-            namedParameterJdbcTemplate.update(usersRoleSql.toString(), namedParameters);
-        });
-
-        usersAddresses.forEach(item -> {
-            SqlParameterSource namedParameters = new MapSqlParameterSource()
-                    .addValue("addressId", item.addressId)
-                    .addValue("userId", item.userId);
-            namedParameterJdbcTemplate.update(usersAddressSql.toString(), namedParameters);
-        });
 
         List<String> bankAccountSqls = Arrays.asList(
                 "INSERT INTO bankaccount( accountHolderAddress, dateTimeOpened, id, userId, accountNumber, bankName, branchName, ifscCode ) VALUES ( 74, '2008-09-24 12:23:41.568000', 1, 1, 66527445610001, 'CBZ', 'Jeanine', '')",
@@ -204,70 +259,94 @@ public class DummyDataServiceImpl {
             namedParameterJdbcTemplate.update(sql, namedParameters);
         });
 
-        List<String> productSqls = Arrays.asList(
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'High-performance laptop with a sleek design and long battery life.', 'Acer Aspire E15', '1AA12345XYZ67')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Powerful laptop for professionals, featuring a stunning display and compact design.', 'Dell XPS 13', '2BC23456LMN78')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium convertible laptop with 360-degree hinge and high-resolution display.', 'HP Spectre x360', '3CD34567OPQ89')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Flagship laptop from Apple with powerful performance and Retina display.', 'MacBook Pro', '4DE45678RST90')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Business ultrabook known for its durability, security features, and performance.', 'Lenovo ThinkPad X1 Carbon', '5EF56789UVW01')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Dual-screen laptop with innovative design and powerful specifications.', 'Asus ZenBook Pro Duo', '6FG67890WXY12')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium laptop with a sleek design and vibrant touchscreen display.', 'Microsoft Surface Laptop', '7GH78901XYZ23')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Thin and light laptop with powerful performance and long battery life.', 'Huawei MateBook X Pro', '8HI89012ABC34')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Gaming laptop with high-refresh-rate display and powerful GPU.', 'Razer Blade 15', '9IJ90123CDE45')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'High-end Chromebook with premium build quality and powerful internals.', 'Google Pixelbook', '0JK01234EFG56')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Latest flagship smartphone from Apple with advanced camera and performance.', 'iPhone 13 Pro', '1KL12345GHI67')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium Android smartphone with powerful features and impressive camera.', 'Samsung Galaxy S22 Ultra', '2LM23456IJK78')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Google''s latest flagship smartphone with pure Android experience.', 'Google Pixel 7', '3MN34567JKL89')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Powerful tablet with large display and support for Apple Pencil.', 'iPad Pro', '4NO45678KLM90')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Advanced smartwatch with fitness and health tracking features.', 'Apple Watch Series 7', '5OP56789LMN01')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium smartwatch with stylish design and advanced health monitoring.', 'Samsung Galaxy Watch 4', '6PQ67890MNO12')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Next-generation gaming console from Sony with powerful hardware.', 'Sony PlayStation 5', '7QR78901NOP23')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Latest gaming console from Microsoft offering high-resolution gaming experience.', 'Xbox Series X', '8RS89012OPQ34')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Compact drone with 4K camera and intelligent flight modes.', 'DJI Mavic Air 2', '9ST90123PQR45')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Flagship action camera known for its rugged build and advanced features.', 'GoPro Hero 10 Black', '0TU01234QRS56')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Smart display with rotating screen and Alexa integration.', 'Amazon Echo Show 10', '1UV12345RST67')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Advanced fitness tracker with built-in GPS and health monitoring features.', 'Fitbit Charge 5', '2VW23456STU78')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium noise-canceling headphones with immersive sound quality.', 'Bose QuietComfort 45', '3WX34567TUV89')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'High-quality wireless headphones with industry-leading noise cancellation.', 'Sony WH-1000XM4 Headphones', '4XY45678UVW90')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Upgraded version of Nintendo Switch with OLED display.', 'Nintendo Switch OLED', '5YZ56789VWX01')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Advanced wireless mouse with customizable buttons and ergonomic design.', 'Logitech MX Master 3 Mouse', '6ZA67890WXY12')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium multisport GPS smartwatch with rugged design and advanced features.', 'Garmin Fenix 7', '7AB78901XYZ23')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'All-in-one virtual reality headset with wireless freedom and immersive experiences.', 'Oculus Quest 2', '8BC89012ABC34')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Portable Bluetooth speaker with powerful sound and waterproof design.', 'JBL Flip 6 Portable Speaker', '9CD90123BCD45')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'High-resolution mirrorless camera with advanced autofocus and image stabilization.', 'Canon EOS R5 Camera', '0DE01234CDE56')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Versatile laptop with powerful performance for everyday computing tasks.', 'HP Pavilion 15', '1EF12345LMN67')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Ultra-portable laptop with long battery life and sleek design.', 'Lenovo IdeaPad Slim 7', '2FG23456OPQ78')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 2, 1, 'Gaming laptop with high-refresh-rate display and RGB keyboard.', 'Alienware m15 R6', '3GH34567QRS89')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Affordable laptop with decent performance and ample storage.', 'Acer Aspire 5', '4HI45678STU90')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Convertible laptop with touchscreen display and stylus support.', 'HP Envy x360', '5IJ56789UVW01')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Sleek and lightweight laptop for professionals on the go.', 'Dell Latitude 14', '6JK67890XYZ12')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Portable laptop with durable design and all-day battery life.', 'Lenovo Chromebook Flex 5', '7KL78901ABC23')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Budget-friendly laptop with adequate performance for everyday use.', 'Acer Swift 3', '8LM89012BCD34')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Gaming laptop with powerful specs and customizable RGB lighting.', 'MSI GE76 Raider', '9MN90123CDE45')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Ultra-slim laptop with stunning display and premium build quality.', 'LG Gram 17', '0NO01234DEF56')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Compact smartphone with impressive camera capabilities and 5G support.', 'OnePlus 10 Pro', '1OP12345EFG67')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Flagship smartphone with innovative camera features and stylish design.', 'Xiaomi Mi 12', '2PQ23456FGH78')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Budget-friendly smartphone with large display and decent performance.', 'Motorola Moto G Power', '3QR34567GHI89')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Compact tablet with long battery life and vibrant display.', 'Samsung Galaxy Tab S7', '4RS45678HIJ90')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Budget-friendly tablet with basic features and decent performance.', 'Amazon Fire HD 10', '5ST56789IJK01')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium fitness tracker with heart rate monitoring and GPS functionality.', 'Garmin Venu 2', '6TU67890JKL12')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Advanced smart scale with body composition analysis and Wi-Fi connectivity.', 'Withings Body Cardio', '7UV78901KLM23')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Noise-canceling true wireless earbuds with long battery life and sweat resistance.', 'Samsung Galaxy Buds Pro', '8VW89012LMN34')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Wireless gaming headset with 3D spatial audio and long-lasting battery.', 'SteelSeries Arctis 7', '9WX90123MNO45')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Portable SSD with fast data transfer speeds and rugged design.', 'SanDisk Extreme Portable SSD', '0XY01234NOP56')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'External hard drive with large storage capacity and USB 3.0 connectivity.', 'Seagate Backup Plus Slim', '1YZ12345OPQ67')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Compact photo printer for printing photos directly from smartphones and cameras.', 'Canon IVY Mini Photo Printer', '2ZA23456PQR78')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Compact instant camera with vintage design and automatic exposure control.', 'Fujifilm Instax Mini 11', '3AB34567QRS89')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'High-resolution document scanner with automatic document feeder.', 'Epson WorkForce ES-500W', '4BC45678RST90')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Wireless charging pad with fast charging support for smartphones and other devices.', 'Anker PowerWave Pad', '5CD56789STU01')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Smart thermostat with energy-saving features and smartphone app control.', 'Nest Learning Thermostat', '6DE67890TUV12')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Smart security camera with 1080p HD video and two-way audio.', 'Ring Indoor Cam', '7EF78901UVW23')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Smart doorbell with motion detection and night vision.', 'Arlo Essential Video Doorbell', '8FG89012VWX34')",
-                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Robot vacuum cleaner with mapping technology and voice control.', 'iRobot Roomba i7+', '9GH90123WXY45')"
-        );
-        productSqls.forEach(sql -> {
-            SqlParameterSource namedParameters = new MapSqlParameterSource();
-            namedParameterJdbcTemplate.update(sql, namedParameters);
-        });
+//        List<String> productSqls = Arrays.asList(
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'High-performance laptop with a sleek design and long battery life.', 'Acer Aspire E15', '1AA12345XYZ67')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Powerful laptop for professionals, featuring a stunning display and compact design.', 'Dell XPS 13', '2BC23456LMN78')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium convertible laptop with 360-degree hinge and high-resolution display.', 'HP Spectre x360', '3CD34567OPQ89')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Flagship laptop from Apple with powerful performance and Retina display.', 'MacBook Pro', '4DE45678RST90')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Business ultrabook known for its durability, security features, and performance.', 'Lenovo ThinkPad X1 Carbon', '5EF56789UVW01')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Dual-screen laptop with innovative design and powerful specifications.', 'Asus ZenBook Pro Duo', '6FG67890WXY12')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium laptop with a sleek design and vibrant touchscreen display.', 'Microsoft Surface Laptop', '7GH78901XYZ23')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Thin and light laptop with powerful performance and long battery life.', 'Huawei MateBook X Pro', '8HI89012ABC34')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Gaming laptop with high-refresh-rate display and powerful GPU.', 'Razer Blade 15', '9IJ90123CDE45')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'High-end Chromebook with premium build quality and powerful internals.', 'Google Pixelbook', '0JK01234EFG56')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Latest flagship smartphone from Apple with advanced camera and performance.', 'iPhone 13 Pro', '1KL12345GHI67')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium Android smartphone with powerful features and impressive camera.', 'Samsung Galaxy S22 Ultra', '2LM23456IJK78')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Google''s latest flagship smartphone with pure Android experience.', 'Google Pixel 7', '3MN34567JKL89')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Powerful tablet with large display and support for Apple Pencil.', 'iPad Pro', '4NO45678KLM90')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Advanced smartwatch with fitness and health tracking features.', 'Apple Watch Series 7', '5OP56789LMN01')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium smartwatch with stylish design and advanced health monitoring.', 'Samsung Galaxy Watch 4', '6PQ67890MNO12')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Next-generation gaming console from Sony with powerful hardware.', 'Sony PlayStation 5', '7QR78901NOP23')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Latest gaming console from Microsoft offering high-resolution gaming experience.', 'Xbox Series X', '8RS89012OPQ34')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Compact drone with 4K camera and intelligent flight modes.', 'DJI Mavic Air 2', '9ST90123PQR45')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Flagship action camera known for its rugged build and advanced features.', 'GoPro Hero 10 Black', '0TU01234QRS56')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Smart display with rotating screen and Alexa integration.', 'Amazon Echo Show 10', '1UV12345RST67')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Advanced fitness tracker with built-in GPS and health monitoring features.', 'Fitbit Charge 5', '2VW23456STU78')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium noise-canceling headphones with immersive sound quality.', 'Bose QuietComfort 45', '3WX34567TUV89')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'High-quality wireless headphones with industry-leading noise cancellation.', 'Sony WH-1000XM4 Headphones', '4XY45678UVW90')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Upgraded version of Nintendo Switch with OLED display.', 'Nintendo Switch OLED', '5YZ56789VWX01')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Advanced wireless mouse with customizable buttons and ergonomic design.', 'Logitech MX Master 3 Mouse', '6ZA67890WXY12')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium multisport GPS smartwatch with rugged design and advanced features.', 'Garmin Fenix 7', '7AB78901XYZ23')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'All-in-one virtual reality headset with wireless freedom and immersive experiences.', 'Oculus Quest 2', '8BC89012ABC34')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Portable Bluetooth speaker with powerful sound and waterproof design.', 'JBL Flip 6 Portable Speaker', '9CD90123BCD45')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'High-resolution mirrorless camera with advanced autofocus and image stabilization.', 'Canon EOS R5 Camera', '0DE01234CDE56')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Versatile laptop with powerful performance for everyday computing tasks.', 'HP Pavilion 15', '1EF12345LMN67')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Ultra-portable laptop with long battery life and sleek design.', 'Lenovo IdeaPad Slim 7', '2FG23456OPQ78')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 2, 1, 'Gaming laptop with high-refresh-rate display and RGB keyboard.', 'Alienware m15 R6', '3GH34567QRS89')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Affordable laptop with decent performance and ample storage.', 'Acer Aspire 5', '4HI45678STU90')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Convertible laptop with touchscreen display and stylus support.', 'HP Envy x360', '5IJ56789UVW01')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Sleek and lightweight laptop for professionals on the go.', 'Dell Latitude 14', '6JK67890XYZ12')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Portable laptop with durable design and all-day battery life.', 'Lenovo Chromebook Flex 5', '7KL78901ABC23')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Budget-friendly laptop with adequate performance for everyday use.', 'Acer Swift 3', '8LM89012BCD34')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Gaming laptop with powerful specs and customizable RGB lighting.', 'MSI GE76 Raider', '9MN90123CDE45')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Ultra-slim laptop with stunning display and premium build quality.', 'LG Gram 17', '0NO01234DEF56')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Compact smartphone with impressive camera capabilities and 5G support.', 'OnePlus 10 Pro', '1OP12345EFG67')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Flagship smartphone with innovative camera features and stylish design.', 'Xiaomi Mi 12', '2PQ23456FGH78')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Budget-friendly smartphone with large display and decent performance.', 'Motorola Moto G Power', '3QR34567GHI89')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Compact tablet with long battery life and vibrant display.', 'Samsung Galaxy Tab S7', '4RS45678HIJ90')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Budget-friendly tablet with basic features and decent performance.', 'Amazon Fire HD 10', '5ST56789IJK01')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium fitness tracker with heart rate monitoring and GPS functionality.', 'Garmin Venu 2', '6TU67890JKL12')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Advanced smart scale with body composition analysis and Wi-Fi connectivity.', 'Withings Body Cardio', '7UV78901KLM23')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Noise-canceling true wireless earbuds with long battery life and sweat resistance.', 'Samsung Galaxy Buds Pro', '8VW89012LMN34')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Wireless gaming headset with 3D spatial audio and long-lasting battery.', 'SteelSeries Arctis 7', '9WX90123MNO45')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Portable SSD with fast data transfer speeds and rugged design.', 'SanDisk Extreme Portable SSD', '0XY01234NOP56')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'External hard drive with large storage capacity and USB 3.0 connectivity.', 'Seagate Backup Plus Slim', '1YZ12345OPQ67')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Compact photo printer for printing photos directly from smartphones and cameras.', 'Canon IVY Mini Photo Printer', '2ZA23456PQR78')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Compact instant camera with vintage design and automatic exposure control.', 'Fujifilm Instax Mini 11', '3AB34567QRS89')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'High-resolution document scanner with automatic document feeder.', 'Epson WorkForce ES-500W', '4BC45678RST90')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Wireless charging pad with fast charging support for smartphones and other devices.', 'Anker PowerWave Pad', '5CD56789STU01')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Smart thermostat with energy-saving features and smartphone app control.', 'Nest Learning Thermostat', '6DE67890TUV12')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Smart security camera with 1080p HD video and two-way audio.', 'Ring Indoor Cam', '7EF78901UVW23')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Smart doorbell with motion detection and night vision.', 'Arlo Essential Video Doorbell', '8FG89012VWX34')",
+//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Robot vacuum cleaner with mapping technology and voice control.', 'iRobot Roomba i7+', '9GH90123WXY45')"
+//        );
+//        productSqls.forEach(sql -> {
+//            SqlParameterSource namedParameters = new MapSqlParameterSource();
+//            namedParameterJdbcTemplate.update(sql, namedParameters);
+//        });
+    }
+
+    private Set<Role> makeRoles(long[] ids) {
+        Set<Role> roles = new HashSet<>();
+        for (long id : ids) {
+            roles.add(new Role(id));
+        }
+        return roles;
+    }
+
+    private Set<Address> makeAddresses(long[] ids) {
+        Set<Address> addresses = new HashSet<>();
+        for (long id : ids) {
+            addresses.add(new Address(id));
+        }
+        return addresses;
+    }
+
+    private List<Tag> makeTags(long[] ids) {
+        List<Tag> tags = new ArrayList<>();
+        for (long id : ids) {
+            tags.add(new Tag(id));
+        }
+        return tags;
     }
 }

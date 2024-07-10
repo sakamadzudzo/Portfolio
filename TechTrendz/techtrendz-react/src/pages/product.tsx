@@ -30,7 +30,7 @@ export const Product = () => {
                     <div>
                         <div>
                             <img src={cat} alt="Cat 1" className="aspect-square py-1" />
-                            <div className="font-extrabold">{product.name}</div>
+                            <div className="font-extrabold">{product?.name}</div>
                             <div className="font-bold">{product.brand?.name}</div>
                             <div className="font-semibold">{product.productType?.description}</div>
                             <div>{product.description}</div>
