@@ -2,7 +2,7 @@
 // import fetcher from "../components/utils/fetcher";
 import sebas from "./../assets/img/Sebas_001.webp";
 import cat1 from "./../assets/img/cat1.webp"
-import { toast } from "react-toastify"
+// import { toast } from "react-toastify"
 
 const Examples = () => {
     // const { data, loading, error, responseTime } = useFetch('http://localhost:3006/getuserall', {

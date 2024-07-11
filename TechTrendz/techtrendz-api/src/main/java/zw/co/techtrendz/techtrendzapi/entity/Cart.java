@@ -34,8 +34,8 @@ public class Cart {
 
     @ManyToMany
     @JoinTable(
-            name = "cartProduct",
+            name = "cartProductItem",
             joinColumns = @JoinColumn(name = "cartId"),
-            inverseJoinColumns = @JoinColumn(name = "productId"))
-    private Set<Product> products;
+            inverseJoinColumns = @JoinColumn(name = "productItemId"))
+    private Set<ProductItem> productItems;
 }

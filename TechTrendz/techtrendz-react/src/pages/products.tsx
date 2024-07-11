@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import cat from './../assets/img/cat1.webp'
 import { Pagination } from "../components/Pagination";
 import { useNavigate } from "react-router-dom";
+import { ProductStatus } from "../components/utils/misc";
 
 const Products = () => {
     const navigate = useNavigate()
@@ -41,25 +42,25 @@ const Products = () => {
         }
     }, [pageNumber, pageSize, sortFields, token])
 
-    const getStatus = (items: any[]) => {
-        let free = items.filter(item => item.productStatus.name === "FREE");
-        let carted = items.filter(item => item.productStatus.name === "CARTED");
-        let orderd = items.filter(item => item.productStatus.name === "ORDERED");
-        let purchased = items.filter(item => item.productStatus.name === "PURCHASED");
-        if (free.length > 0) {
-            return "bg-green-600"
-        } else if (carted.length > 0) {
-            return "bg-yellow-500"
-        }
-        else if (orderd.length > 0) {
-            return "bg-orange-500"
-        }
-        else if (purchased.length > 0) {
-            return "bg-red-500"
-        } else {
-            return "bg-gray-700"
-        }
-    }
+    // const getStatus = (items: any[]) => {
+    //     let free = items.filter(item => item.productStatus.name === "FREE");
+    //     let carted = items.filter(item => item.productStatus.name === "CARTED");
+    //     let orderd = items.filter(item => item.productStatus.name === "ORDERED");
+    //     let purchased = items.filter(item => item.productStatus.name === "PURCHASED");
+    //     if (free.length > 0) {
+    //         return "bg-green-600"
+    //     } else if (carted.length > 0) {
+    //         return "bg-yellow-500"
+    //     }
+    //     else if (orderd.length > 0) {
+    //         return "bg-orange-500"
+    //     }
+    //     else if (purchased.length > 0) {
+    //         return "bg-red-500"
+    //     } else {
+    //         return "bg-gray-700"
+    //     }
+    // }
 
     const nextPage = () => {
         setPageNumber(pageNumber + 1)
@@ -117,7 +118,7 @@ const Products = () => {
                                     <div className="font-bold">Price:</div>
                                     <div>${product.price}</div>
                                 </div>
-                                <div className={`absolute top-3 left-3 w-5 aspect-square rounded-full border-2 border-white dark:border-black ${product.productItems ? getStatus(product.productItems) : getStatus([])}`}></div>
+                                <ProductStatus product={product} />
                                 {/* <div>{product.tags && product.tags.map((tag: any) =>
                                 <div key={tag.id}>{tag.name}</div>
                             )}</div> */}

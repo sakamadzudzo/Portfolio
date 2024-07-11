@@ -13,8 +13,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,6 +47,9 @@ public class ProductItem {
     @JoinColumn(name = "product_id", nullable = false)
     @JsonBackReference
     private Product product;
+    
+    @ManyToMany(mappedBy = "productItems")
+    private Set<Cart> carts;
 
     @NotNull
     @Column(nullable = false, unique = true)

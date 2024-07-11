@@ -58,9 +58,6 @@ public class Product {
     @JoinColumn(name = "productType_id", nullable = false)
     private ProductType productType;
 
-    @ManyToMany(mappedBy = "products")
-    private Set<Cart> carts;
-
     @OneToMany(mappedBy = "product")
     @JsonManagedReference
     private List<ProductItem> productItems;
