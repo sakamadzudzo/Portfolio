@@ -4,8 +4,11 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,11 +22,18 @@ import zw.co.techtrendz.techtrendzapi.service.AuditService;
 @Service
 public class AuditServiceImpl implements AuditService {
 
-    @Autowired
-    private AuditReader auditReader;
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    private AuditReader getAuditReader() {
+        return AuditReaderFactory.get(entityManager);
+    }
 
     public List<Brand> getBrandHistory(int revision) {
-        AuditQuery query = auditReader.createQuery().forEntitiesAtRevision(Brand.class, 2);
+        final AuditReader auditReader = getAuditReader();
+//        AuditQuery query = auditReader.createQuery().forRevisionsOfEntityWithChanges(Brand.class, true);
+        AuditQuery query = auditReader.createQuery().forEntitiesModifiedAtRevision(Brand.class, revision);
+//        AuditQuery query = auditReader.createQuery().forRevisionsOfEntity(Brand.class, true);
         return query.getResultList();
     }
 

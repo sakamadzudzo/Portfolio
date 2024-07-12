@@ -23,7 +23,7 @@ import org.hibernate.envers.Audited;
 @NoArgsConstructor
 @Data
 @Entity
-@Audited
+@Audited(withModifiedFlag = true)
 public class Brand {
 
     @Id
