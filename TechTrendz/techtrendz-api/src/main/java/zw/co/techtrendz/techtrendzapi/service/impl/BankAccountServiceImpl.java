@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,14 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     public BankAccount saveBankAccount(BankAccount address) {
         return addressDao.save(address);
+    }
+
+    public List<BankAccount> saveBankAccounts(List<BankAccount> bankAccounts) {
+        List<BankAccount> savedBankAccounts = new ArrayList<>();
+        bankAccounts.forEach(bankAccount -> {
+            savedBankAccounts.add(this.saveBankAccount(bankAccount));
+        });
+        return savedBankAccounts;
     }
 
     public Optional<BankAccount> getBankAccountById(long id) {

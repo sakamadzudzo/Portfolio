@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,19 +35,19 @@ public class BankAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotNull
     @Column(unique = true, nullable = false)
     private Long accountNumber;
 
-    @NotBlank
+    @NotNull
     @Column(nullable = false)
     private String bankName;
 
-    @NotBlank
+    @NotNull
     @Column(nullable = false)
     private String branchName;
 
-    @NotBlank
+    @NotNull
     @Column(nullable = false)
     private String ifscCode;
 

@@ -6,6 +6,8 @@ package zw.co.techtrendz.techtrendzapi.service.impl;
 
 import jakarta.annotation.PostConstruct;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -17,6 +19,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Service;
 import zw.co.techtrendz.techtrendzapi.entity.Address;
+import zw.co.techtrendz.techtrendzapi.entity.BankAccount;
 import zw.co.techtrendz.techtrendzapi.entity.Brand;
 import zw.co.techtrendz.techtrendzapi.entity.ContactType;
 import zw.co.techtrendz.techtrendzapi.entity.OrderStatus;
@@ -29,6 +32,7 @@ import zw.co.techtrendz.techtrendzapi.entity.Salutation;
 import zw.co.techtrendz.techtrendzapi.entity.Tag;
 import zw.co.techtrendz.techtrendzapi.entity.Users;
 import zw.co.techtrendz.techtrendzapi.service.AddressService;
+import zw.co.techtrendz.techtrendzapi.service.BankAccountService;
 import zw.co.techtrendz.techtrendzapi.service.BrandService;
 import zw.co.techtrendz.techtrendzapi.service.ContactTypeService;
 import zw.co.techtrendz.techtrendzapi.service.OrderStatusService;
@@ -71,6 +75,8 @@ public class DummyDataServiceImpl {
     private ProductItemService productItemService;
     @Autowired
     private TagService tagService;
+    @Autowired
+    private BankAccountService bankAccountService;
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -254,93 +260,130 @@ public class DummyDataServiceImpl {
         );
         userService.saveUsers(users);
 
-        List<String> bankAccountSqls = Arrays.asList(
-                "INSERT INTO bankaccount( accountHolderAddress, dateTimeOpened, id, userId, accountNumber, bankName, branchName, ifscCode ) VALUES ( 74, '2008-09-24 12:23:41.568000', 1, 1, 66527445610001, 'CBZ', 'Jeanine', '')",
-                "INSERT INTO bankaccount( accountHolderAddress, dateTimeOpened, id, userId, accountNumber, bankName, branchName, ifscCode ) VALUES ( 11, '2008-04-17 07:01:08.992000', 2, 2, 66527445610002, 'CBZ', 'Tabatha', '')",
-                "INSERT INTO bankaccount( accountHolderAddress, dateTimeOpened, id, userId, accountNumber, bankName, branchName, ifscCode ) VALUES ( 42, '2008-11-25 20:18:55.872000', 3, 3, 66527445610003, 'CBZ', 'Clinton', '')",
-                "INSERT INTO bankaccount( accountHolderAddress, dateTimeOpened, id, userId, accountNumber, bankName, branchName, ifscCode ) VALUES ( 41, '2008-01-02 10:30:24.376000', 4, 4, 66527445610004, 'CBZ', 'Casey', '')",
-                "INSERT INTO bankaccount( accountHolderAddress, dateTimeOpened, id, userId, accountNumber, bankName, branchName, ifscCode ) VALUES ( 21, '2008-06-30 18:05:21.024000', 5, 5, 66527445610005, 'CBZ', 'Alexis', '')",
-                "INSERT INTO bankaccount( accountHolderAddress, dateTimeOpened, id, userId, accountNumber, bankName, branchName, ifscCode ) VALUES ( 4, '2008-11-08 17:31:00.736000', 6, 6, 66527445610006, 'CBZ', 'Orlando', '')",
-                "INSERT INTO bankaccount( accountHolderAddress, dateTimeOpened, id, userId, accountNumber, bankName, branchName, ifscCode ) VALUES ( 34, '2008-12-26 17:56:34.688000', 7, 7, 66527445610007, 'CBZ', 'Autumn', '')",
-                "INSERT INTO bankaccount( accountHolderAddress, dateTimeOpened, id, userId, accountNumber, bankName, branchName, ifscCode ) VALUES ( 66, '2008-01-13 02:22:41.728000', 8, 8, 66527445610008, 'CBZ', 'Kendall', '')",
-                "INSERT INTO bankaccount( accountHolderAddress, dateTimeOpened, id, userId, accountNumber, bankName, branchName, ifscCode ) VALUES ( 97, '2008-11-09 14:58:39.488000', 9, 9, 66527445610009, 'CBZ', 'Brad', '')",
-                "INSERT INTO bankaccount( accountHolderAddress, dateTimeOpened, id, userId, accountNumber, bankName, branchName, ifscCode ) VALUES ( 72, '2008-12-03 18:43:35.808000', 10, 10, 66527445610010, 'CBZ', 'Sharon', '')",
-                "INSERT INTO bankaccount( accountHolderAddress, dateTimeOpened, id, userId, accountNumber, bankName, branchName, ifscCode ) VALUES ( 1, '2008-12-27 07:30:14.912000', 11, 2, 66527445610011, 'CBZ', 'Ted', '')",
-                "INSERT INTO bankaccount( accountHolderAddress, dateTimeOpened, id, userId, accountNumber, bankName, branchName, ifscCode ) VALUES ( 16, '2008-06-14 15:53:15.264000', 12, 3, 66527445610012, 'CBZ', 'Curtis', '')",
-                "INSERT INTO bankaccount( accountHolderAddress, dateTimeOpened, id, userId, accountNumber, bankName, branchName, ifscCode ) VALUES ( 97, '2008-03-24 10:08:19.712000', 13, 8, 66527445610013, 'CBZ', 'Alissa', '')",
-                "INSERT INTO bankaccount( accountHolderAddress, dateTimeOpened, id, userId, accountNumber, bankName, branchName, ifscCode ) VALUES ( 16, '2008-07-09 05:15:01.760000', 14, 7, 66527445610014, 'CBZ', 'Terry', '')",
-                "INSERT INTO bankaccount( accountHolderAddress, dateTimeOpened, id, userId, accountNumber, bankName, branchName, ifscCode ) VALUES ( 94, '2008-01-28 06:59:19.936000', 15, 3, 66527445610015, 'CBZ', 'Cecil', '')"
+        List<Address> addresses = Arrays.asList(
+                new Address(1L, 123L, "Main Street", "Main Street", "Newlands", "Harare", null, "Harare", "Zimbabwe", "12345", null),
+                new Address(2L, 456L, "High Street", "High Street", "Hillside", "Bulawayo", null, "Bulawayo", "Zimbabwe", "67890", null),
+                new Address(3L, 789L, "Market Road", "Market Road", null, "Mutare", null, "Manicaland", "Zimbabwe", "54321", null),
+                new Address(4L, 101L, "Park Avenue", "Park Avenue", "Senga", "Gweru", null, "Midlands", "Zimbabwe", "98765", null),
+                new Address(5L, 112L, "Church Street", "Church Street", "Rhodene", "Masvingo", null, "Masvingo", "Zimbabwe", "45678", null),
+                new Address(6L, 131L, "Industrial Road", "Industrial Road", "Gaika", "Kwekwe", null, "Midlands", "Zimbabwe", "23456", null),
+                new Address(7L, 151L, "Oxford Street", "Oxford Street", "Zengeza", "Chitungwiza", null, "Harare", "Zimbabwe", "87654", null),
+                new Address(8L, 171L, "Riverside Drive", "Riverside Drive", "Sunway City", "Epworth", null, "Harare", "Zimbabwe", "76543", null),
+                new Address(9L, 192L, "Railway Avenue", "Railway Avenue", null, "Bindura", null, "Mashonaland Central", "Zimbabwe", "32109", null),
+                new Address(10L, 201L, "Victoria Avenue", "Victoria Avenue", "Mosi-oa-Tunya", "Victoria Falls", null, "Matabeleland North", "Zimbabwe", "10987", null),
+                new Address(11L, 221L, "Freedom Avenue", "Freedom Avenue", "Chikonohono", "Chinhoyi", null, "Mashonaland West", "Zimbabwe", "54321", null),
+                new Address(12L, 241L, "Independence Street", "Independence Street", "Chiedza", "Karoi", null, "Mashonaland West", "Zimbabwe", "98765", null),
+                new Address(13L, 261L, "Liberty Lane", "Liberty Lane", "Gaza", "Chipinge", null, "Manicaland", "Zimbabwe", "23456", null),
+                new Address(14L, 281L, "Unity Road", "Unity Road", "Dulivhadzimu", "Beitbridge", null, "Matabeleland South", "Zimbabwe", "87654", null),
+                new Address(15L, 301L, "Victory Crescent", "Victory Crescent", "Chiredzi North", "Chiredzi", null, "Masvingo", "Zimbabwe", "76543", null),
+                new Address(16L, 321L, "Hope Street", "Hope Street", "Makuvaza", "Norton", null, "Mashonaland West", "Zimbabwe", "32109", null),
+                new Address(17L, 341L, "Faith Lane", "Faith Lane", "Dombotombo", "Marondera", null, "Mashonaland East", "Zimbabwe", "10987", null),
+                new Address(18L, 361L, "Grace Avenue", "Grace Avenue", "Damafalls", "Ruwa", null, "Mashonaland East", "Zimbabwe", "21098", null),
+                new Address(19L, 381L, "Joy Road", "Joy Road", "Phelandaba", "Gwanda", null, "Matabeleland South", "Zimbabwe", "54321", null),
+                new Address(20L, 401L, "Peace Street", "Peace Street", "Zvamahande", "Shurugwi", null, "Midlands", "Zimbabwe", "87654", null),
+                new Address(21L, 421L, "Liberty Lane", "Liberty Lane", "Chaminuka", "Chegutu", null, "Mashonaland West", "Zimbabwe", "32109", null),
+                new Address(22L, 441L, "Unity Avenue", "Unity Avenue", "Nembudziya", "Gokwe", null, "Midlands", "Zimbabwe", "10987", null),
+                new Address(23L, 461L, "Victory Crescent", "Victory Crescent", "Mabuto", "Zvishavane", null, "Midlands", "Zimbabwe", "54321", null),
+                new Address(24L, 481L, "Hope Street", "Hope Street", "Chirumanzi", "Mvuma", null, "Midlands", "Zimbabwe", "87654", null),
+                new Address(25L, 501L, "Faith Lane", "Faith Lane", "Chakari", "Banket", null, "Mashonaland West", "Zimbabwe", "32109", null),
+                new Address(26L, 521L, "Grace Avenue", "Grace Avenue", "Zengeza", "Chitungwiza", null, "Harare", "Zimbabwe", "10987", null),
+                new Address(27L, 541L, "Joy Road", "Joy Road", "Sunway City", "Epworth", null, "Harare", "Zimbabwe", "54321", null),
+                new Address(28L, 561L, "Peace Street", "Peace Street", "Vengere", "Rusape", null, "Manicaland", "Zimbabwe", "87654", null),
+                new Address(29L, 581L, "Liberty Lane", "Liberty Lane", "Mahombekombe", "Kariba", null, "Mashonaland West", "Zimbabwe", "32109", null),
+                new Address(30L, 601L, "Unity Avenue", "Unity Avenue", "Madziwa", "Murehwa", null, "Mashonaland East", "Zimbabwe", "10987", null),
+                new Address(31L, 621L, "Victory Crescent", "Victory Crescent", "Dendera", "Nyanga", null, "Manicaland", "Zimbabwe", "54321", null),
+                new Address(32L, 641L, "Hope Street", "Hope Street", "Chipadze", "Bindura", null, "Mashonaland Central", "Zimbabwe", "87654", null),
+                new Address(33L, 661L, "Faith Lane", "Faith Lane", "Norton Town", "Norton", null, "Mashonaland West", "Zimbabwe", "32109", null),
+                new Address(34L, 681L, "Grace Avenue", "Grace Avenue", "Beitbridge Town", "Beitbridge", null, "Matabeleland South", "Zimbabwe", "10987", null),
+                new Address(35L, 701L, "Joy Road", "Joy Road", "Chiredzi Town", "Chiredzi", null, "Masvingo", "Zimbabwe", "54321", null),
+                new Address(36L, 721L, "Peace Street", "Peace Street", "Karoi Town", "Karoi", null, "Mashonaland West", "Zimbabwe", "87654", null),
+                new Address(37L, 741L, "Liberty Lane", "Liberty Lane", "Gwanda Town", "Gwanda", null, "Matabeleland South", "Zimbabwe", "32109", null),
+                new Address(38L, 761L, "Unity Avenue", "Unity Avenue", "Chipinge Town", "Chipinge", null, "Manicaland", "Zimbabwe", "10987", null),
+                new Address(39L, 781L, "Victory Crescent", "Victory Crescent", "Mvuma Town", "Mvuma", null, "Midlands", "Zimbabwe", "54321", null),
+                new Address(40L, 801L, "Hope Street", "Hope Street", "Chinhoyi Town", "Chinhoyi", null, "Mashonaland West", "Zimbabwe", "87654", null),
+                new Address(41L, 821L, "Faith Lane", "Faith Lane", "Zvishavane Town", "Zvishavane", null, "Midlands", "Zimbabwe", "32109", null),
+                new Address(42L, 841L, "Grace Avenue", "Grace Avenue", "Chitungwiza Town", "Chitungwiza", null, "Harare", "Zimbabwe", "10987", null),
+                new Address(43L, 861L, "Peace Street", "Peace Street", "Shurugwi Town", "Shurugwi", null, "Midlands", "Zimbabwe", "54321", null),
+                new Address(44L, 881L, "Liberty Lane", "Liberty Lane", "Marondera Town", "Marondera", null, "Mashonaland East", "Zimbabwe", "87654", null),
+                new Address(45L, 901L, "Unity Avenue", "Unity Avenue", "Ruwa Town", "Ruwa", null, "Mashonaland East", "Zimbabwe", "32109", null),
+                new Address(46L, 123L, "Main Street", "Main Street", "Central District", "Harare", "Harare", "Harare", "Zimbabwe", "12345", null),
+                new Address(47L, 456L, "Second Avenue", "Second Avenue", "Western District", "Bulawayo", "Bulawayo", "Bulawayo", "Zimbabwe", "67890", null),
+                new Address(48L, 789L, "Third Street", "Third Street", "Eastern District", "Mutare", "Manicaland", "Manicaland", "Zimbabwe", "54321", null),
+                new Address(49L, 101L, "Fourth Road", "Fourth Road", "Midlands District", "Gweru", "Midlands", "Midlands", "Zimbabwe", "13579", null),
+                new Address(50L, 202L, "Fifth Close", "Fifth Close", "Southern District", "Masvingo", "Masvingo", "Masvingo", "Zimbabwe", "97531", null),
+                new Address(51L, 303L, "Sixth Lane", "Sixth Lane", "Central District", "Kwekwe", "Midlands", "Midlands", "Zimbabwe", "24680", null),
+                new Address(52L, 404L, "Seventh Avenue", "Seventh Avenue", "Harare Metropolitan", "Chitungwiza", "Harare", "Harare", "Zimbabwe", "08642", null),
+                new Address(53L, 505L, "Eighth Road", "Eighth Road", "Mashonaland Central", "Bindura", "Mashonaland Central", "Mashonaland Central", "Zimbabwe", "96420", null),
+                new Address(54L, 606L, "Ninth Street", "Ninth Street", "Mashonaland East", "Marondera", "Mashonaland East", "Mashonaland East", "Zimbabwe", "02876", null),
+                new Address(55L, 707L, "Tenth Close", "Tenth Close", "Matabeleland South", "Gwanda", "Matabeleland South", "Matabeleland South", "Zimbabwe", "50712", null),
+                new Address(56L, 808L, "Eleventh Lane", "Eleventh Lane", "Mashonaland West", "Kadoma", "Mashonaland West", "Mashonaland West", "Zimbabwe", "38496", null),
+                new Address(57L, 909L, "Twelfth Avenue", "Twelfth Avenue", "Mashonaland West", "Kariba", "Mashonaland West", "Mashonaland West", "Zimbabwe", "03572", null),
+                new Address(58L, 111L, "Thirteenth Road", "Thirteenth Road", "Matabeleland North", "Hwange", "Matabeleland North", "Matabeleland North", "Zimbabwe", "92035", null),
+                new Address(59L, 222L, "Fourteenth Street", "Fourteenth Street", "Manicaland", "Chipinge", "Manicaland", "Manicaland", "Zimbabwe", "72504", null),
+                new Address(60L, 333L, "Fifteenth Close", "Fifteenth Close", "Mashonaland West", "Chinhoyi", "Mashonaland West", "Mashonaland West", "Zimbabwe", "16928", null),
+                new Address(61L, 444L, "Sixteenth Lane", "Sixteenth Lane", "Matabeleland South", "Beitbridge", "Matabeleland South", "Matabeleland South", "Zimbabwe", "40389", null),
+                new Address(62L, 555L, "Seventeenth Avenue", "Seventeenth Avenue", "Mashonaland West", "Norton", "Mashonaland West", "Mashonaland West", "Zimbabwe", "70836", null),
+                new Address(63L, 666L, "Eighteenth Road", "Eighteenth Road", "Matabeleland North", "Victoria Falls", "Matabeleland North", "Matabeleland North", "Zimbabwe", "92540", null),
+                new Address(64L, 777L, "Nineteenth Street", "Nineteenth Street", "Mashonaland East", "Ruwa", "Mashonaland East", "Mashonaland East", "Zimbabwe", "13870", null),
+                new Address(65L, 888L, "Twentieth Close", "Twentieth Close", "Mashonaland West", "Chegutu", "Mashonaland West", "Mashonaland West", "Zimbabwe", "24597", null),
+                new Address(66L, 999L, "Twenty-First Lane", "Twenty-First Lane", "Manicaland", "Rusape", "Manicaland", "Manicaland", "Zimbabwe", "83245", null),
+                new Address(67L, 121L, "Twenty-Second Avenue", "Twenty-Second Avenue", "Midlands", "Zvishavane", "Midlands", "Midlands", "Zimbabwe", "67024", null),
+                new Address(68L, 232L, "Twenty-Third Road", "Twenty-Third Road", "Mashonaland East", "Murehwa", "Mashonaland East", "Mashonaland East", "Zimbabwe", "92647", null),
+                new Address(69L, 343L, "Twenty-Fourth Street", "Twenty-Fourth Street", "Harare Metropolitan", "Epworth", "Harare", "Harare", "Zimbabwe", "34791", null),
+                new Address(70L, 454L, "Twenty-Fifth Close", "Twenty-Fifth Close", "Masvingo", "Chiredzi", "Masvingo", "Masvingo", "Zimbabwe", "51063", null),
+                new Address(71L, 565L, "Twenty-Sixth Lane", "Twenty-Sixth Lane", "Midlands", "Shurugwi", "Midlands", "Midlands", "Zimbabwe", "02548", null),
+                new Address(72L, 676L, "Twenty-Seventh Avenue", "Twenty-Seventh Avenue", "Midlands", "Gokwe", "Midlands", "Midlands", "Zimbabwe", "68394", null),
+                new Address(73L, 787L, "Twenty-Eighth Road", "Twenty-Eighth Road", "Midlands", "Kwekwe", "Midlands", "Midlands", "Zimbabwe", "47291", null),
+                new Address(74L, 898L, "Twenty-Ninth Street", "Twenty-Ninth Street", "Mashonaland West", "Karoi", "Mashonaland West", "Mashonaland West", "Zimbabwe", "62540", null),
+                new Address(75L, 909L, "Thirtieth Close", "Thirtieth Close", "Midlands", "Zhombe", "Midlands", "Midlands", "Zimbabwe", "87394", null),
+                new Address(76L, 110L, "Thirty-First Lane", "Thirty-First Lane", "Mashonaland Central", "Mvurwi", "Mashonaland Central", "Mashonaland Central", "Zimbabwe", "40296", null),
+                new Address(77L, 221L, "Thirty-Second Avenue", "Thirty-Second Avenue", "Matabeleland North", "Nkayi", "Matabeleland North", "Matabeleland North", "Zimbabwe", "69382", null),
+                new Address(78L, 332L, "Thirty-Third Road", "Thirty-Third Road", "Midlands", "Mvuma", "Midlands", "Midlands", "Zimbabwe", "52049", null),
+                new Address(79L, 443L, "Thirty-Fourth Street", "Thirty-Fourth Street", "Masvingo", "Gutu", "Masvingo", "Masvingo", "Zimbabwe", "83519", null),
+                new Address(80L, 554L, "Thirty-Fifth Close", "Thirty-Fifth Close", "Mashonaland West", "Raffingora", "Mashonaland West", "Mashonaland West", "Zimbabwe", "63058", null),
+                new Address(81L, 665L, "Thirty-Sixth Lane", "Thirty-Sixth Lane", "Mashonaland East", "Chivhu", "Mashonaland East", "Mashonaland East", "Zimbabwe", "19475", null),
+                new Address(82L, 776L, "Thirty-Seventh Avenue", "Thirty-Seventh Avenue", "Mashonaland Central", "Centenary", "Mashonaland Central", "Mashonaland Central", "Zimbabwe", "83946", null),
+                new Address(83L, 887L, "Thirty-Eighth Road", "Thirty-Eighth Road", "Matabeleland South", "Plumtree", "Matabeleland South", "Matabeleland South", "Zimbabwe", "57294", null),
+                new Address(84L, 998L, "Thirty-Ninth Street", "Thirty-Ninth Street", "Manicaland", "Headlands", "Manicaland", "Manicaland", "Zimbabwe", "30495", null),
+                new Address(85L, 123L, "Fortieth Close", "Fortieth Close", "Mashonaland Central", "Shamva", "Mashonaland Central", "Mashonaland Central", "Zimbabwe", "93856", null),
+                new Address(86L, 234L, "Forty-First Lane", "Forty-First Lane", "Manicaland", "Chimanimani", "Manicaland", "Manicaland", "Zimbabwe", "50297", null),
+                new Address(87L, 345L, "Forty-Second Avenue", "Forty-Second Avenue", "Mashonaland Central", "Concession", "Mashonaland Central", "Mashonaland Central", "Zimbabwe", "72094", null),
+                new Address(88L, 456L, "Forty-Third Road", "Forty-Third Road", "Manicaland", "Nyanga", "Manicaland", "Manicaland", "Zimbabwe", "39047", null),
+                new Address(89L, 567L, "Forty-Fourth Street", "Forty-Fourth Street", "Mashonaland Central", "Guruve", "Mashonaland Central", "Mashonaland Central", "Zimbabwe", "64023", null),
+                new Address(90L, 678L, "Forty-Fifth Close", "Forty-Fifth Close", "Midlands", "Chirumanzu", "Midlands", "Midlands", "Zimbabwe", "85039", null),
+                new Address(91L, 789L, "Forty-Sixth Lane", "Forty-Sixth Lane", "Mashonaland Central", "Rushinga", "Mashonaland Central", "Mashonaland Central", "Zimbabwe", "32058", null),
+                new Address(92L, 890L, "Forty-Seventh Avenue", "Forty-Seventh Avenue", "Mashonaland Central", "Mazowe", "Mashonaland Central", "Mashonaland Central", "Zimbabwe", "97340", null),
+                new Address(93L, 901L, "Forty-Eighth Road", "Forty-Eighth Road", "Mashonaland East", "Uzumba-Maramba-Pfungwe", "Mashonaland East", "Mashonaland East", "Zimbabwe", "64072", null),
+                new Address(94L, 112L, "Forty-Ninth Street", "Forty-Ninth Street", "Mashonaland West", "Norton", "Mashonaland West", "Mashonaland West", "Zimbabwe", "30894", null),
+                new Address(95L, 223L, "Fiftieth Close", "Fiftieth Close", "Matabeleland North", "Binga", "Matabeleland North", "Matabeleland North", "Zimbabwe", "54023", null),
+                new Address(96L, 334L, "Fiftieth Lane", "Fiftieth Lane", "Manicaland", "Buhera", "Manicaland", "Manicaland", "Zimbabwe", "67382", null),
+                new Address(97L, 445L, "Fiftieth Avenue", "Fiftieth Avenue", "Mashonaland East", "Goromonzi", "Mashonaland East", "Mashonaland East", "Zimbabwe", "98235", null),
+                new Address(98L, 556L, "Fiftieth Road", "Fiftieth Road", "Matabeleland South", "Gwanda", "Matabeleland South", "Matabeleland South", "Zimbabwe", "50382", null),
+                new Address(99L, 667L, "Fifty-First Street", "Fifty-First Street", "Midlands", "Gweru", "Midlands", "Midlands", "Zimbabwe", "82064", null),
+                new Address(100L, 778L, "Fifty-Second Close", "Fifty-Second Close", "Mashonaland West", "Hurungwe", "Mashonaland West", "Mashonaland West", "Zimbabwe", "54028", null),
+                new Address(101L, 889L, "Fifty-Third Lane", "Fifty-Third Lane", "Matabeleland North", "Hwange", "Matabeleland North", "Matabeleland North", "Zimbabwe", "82093", null),
+                new Address(102L, 900L, "Fifty-Fourth Avenue", "Fifty-Fourth Avenue", "Mashonaland West", "Kariba", "Mashonaland West", "Mashonaland West", "Zimbabwe", "64093", null)
         );
-        bankAccountSqls.forEach(sql -> {
-            SqlParameterSource namedParameters = new MapSqlParameterSource();
-            namedParameterJdbcTemplate.update(sql, namedParameters);
-        });
-
-//        List<String> productSqls = Arrays.asList(
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'High-performance laptop with a sleek design and long battery life.', 'Acer Aspire E15', '1AA12345XYZ67')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Powerful laptop for professionals, featuring a stunning display and compact design.', 'Dell XPS 13', '2BC23456LMN78')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium convertible laptop with 360-degree hinge and high-resolution display.', 'HP Spectre x360', '3CD34567OPQ89')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Flagship laptop from Apple with powerful performance and Retina display.', 'MacBook Pro', '4DE45678RST90')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Business ultrabook known for its durability, security features, and performance.', 'Lenovo ThinkPad X1 Carbon', '5EF56789UVW01')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Dual-screen laptop with innovative design and powerful specifications.', 'Asus ZenBook Pro Duo', '6FG67890WXY12')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium laptop with a sleek design and vibrant touchscreen display.', 'Microsoft Surface Laptop', '7GH78901XYZ23')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Thin and light laptop with powerful performance and long battery life.', 'Huawei MateBook X Pro', '8HI89012ABC34')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Gaming laptop with high-refresh-rate display and powerful GPU.', 'Razer Blade 15', '9IJ90123CDE45')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'High-end Chromebook with premium build quality and powerful internals.', 'Google Pixelbook', '0JK01234EFG56')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Latest flagship smartphone from Apple with advanced camera and performance.', 'iPhone 13 Pro', '1KL12345GHI67')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium Android smartphone with powerful features and impressive camera.', 'Samsung Galaxy S22 Ultra', '2LM23456IJK78')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Google''s latest flagship smartphone with pure Android experience.', 'Google Pixel 7', '3MN34567JKL89')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Powerful tablet with large display and support for Apple Pencil.', 'iPad Pro', '4NO45678KLM90')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Advanced smartwatch with fitness and health tracking features.', 'Apple Watch Series 7', '5OP56789LMN01')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium smartwatch with stylish design and advanced health monitoring.', 'Samsung Galaxy Watch 4', '6PQ67890MNO12')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Next-generation gaming console from Sony with powerful hardware.', 'Sony PlayStation 5', '7QR78901NOP23')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Latest gaming console from Microsoft offering high-resolution gaming experience.', 'Xbox Series X', '8RS89012OPQ34')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Compact drone with 4K camera and intelligent flight modes.', 'DJI Mavic Air 2', '9ST90123PQR45')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Flagship action camera known for its rugged build and advanced features.', 'GoPro Hero 10 Black', '0TU01234QRS56')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Smart display with rotating screen and Alexa integration.', 'Amazon Echo Show 10', '1UV12345RST67')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Advanced fitness tracker with built-in GPS and health monitoring features.', 'Fitbit Charge 5', '2VW23456STU78')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium noise-canceling headphones with immersive sound quality.', 'Bose QuietComfort 45', '3WX34567TUV89')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'High-quality wireless headphones with industry-leading noise cancellation.', 'Sony WH-1000XM4 Headphones', '4XY45678UVW90')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Upgraded version of Nintendo Switch with OLED display.', 'Nintendo Switch OLED', '5YZ56789VWX01')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Advanced wireless mouse with customizable buttons and ergonomic design.', 'Logitech MX Master 3 Mouse', '6ZA67890WXY12')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium multisport GPS smartwatch with rugged design and advanced features.', 'Garmin Fenix 7', '7AB78901XYZ23')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'All-in-one virtual reality headset with wireless freedom and immersive experiences.', 'Oculus Quest 2', '8BC89012ABC34')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Portable Bluetooth speaker with powerful sound and waterproof design.', 'JBL Flip 6 Portable Speaker', '9CD90123BCD45')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'High-resolution mirrorless camera with advanced autofocus and image stabilization.', 'Canon EOS R5 Camera', '0DE01234CDE56')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Versatile laptop with powerful performance for everyday computing tasks.', 'HP Pavilion 15', '1EF12345LMN67')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Ultra-portable laptop with long battery life and sleek design.', 'Lenovo IdeaPad Slim 7', '2FG23456OPQ78')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 2, 1, 'Gaming laptop with high-refresh-rate display and RGB keyboard.', 'Alienware m15 R6', '3GH34567QRS89')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Affordable laptop with decent performance and ample storage.', 'Acer Aspire 5', '4HI45678STU90')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Convertible laptop with touchscreen display and stylus support.', 'HP Envy x360', '5IJ56789UVW01')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Sleek and lightweight laptop for professionals on the go.', 'Dell Latitude 14', '6JK67890XYZ12')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Portable laptop with durable design and all-day battery life.', 'Lenovo Chromebook Flex 5', '7KL78901ABC23')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Budget-friendly laptop with adequate performance for everyday use.', 'Acer Swift 3', '8LM89012BCD34')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Gaming laptop with powerful specs and customizable RGB lighting.', 'MSI GE76 Raider', '9MN90123CDE45')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Ultra-slim laptop with stunning display and premium build quality.', 'LG Gram 17', '0NO01234DEF56')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Compact smartphone with impressive camera capabilities and 5G support.', 'OnePlus 10 Pro', '1OP12345EFG67')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Flagship smartphone with innovative camera features and stylish design.', 'Xiaomi Mi 12', '2PQ23456FGH78')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Budget-friendly smartphone with large display and decent performance.', 'Motorola Moto G Power', '3QR34567GHI89')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Compact tablet with long battery life and vibrant display.', 'Samsung Galaxy Tab S7', '4RS45678HIJ90')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Budget-friendly tablet with basic features and decent performance.', 'Amazon Fire HD 10', '5ST56789IJK01')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Premium fitness tracker with heart rate monitoring and GPS functionality.', 'Garmin Venu 2', '6TU67890JKL12')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Advanced smart scale with body composition analysis and Wi-Fi connectivity.', 'Withings Body Cardio', '7UV78901KLM23')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Noise-canceling true wireless earbuds with long battery life and sweat resistance.', 'Samsung Galaxy Buds Pro', '8VW89012LMN34')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Wireless gaming headset with 3D spatial audio and long-lasting battery.', 'SteelSeries Arctis 7', '9WX90123MNO45')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Portable SSD with fast data transfer speeds and rugged design.', 'SanDisk Extreme Portable SSD', '0XY01234NOP56')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'External hard drive with large storage capacity and USB 3.0 connectivity.', 'Seagate Backup Plus Slim', '1YZ12345OPQ67')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Compact photo printer for printing photos directly from smartphones and cameras.', 'Canon IVY Mini Photo Printer', '2ZA23456PQR78')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Compact instant camera with vintage design and automatic exposure control.', 'Fujifilm Instax Mini 11', '3AB34567QRS89')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'High-resolution document scanner with automatic document feeder.', 'Epson WorkForce ES-500W', '4BC45678RST90')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Wireless charging pad with fast charging support for smartphones and other devices.', 'Anker PowerWave Pad', '5CD56789STU01')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Smart thermostat with energy-saving features and smartphone app control.', 'Nest Learning Thermostat', '6DE67890TUV12')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Smart security camera with 1080p HD video and two-way audio.', 'Ring Indoor Cam', '7EF78901UVW23')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Smart doorbell with motion detection and night vision.', 'Arlo Essential Video Doorbell', '8FG89012VWX34')",
-//                "INSERT INTO Product (`brand_id`, `productStatus_id`, `productType_id`, description, name, serialNumber) VALUES(1, 1, 1, 'Robot vacuum cleaner with mapping technology and voice control.', 'iRobot Roomba i7+', '9GH90123WXY45')"
-//        );
-//        productSqls.forEach(sql -> {
-//            SqlParameterSource namedParameters = new MapSqlParameterSource();
-//            namedParameterJdbcTemplate.update(sql, namedParameters);
-//        });
+        addressService.saveAddresses(addresses);
+        
+        List<BankAccount> bankAccounts = Arrays.asList(
+                new BankAccount(1L, 66527445610001L, "CBZ", "Jeanine", "", new Address(74), LocalDateTime.parse("2008-09-24 12:23:41.568000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(1)),
+                new BankAccount(2L, 66527445610002L, "CBZ", "Tabatha", "", new Address(11), LocalDateTime.parse("2008-04-17 07:01:08.992000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(2)),
+                new BankAccount(3L, 66527445610003L, "CBZ", "Clinton", "", new Address(42), LocalDateTime.parse("2008-11-25 20:18:55.872000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(3)),
+                new BankAccount(4L, 66527445610004L, "CBZ", "Casey", "", new Address(41), LocalDateTime.parse("2008-01-02 10:30:24.376000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(4)),
+                new BankAccount(5L, 66527445610005L, "CBZ", "Alexis", "", new Address(21), LocalDateTime.parse("2008-06-30 18:05:21.024000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(5)),
+                new BankAccount(6L, 66527445610006L, "CBZ", "Orlando", "", new Address(4), LocalDateTime.parse("2008-11-08 17:31:00.736000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(6)),
+                new BankAccount(7L, 66527445610007L, "CBZ", "Autumn", "", new Address(34), LocalDateTime.parse("2008-12-26 17:56:34.688000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(7)),
+                new BankAccount(8L, 66527445610008L, "CBZ", "Kendall", "", new Address(66), LocalDateTime.parse("2008-01-13 02:22:41.728000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(8)),
+                new BankAccount(9L, 66527445610009L, "CBZ", "Brad", "", new Address(97), LocalDateTime.parse("2008-11-09 14:58:39.488000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(9)),
+                new BankAccount(10L, 66527445610010L, "CBZ", "Sharon", "", new Address(72), LocalDateTime.parse("2008-12-03 18:43:35.808000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(10)),
+                new BankAccount(11L, 66527445610011L, "CBZ", "Ted", "", new Address(1), LocalDateTime.parse("2008-12-27 07:30:14.912000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(2)),
+                new BankAccount(12L, 66527445610012L, "CBZ", "Curtis", "", new Address(16), LocalDateTime.parse("2008-06-14 15:53:15.264000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(3)),
+                new BankAccount(13L, 66527445610013L, "CBZ", "Alissa", "", new Address(97), LocalDateTime.parse("2008-03-24 10:08:19.712000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(8)),
+                new BankAccount(14L, 66527445610014L, "CBZ", "Terry", "", new Address(16), LocalDateTime.parse("2008-07-09 05:15:01.760000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(7)),
+                new BankAccount(15L, 66527445610015L, "CBZ", "Cecil", "", new Address(94), LocalDateTime.parse("2008-01-28 06:59:19.936000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(3))
+        );
+        bankAccountService.saveBankAccounts(bankAccounts);
     }
 
     private Set<Role> makeRoles(long[] ids) {

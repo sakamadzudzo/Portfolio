@@ -73,6 +73,16 @@ public class UserServiceImpl implements UserService {
         return userDao.findAll(userExample);
     }
 
+    public Users getUserByUsername(String username) {
+        Users user = new Users();
+        user.setUsername(username);
+        Example userExample = Example.of(user);
+        Optional<Users> requestUser = userDao.findBy(userExample, q -> q
+                .sortBy(Sort.by("username").descending())
+                .first());
+        return requestUser.isPresent() ? requestUser.get() : null;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users user = new Users();

@@ -48,7 +48,7 @@ public class TokenServiceImpl implements TokenService {
 
     public String generateToken(Users user) {
         Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
-        Instant expiration = generateExpirationTimeIn(this.expiration);  // expires in 10 min
+        Instant expiration = generateExpirationTimeIn(this.expiration);
         String roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.joining(","));
         String token = JWT.create()
                 .withSubject(user.getUsername())

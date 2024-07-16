@@ -28,5 +28,5 @@ public interface UserService extends UserDetailsService {
 
     public List<Users> getUserByRole(Role role);
 
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+    public Users getUserByUsername(String username);
 }

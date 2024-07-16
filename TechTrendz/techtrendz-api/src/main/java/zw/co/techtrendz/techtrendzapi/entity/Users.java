@@ -114,4 +114,8 @@ public class Users implements UserDetails {
         }
         return name;
     }
+
+    public Users(long id) {
+        this.id = id;
+    }
 }

@@ -17,6 +17,8 @@ import zw.co.techtrendz.techtrendzapi.entity.BankAccount;
 public interface BankAccountService {
 
     public BankAccount saveBankAccount(BankAccount bankAccount);
+    
+    public List<BankAccount> saveBankAccounts(List<BankAccount> bankAccounts);
 
     public Optional<BankAccount> getBankAccountById(long id);
 

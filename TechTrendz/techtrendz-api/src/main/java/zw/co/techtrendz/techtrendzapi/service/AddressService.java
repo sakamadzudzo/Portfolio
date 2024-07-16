@@ -17,6 +17,8 @@ import zw.co.techtrendz.techtrendzapi.entity.Address;
 public interface AddressService {
 
     public Address saveAddress(Address address);
+    
+    public List<Address> saveAddresses(List<Address> addresses);
 
     public Optional<Address> getAddressById(long id);
 

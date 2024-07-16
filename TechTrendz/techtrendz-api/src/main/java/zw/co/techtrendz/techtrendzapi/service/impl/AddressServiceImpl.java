@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,14 @@ public class AddressServiceImpl implements AddressService {
 
     public Address saveAddress(Address address) {
         return addressDao.save(address);
+    }
+
+    public List<Address> saveAddresses(List<Address> addresses) {
+        List<Address> savedAddresses = new ArrayList<>();
+        addresses.forEach(address -> {
+            savedAddresses.add(this.saveAddress(address));
+        });
+        return savedAddresses;
     }
 
     public Optional<Address> getAddressById(long id) {
