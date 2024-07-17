@@ -5,6 +5,7 @@
 package zw.co.techtrendz.techtrendzapi.service;
 
 import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Service;
 import zw.co.techtrendz.techtrendzapi.entity.Brand;
 
@@ -15,5 +16,5 @@ import zw.co.techtrendz.techtrendzapi.entity.Brand;
 @Service
 public interface AuditService {
 
-    public List<Brand> getBrandHistory(int revision);
+    public String getBrandHistory(int revision);
 }

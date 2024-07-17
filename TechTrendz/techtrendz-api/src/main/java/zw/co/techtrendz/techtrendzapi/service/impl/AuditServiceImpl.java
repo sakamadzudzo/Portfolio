@@ -4,9 +4,14 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditQuery;
@@ -29,12 +34,22 @@ public class AuditServiceImpl implements AuditService {
         return AuditReaderFactory.get(entityManager);
     }
 
-    public List<Brand> getBrandHistory(int revision) {
+    public String getBrandHistory(int revision) {
         final AuditReader auditReader = getAuditReader();
 //        AuditQuery query = auditReader.createQuery().forRevisionsOfEntityWithChanges(Brand.class, true);
-        AuditQuery query = auditReader.createQuery().forEntitiesModifiedAtRevision(Brand.class, revision);
-//        AuditQuery query = auditReader.createQuery().forRevisionsOfEntity(Brand.class, true);
-        return query.getResultList();
+//        AuditQuery query = auditReader.createQuery().forEntitiesModifiedAtRevision(Brand.class, revision);
+        AuditQuery query = auditReader.createQuery().forRevisionsOfEntity(Brand.class, true);
+        
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.findAndRegisterModules();
+        
+        String result = "";
+        try {
+            result = mapper.writeValueAsString(query.getResultList());
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(AuditServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
     }
 
 }

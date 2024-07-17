@@ -5,6 +5,7 @@
 package zw.co.techtrendz.techtrendzapi.controller;
 
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +25,7 @@ public class AuditController {
     private AuditService auditService;
 
     @RequestMapping(name = "/getbrandhistory", value = "/getbrandhistory", method = RequestMethod.GET)
-    public List<Brand> getBrandHistory(@RequestParam Integer revision) {
+    public String getBrandHistory(@RequestParam Integer revision) {
         return auditService.getBrandHistory(revision);
     }
 }
