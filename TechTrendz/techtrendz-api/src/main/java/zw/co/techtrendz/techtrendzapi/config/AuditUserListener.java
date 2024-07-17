@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.config;
 
+import org.springframework.context.ApplicationContext;
 import org.hibernate.envers.RevisionListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,11 +20,18 @@ import zw.co.techtrendz.techtrendzapi.service.UserService;
 @Component
 public class AuditUserListener implements RevisionListener {
 
+//    @Autowired
+//    private UserService userService;
+    private static ApplicationContext applicationContext;
+
     @Autowired
-    private UserService userService;
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
     @Override
     public void newRevision(Object revisionEntity) {
+        UserService userService = applicationContext.getBean(UserService.class);
         final AuditEntity auditEntity = (AuditEntity) revisionEntity;
         Users user = new Users(0);
         user.setUsername("SYSTEM");
@@ -31,10 +39,12 @@ public class AuditUserListener implements RevisionListener {
         if (authentication != null) {
             String currentUsername = authentication.getName();
             Users loadedUser = userService.getUserByUsername(currentUsername);
-            System.out.println("\n\n\n" + loadedUser);
-            user.setUsername(currentUsername);
+            if (loadedUser != null) {
+                user = loadedUser;
+            }
         }
-        auditEntity.setUsername(user.getUsername());
+        auditEntity.setUserId(user.getId());
+        auditEntity.setUsername(user.getUsername().toUpperCase());
     }
 
 }
