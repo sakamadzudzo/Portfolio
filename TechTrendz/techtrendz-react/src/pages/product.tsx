@@ -37,6 +37,9 @@ export const Product = () => {
                             <div>{product.description}</div>
                         </div>
                         <div>
+                            <button className="btn-hollow px-2 w-auto">Add to cart</button>
+                        </div>
+                        <div>
                             {/* <div>Brand</div> */}
                             {/* <div>{product.brand.name}</div> */}
                         </div>
