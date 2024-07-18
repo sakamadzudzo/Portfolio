@@ -6,6 +6,7 @@ package zw.co.techtrendz.techtrendzapi.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import zw.co.techtrendz.techtrendzapi.config.AuditEntity;
 import zw.co.techtrendz.techtrendzapi.entity.Brand;
 import zw.co.techtrendz.techtrendzapi.service.AuditService;
 
@@ -39,17 +41,20 @@ public class AuditServiceImpl implements AuditService {
 //        AuditQuery query = auditReader.createQuery().forRevisionsOfEntityWithChanges(Brand.class, true);
 //        AuditQuery query = auditReader.createQuery().forEntitiesModifiedAtRevision(Brand.class, revision);
         AuditQuery query = auditReader.createQuery().forRevisionsOfEntity(Brand.class, true);
-        
+
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
-        
+//        mapper.registerModule(new Hibernate5Module());
+
         String result = "";
-        try {
-            result = mapper.writeValueAsString(query.getResultList());
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(AuditServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return result;
+//        try {
+//            result = mapper.writeValueAsString(query.getResultList());
+//        } catch (JsonProcessingException ex) {
+//            Logger.getLogger(AuditServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        var l = (AuditEntity)query.getResultList();
+        result = query.getResultList().toString();
+        return l.toString();
     }
 
 }
