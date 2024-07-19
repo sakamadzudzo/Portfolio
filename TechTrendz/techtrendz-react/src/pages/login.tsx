@@ -80,8 +80,8 @@ const Login = () => {
                                 <div className="error-div">{error}</div>
                             </div>
                             : <></>}
-                        <FormInput id="username" name="username" className="w-full" label="Username" onChange={(value: string) => { setUsername(value) }} value={username} autoFocus={true} />
-                        <FormInput id="password" name="password" className="w-full" type="password" label="Password" onChange={(value: string) => { setPassword(value) }} value={password} />
+                        <FormInput id="username" name="username" className="w-full" label="Username" onChange={(value: string) => { setUsername(value) }} value={username} autoFocus={true} placeholder="Username" />
+                        <FormInput id="password" name="password" className="w-full" type="password" label="Password" onChange={(value: string) => { setPassword(value) }} value={password} placeholder="Password" />
                     </FormBody>
                     <FormFooter className="justify-end p-2">
                         <button className={`btn-hollow`}>Cancel</button>
