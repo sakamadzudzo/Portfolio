@@ -41,7 +41,7 @@ const Layout = () => {
                 pauseOnFocusLoss={false}
                 draggable={false}
             />
-            <div className={`relative h-screen w-full overflow-hidden ${dark ? 'dark' : ''} bg-light-50 dark:bg-dark-50`}>
+            <div className={`relative h-dvh w-full overflow-hidden ${dark ? 'dark' : ''} bg-light-50 dark:bg-dark-50`}>
                 <button className="absolute top-0 right-0 focus:outline-none z-50" onClick={() => setDark(!dark)}>
                     <div className="flex h-7 border rounded-lg rounded-tr-none overflow-hidden">
                         {!dark ?

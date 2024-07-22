@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -87,7 +88,9 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users user = new Users();
         user.setUsername(username);
-        Example userExample = Example.of(user);
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreCase();
+        Example userExample = Example.of(user, matcher);
         Optional<Users> requestUser = userDao.findBy(userExample, q -> q
                 .sortBy(Sort.by("username").descending())
                 .first());

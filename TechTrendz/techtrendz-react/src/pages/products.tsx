@@ -102,7 +102,7 @@ const Products = () => {
                 <div className="w-full h-[95%] md:h-[93.5%] overflow-y-auto">
                     <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 lg:gap-7 h-full">
                         {products && !empty && products.map((product: any) =>
-                            <div key={product.id} className={"min:w-30 rounded-sm p-1 hover:dark:bg-white/10 focus:dark:bg-white/10 hover:bg-black/10 focus:bg-black/10 h-fit border relative"}
+                            <div key={product.id} className={"min:w-30 rounded-sm p-1 hover:dark:bg-white/10 focus:dark:bg-white/10 hover:bg-black/10 focus:bg-black/10 h-fit border relative cursor-pointer"}
                                 onClick={() => { openProduct(product.id) }}>
                                 <img src={cat} alt="Cat 1" className="aspect-square px-1 py-1" />
                                 <div>{product.name}</div>
