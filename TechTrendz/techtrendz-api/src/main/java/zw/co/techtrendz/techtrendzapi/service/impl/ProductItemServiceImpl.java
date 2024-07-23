@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import zw.co.techtrendz.techtrendzapi.service.ProductItemService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

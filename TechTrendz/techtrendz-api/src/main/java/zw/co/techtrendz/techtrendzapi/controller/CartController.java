@@ -41,4 +41,9 @@ public class CartController {
         return cartService.getCartAll();
     }
 
+    @RequestMapping(name = "/getcartbyuserid", value = "/getcartbyuserid", method = RequestMethod.GET)
+    public Optional<Cart> getCartByUserId(@RequestParam(required = true) Long userId) {
+        return cartService.getCartByUserId(userId);
+    }
+
 }

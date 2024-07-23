@@ -6,33 +6,42 @@ import { AuthState } from "../components/utils/authSlice";
 import cat from './../assets/img/cat1.webp'
 // import { ProductStatus } from "../components/utils/misc";
 import IconCartPlus from "../components/icons/IconCartPlus";
-// import { numformat } from "../components/utils/misc";
+import { getCartByUserId } from "../components/utils/cartService";
+import { numformat } from "../components/utils/misc";
 
 export const Product = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
+    const user: any = useSelector((state: AuthState) => state.auth ? state.auth.user : {})
     const { id } = useParams();
     const [product, setProduct] = useState(Object)
+    const [cart, setCart] = useState(Object)
 
     const getProduct = useCallback(async () => {
         const item = await getProductById(token!, id!)
         setProduct(item)
     }, [token, id])
 
-    const numformat = (num: number) => {
-        let result = "";
-        if (num) {
-            result = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            // result = result.toString().replace(/[^0-9]/g, "");
+    const getCart = useCallback(async () => {
+        let item = await getCartByUserId(token!, user ? user.id : 0)
+        if(!item) {
+            item = {}
         }
-        return result;
-    }
+        if (user) {
+            item.user = user
+        }
+        setCart(item)
+    }, [token, user])
 
     useEffect(() => {
         getProduct()
     }, [getProduct, token])
 
     useEffect(() => {
-        document.title = 'TechBrandz - Products';
+        getCart()
+    }, [getCart, token, user])
+
+    useEffect(() => {
+        document.title = 'TechBrandz - Product';
     }, []);
 
     return (
@@ -46,7 +55,7 @@ export const Product = () => {
                                 {/* <ProductStatus product={product} /> */}
                                 <div className="flex justify-between">
                                     <div className="font-medium">{product?.name}</div>
-                                    <div>{product?.productItems?.length > 0 ? product?.productItems?.length + "left" : "Out of stock"} </div>
+                                    <div>{product?.productItems?.length > 0 ? product?.productItems?.length + " left" : "Out of stock"} </div>
                                 </div>
                                 <div className="flex justify-between">
                                     <div className="font-normal">{product.brand?.name} | {product.productType?.description}</div>

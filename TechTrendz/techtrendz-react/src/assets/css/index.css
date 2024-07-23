@@ -25,7 +25,7 @@
     }
 
     .btn-hollow {
-        @apply h-7 w-20 flex justify-center items-center text-lg rounded-lg cursor-pointer disabled:cursor-not-allowed border text-light-950 border-light-950 disabled:border-light-200 disabled:text-light-200 disabled:fill-light-200 hover:border-light-900 hover:text-light-900 hover:fill-light-900 active:border-light-700 active:text-light-700 active:fill-light-700 focus:border-light-700 focus:text-light-700 focus:fill-light-700 dark:text-dark-950 dark:border-dark-950 dark:disabled:border-dark-200 dark:disabled:text-dark-200 dark:disabled:fill-dark-200 dark:hover:border-dark-800 dark:hover:text-dark-800 dark:hover:fill-dark-800 dark:active:border-dark-700 dark:active:text-dark-700 dark:active:fill-dark-700 dark:focus:border-dark-700 dark:focus:text-dark-700 dark:focus:fill-dark-700
+        @apply h-7 w-20 flex justify-center items-center text-lg rounded-lg cursor-pointer disabled:cursor-not-allowed border text-light-950 fill-light-950 border-light-950 disabled:border-light-200 disabled:text-light-200 disabled:fill-light-200 hover:border-light-900 hover:text-light-900 hover:fill-light-900 active:border-light-700 active:text-light-700 active:fill-light-700 focus:border-light-700 focus:text-light-700 focus:fill-light-700 dark:text-dark-950 dark:fill-dark-950 dark:border-dark-950 dark:disabled:border-dark-200 dark:disabled:text-dark-200 dark:disabled:fill-dark-200 dark:hover:border-dark-800 dark:hover:text-dark-800 dark:hover:fill-dark-800 dark:active:border-dark-700 dark:active:text-dark-700 dark:active:fill-dark-700 dark:focus:border-dark-700 dark:focus:text-dark-700 dark:focus:fill-dark-700
     }
 
     .wrapper {

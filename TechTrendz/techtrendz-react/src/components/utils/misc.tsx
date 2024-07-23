@@ -26,9 +26,9 @@ export const ProductStatus = ({ product }: { product: any }) => {
 }
 
 export const numformat = (num: number) => {
-    // let num2 = num;
-    console.log(num);
-    let result = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    result = result.toString().replace(/[^0-9]/g, "");
+    let result = "";
+    if (num) {
+        result = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
     return result;
 }
