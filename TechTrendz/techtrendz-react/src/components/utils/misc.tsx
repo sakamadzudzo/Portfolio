@@ -24,3 +24,11 @@ export const ProductStatus = ({ product }: { product: any }) => {
         <div className={`absolute top-3 left-3 w-5 aspect-square rounded-full border-2 border-white dark:border-black ${getStatus()}`}></div>
     )
 }
+
+export const numformat = (num: number) => {
+    // let num2 = num;
+    console.log(num);
+    let result = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    result = result.toString().replace(/[^0-9]/g, "");
+    return result;
+}

@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users user = new Users();
-        user.setUsername(username);
+        user.setUsername(username.strip());
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnoreCase();
         Example userExample = Example.of(user, matcher);

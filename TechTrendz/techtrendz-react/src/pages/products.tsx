@@ -107,15 +107,15 @@ const Products = () => {
                                 <img src={cat} alt="Cat 1" className="aspect-square px-1 py-1" />
                                 <div>{product.name}</div>
                                 <div className="flex gap-1">
-                                    <div className="font-bold">Brand:</div>
+                                    <div className="font-normal">Brand:</div>
                                     <div>{product.brand.name}</div>
                                 </div>
                                 <div className="flex gap-1">
-                                    <div className="font-bold">Product:</div>
+                                    <div className="font-normal">Product:</div>
                                     <div>{product.productType.description}</div>
                                 </div>
                                 <div className="flex gap-1">
-                                    <div className="font-bold">Price:</div>
+                                    <div className="font-normal">Price:</div>
                                     <div>${product.price}</div>
                                 </div>
                                 <ProductStatus product={product} />
