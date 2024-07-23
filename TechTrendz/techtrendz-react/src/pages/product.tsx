@@ -47,7 +47,7 @@ export const Product = () => {
                         </div>
                         <div>
                             <button className="btn-hollow h-10 py-2 px-2 w-full flex gap-2" disabled={product?.productItems?.length <= 0}>
-                                <IconCartPlus className="w-fit h-4" /> <div className="text-inherit">Add to cart</div>
+                                <IconCartPlus className="w-fit h-4 icon" /> <div className="text-inherit">Add to cart</div>
                             </button>
                         </div>
                     </div> :
