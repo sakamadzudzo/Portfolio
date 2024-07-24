@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +18,9 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.envers.Audited;
 
 /**
@@ -26,7 +29,9 @@ import org.hibernate.envers.Audited;
  */
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+//@Data
+@Getter
+@Setter
 @Entity
 @Audited
 public class Cart {
@@ -36,6 +41,7 @@ public class Cart {
     private Long id;
 
     @ManyToMany
+//    @JsonManagedReference(value = "cart-productitem")
     @JoinTable(
             name = "cartProductItem",
             joinColumns = @JoinColumn(name = "cartId"),

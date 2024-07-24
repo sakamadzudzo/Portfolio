@@ -27,3 +27,29 @@ export const getCartByUserId = async (token: string, userId: number) => {
         })
     return data
 }
+
+export const addToCart = async (token: string, productId: number, count: number) => {
+    authOrReload(token)
+    let data: any = null
+    await axios.post(API + "addtocart", null, {
+        params: {
+            productId: productId,
+            count: count
+        },
+        headers: {
+            Authorization: token
+        }
+    })
+        .then((response) => {
+            data = response.data
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+            data = null
+        })
+        .finally(() => {
+            return data;
+        })
+    return data
+}

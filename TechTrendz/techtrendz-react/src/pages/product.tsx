@@ -6,8 +6,10 @@ import { AuthState } from "../components/utils/authSlice";
 import cat from './../assets/img/cat1.webp'
 // import { ProductStatus } from "../components/utils/misc";
 import IconCartPlus from "../components/icons/IconCartPlus";
-import { getCartByUserId } from "../components/utils/cartService";
+import { addToCart, getCartByUserId } from "../components/utils/cartService";
 import { numformat } from "../components/utils/misc";
+import FormInput from "../components/FormInput";
+import { toast } from "react-toastify";
 
 export const Product = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -15,6 +17,7 @@ export const Product = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(Object)
     const [cart, setCart] = useState(Object)
+    const [count, setCount] = useState(1)
 
     const getProduct = useCallback(async () => {
         const item = await getProductById(token!, id!)
@@ -23,7 +26,7 @@ export const Product = () => {
 
     const getCart = useCallback(async () => {
         let item = await getCartByUserId(token!, user ? user.id : 0)
-        if(!item) {
+        if (!item) {
             item = {}
         }
         if (user) {
@@ -32,13 +35,37 @@ export const Product = () => {
         setCart(item)
     }, [token, user])
 
+    const addItemToCart = async () => {
+        // let similar = cart.productItems.filter(item => {item.})
+        if (count > 0) {
+            let item = await addToCart(token!, product.id, count)
+            if (!item) {
+                item = {}
+            }
+            if (user) {
+                item.user = user
+            }
+            setCart(item)
+            getCart()
+        } else {
+            toast.error("Amount to add to cart cannot be less than zero")
+        }
+    }
+
+    const itemsInCart = () => {
+        if (!cart?.productItems) {
+            return 0
+        }
+        return cart.productItems.filter((item: any) => product.productItems.includes(item)).length
+    }
+
     useEffect(() => {
         getProduct()
-    }, [getProduct, token])
+    }, [getProduct])
 
     useEffect(() => {
         getCart()
-    }, [getCart, token, user])
+    }, [getCart])
 
     useEffect(() => {
         document.title = 'TechBrandz - Product';
@@ -65,9 +92,17 @@ export const Product = () => {
                             </div>
                         </div>
                         <div className="w-full flex justify-center">
-                            <button className="btn-hollow h-10 py-2 px-2 w-full md:w-96 flex gap-2" disabled={product?.productItems?.length <= 0}>
-                                <IconCartPlus className="w-fit h-4 icon" /> <div className="text-inherit">Add to cart</div>
-                            </button>
+                            <div className="w-full md:w-96 flex flex-col gap-2">
+                                <div className="w-full flex justify-between">
+                                <FormInput value={count} id="count" name="count" label="Count" key="count"
+                                    type="number" onChange={setCount}
+                                    className=" px-0 w-full" />
+                                <div>{itemsInCart()} in cart</div>
+                                </div>
+                                <button className="btn-hollow h-10 py-2 px-2 w-full flex gap-2" disabled={product?.productItems?.length <= 0} onClick={addItemToCart}>
+                                    <IconCartPlus className="w-fit h-4 icon" /> <div className="text-inherit">Add to cart</div>
+                                </button>
+                            </div>
                         </div>
                     </div> :
                     <div>

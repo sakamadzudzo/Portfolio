@@ -13,7 +13,7 @@ const FormInput = ({
     label?: string
     autoFocus?: boolean
     onChange: Function
-    value: string,
+    value: string | number,
     id?: string,
     name?: string,
     type?: string,

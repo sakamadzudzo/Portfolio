@@ -59,7 +59,7 @@ public class Product {
     private ProductType productType;
 
     @OneToMany(mappedBy = "product")
-    @JsonManagedReference
+    @JsonManagedReference(value = "product-productitem")
     private List<ProductItem> productItems;
 
     @ManyToMany

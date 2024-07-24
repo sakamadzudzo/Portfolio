@@ -46,4 +46,9 @@ public class CartController {
         return cartService.getCartByUserId(userId);
     }
 
+    @RequestMapping(name = "/addtocart", value = "/addtocart", method = RequestMethod.POST)
+    public Cart addToCart(@RequestParam(required = true) Long productId, @RequestParam(required = true) Long count) {
+        return cartService.addToCart(productId, count);
+    }
+
 }

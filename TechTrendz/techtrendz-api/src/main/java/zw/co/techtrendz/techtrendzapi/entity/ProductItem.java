@@ -45,10 +45,11 @@ public class ProductItem {
     @ManyToOne
     @NotNull
     @JoinColumn(name = "product_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "product-productitem")
     private Product product;
     
     @ManyToMany(mappedBy = "productItems")
+    @JsonBackReference(value = "cart-productitem")
     private Set<Cart> carts;
 
     @NotNull

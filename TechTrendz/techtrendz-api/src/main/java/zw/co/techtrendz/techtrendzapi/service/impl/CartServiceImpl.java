@@ -4,11 +4,15 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import zw.co.techtrendz.techtrendzapi.service.ProductItemService;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.security.core.Authentication;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Service;
 import zw.co.techtrendz.techtrendzapi.entity.Cart;
 import zw.co.techtrendz.techtrendzapi.entity.Product;
 import zw.co.techtrendz.techtrendzapi.entity.ProductItem;
+import zw.co.techtrendz.techtrendzapi.entity.ProductStatus;
 import zw.co.techtrendz.techtrendzapi.entity.Users;
 import zw.co.techtrendz.techtrendzapi.repository.CartDao;
 import zw.co.techtrendz.techtrendzapi.service.CartService;
@@ -60,28 +65,38 @@ public class CartServiceImpl implements CartService {
     }
 
     public Cart addToCart(long productId, long count) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-        Users user = userService.getUserByUsername(currentUsername);
-        Optional<Cart> loadedCart = this.getCartByUserId(user.getId());
-        Cart cart = new Cart();
-        if (loadedCart.isPresent()) {
-            cart = loadedCart.get();
-        } else {
-            cart.setUser(user);
-        }
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String currentUsername = authentication.getName();
+            Users user = userService.getUserByUsername(currentUsername);
+            Optional<Cart> loadedCart = this.getCartByUserId(user.getId());
+            Cart cart = new Cart();
+            if (loadedCart.isPresent()) {
+                cart = loadedCart.get();
+            } else {
+                cart.setUser(user);
+            }
 
-        Product product = productService.getProductById(productId).get();
-        List<ProductItem> productItems = product.getProductItems();
-        productItems.stream().filter(item -> {
-            return item.getProductStatus().getId() == 1 || item.getProductStatus().getId() == 2 ? true : false;
-        });
-        Set<ProductItem> toCart = cart.getProductItems();
-        for (int iter = 0; iter < count; iter++) {
-            toCart.add(productItems.get(iter));
+            Product product = productService.getProductById(productId).get();
+            List<ProductItem> productItems = product.getProductItems();
+            productItems.stream().filter(item -> {
+                return item.getProductStatus().getId() == 1 || item.getProductStatus().getId() == 2 ? true : false;
+            });
+            Collections.sort(productItems, Comparator.comparing(ProductItem::getSerialNumber, Comparator.nullsFirst(Comparator.naturalOrder())));
+            Set<ProductItem> toCart = cart.getProductItems() != null ? cart.getProductItems() : new HashSet<>();
+            for (int iter = 0; iter < count; iter++) {
+                if (toCart.contains(productItems.get(iter))) {
+                    count = count + 1;
+                    continue;
+                }
+                productItems.get(iter).setProductStatus(new ProductStatus(2L));
+                toCart.add(productItems.get(iter));
+            }
+            cart.setProductItems(toCart);
+            return this.saveCart(cart);
+        } catch (Exception ex) {
+            Logger.getLogger(CartServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        cart.setProductItems(toCart);
-        return this.saveCart(cart);
+        return null;
     }
-
 }
