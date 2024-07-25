@@ -25,4 +25,6 @@ public interface CartService {
     public Optional<Cart> getCartByUserId(long userId);
 
     public Cart addToCart(long productId, long count);
+    
+    public List<Cart> cartsWithProductItem(long productItemId);
 }

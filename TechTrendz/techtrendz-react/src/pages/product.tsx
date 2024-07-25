@@ -47,6 +47,7 @@ export const Product = () => {
             }
             setCart(item)
             getCart()
+            setCount(1)
         } else {
             toast.error("Amount to add to cart cannot be less than zero")
         }
@@ -56,7 +57,8 @@ export const Product = () => {
         if (!cart?.productItems) {
             return 0
         }
-        return cart.productItems.filter((item: any) => product.productItems.includes(item)).length
+        let itemsIdsInProduct = product.productItems.map((item: any) => { return item.id })
+        return cart.productItems.filter((item: any) => itemsIdsInProduct.includes(item.id)).length
     }
 
     useEffect(() => {
@@ -76,7 +78,7 @@ export const Product = () => {
             <div className="h-full w-full p-3">
                 {product ?
                     <div className="h-full w-full flex flex-col justify-between overflow-hidden">
-                        <div className="rounded-sm flex md:justify-center h-[90%]">
+                        <div className="rounded-sm flex md:justify-center h-[88%]">
                             <div className="flex flex-col gap-1 md:w-96">
                                 <img src={cat} alt="Cat 1" className="aspect-square" />
                                 {/* <ProductStatus product={product} /> */}
@@ -94,10 +96,10 @@ export const Product = () => {
                         <div className="w-full flex justify-center">
                             <div className="w-full md:w-96 flex flex-col gap-2">
                                 <div className="w-full flex justify-between">
-                                <FormInput value={count} id="count" name="count" label="Count" key="count"
-                                    type="number" onChange={setCount}
-                                    className=" px-0 w-full" />
-                                <div>{itemsInCart()} in cart</div>
+                                    <FormInput value={count} id="count" name="count" label="Count" key="count"
+                                        type="number" onChange={setCount}
+                                        className=" px-0 w-full" />
+                                    <div>{itemsInCart()} in cart</div>
                                 </div>
                                 <button className="btn-hollow h-10 py-2 px-2 w-full flex gap-2" disabled={product?.productItems?.length <= 0} onClick={addItemToCart}>
                                     <IconCartPlus className="w-fit h-4 icon" /> <div className="text-inherit">Add to cart</div>

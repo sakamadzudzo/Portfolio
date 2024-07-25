@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -15,6 +16,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -62,6 +65,15 @@ public class CartServiceImpl implements CartService {
         cart.setUser(user);
         Example<Cart> cartExample = Example.of(cart);
         return cartDao.findOne(cartExample);
+    }
+
+    public List<Cart> cartsWithProductItem(long productItemId) {
+        List<ProductItem> productItems = Arrays.asList(new ProductItem(productItemId));
+        Cart cart = new Cart();
+        cart.setProductItems(Set.copyOf(productItems));
+        Example<Cart> cartExample = Example.of(cart);
+        Sort sort = Sort.by("id");
+        return cartDao.findAll(cartExample, sort);
     }
 
     public Cart addToCart(long productId, long count) {

@@ -47,7 +47,7 @@ public class ProductItem {
     @JoinColumn(name = "product_id", nullable = false)
     @JsonBackReference(value = "product-productitem")
     private Product product;
-    
+
     @ManyToMany(mappedBy = "productItems")
     @JsonBackReference(value = "cart-productitem")
     private Set<Cart> carts;
@@ -55,4 +55,8 @@ public class ProductItem {
     @NotNull
     @Column(nullable = false, unique = true)
     private String serialNumber;
+
+    public ProductItem(long id) {
+        this.id = id;
+    }
 }
