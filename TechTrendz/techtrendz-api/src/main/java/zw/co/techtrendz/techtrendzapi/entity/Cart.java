@@ -5,6 +5,7 @@
 package zw.co.techtrendz.techtrendzapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +23,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.envers.Audited;
+import zw.co.techtrendz.techtrendzapi.views.View;
 
 /**
  *
@@ -38,18 +40,19 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView({View.CartView.class})
     private Long id;
 
     @ManyToMany
-//    @JsonManagedReference(value = "cart-productitem")
+    @JsonView({View.CartView.class})
     @JoinTable(
             name = "cartProductItem",
             joinColumns = @JoinColumn(name = "cartId"),
             inverseJoinColumns = @JoinColumn(name = "productItemId"))
     private Set<ProductItem> productItems;
-    
+
     @OneToOne
     @NotNull
-//    @Column(nullable = false)
+    @JsonView({View.CartView.class})
     private Users user;
 }

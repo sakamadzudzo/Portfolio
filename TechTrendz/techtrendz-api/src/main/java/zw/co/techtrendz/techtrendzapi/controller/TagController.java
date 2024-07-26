@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import zw.co.techtrendz.techtrendzapi.entity.Brand;
-import zw.co.techtrendz.techtrendzapi.service.BrandService;
+import zw.co.techtrendz.techtrendzapi.entity.Tag;
+import zw.co.techtrendz.techtrendzapi.service.TagService;
 import zw.co.techtrendz.techtrendzapi.views.View;
 
 /**
@@ -23,27 +23,27 @@ import zw.co.techtrendz.techtrendzapi.views.View;
  * @author smadzudzo
  */
 @RestController
-public class BrandController {
+public class TagController {
 
     @Autowired
-    private BrandService brandService;
+    private TagService tagService;
 
     @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
-    @RequestMapping(name = "/savebrand", value = "/savebrand", method = RequestMethod.POST)
-    public Brand saveBrand(@Valid @RequestBody Brand brand) {
-        return brandService.saveBrand(brand);
+    @RequestMapping(name = "/savetag", value = "/savetag", method = RequestMethod.POST)
+    public Tag saveTag(@Valid @RequestBody Tag tag) {
+        return tagService.saveTag(tag);
     }
 
     @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
-    @RequestMapping(name = "/getbrandbyid", value = "/getbrandbyid", method = RequestMethod.GET)
-    public Optional<Brand> getBrandById(@RequestParam(required = true) Long id) {
-        return brandService.getBrandById(id);
+    @RequestMapping(name = "/gettagbyid", value = "/gettagbyid", method = RequestMethod.GET)
+    public Optional<Tag> getTagById(@RequestParam(required = true) Long id) {
+        return tagService.getTagById(id);
     }
 
     @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
-    @RequestMapping(name = "/getbrandall", value = "/getbrandall", method = RequestMethod.GET)
-    public List<Brand> getBrandAll() {
-        return brandService.getBrandAll();
+    @RequestMapping(name = "/gettagall", value = "/gettagall", method = RequestMethod.GET)
+    public List<Tag> getTagAll() {
+        return tagService.getTagAll();
     }
 
 }

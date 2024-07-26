@@ -6,6 +6,7 @@ package zw.co.techtrendz.techtrendzapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -21,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.envers.Audited;
+import zw.co.techtrendz.techtrendzapi.views.View;
 
 /**
  *
@@ -35,25 +37,28 @@ public class ProductItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private Long id;
 
     @ManyToOne
     @NotNull
     @JoinColumn(name = "productStatus_id", nullable = false)
+    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private ProductStatus productStatus;
 
     @ManyToOne
     @NotNull
+    @JsonView({View.CartView.class, View.ProductItemView.class})
     @JoinColumn(name = "product_id", nullable = false)
-    @JsonBackReference(value = "product-productitem")
     private Product product;
 
     @ManyToMany(mappedBy = "productItems")
-    @JsonBackReference(value = "cart-productitem")
+    @JsonView({View.ProductItemView.class, View.ProductView.class})
     private Set<Cart> carts;
 
     @NotNull
     @Column(nullable = false, unique = true)
+    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private String serialNumber;
 
     public ProductItem(long id) {

@@ -6,6 +6,7 @@ package zw.co.techtrendz.techtrendzapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,6 +26,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.envers.Audited;
+import zw.co.techtrendz.techtrendzapi.views.View;
 
 /**
  *
@@ -39,34 +41,41 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private Long id;
 
     @Column(nullable = false)
     @NotNull
+    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private String name;
 
     @Column(columnDefinition = "TEXT")
+    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     @NotNull
+    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private Brand brand;
 
     @ManyToOne
     @NotNull
     @JoinColumn(name = "productType_id", nullable = false)
+    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private ProductType productType;
 
     @OneToMany(mappedBy = "product")
-    @JsonManagedReference(value = "product-productitem")
+    @JsonView({View.ProductView.class})
     private List<ProductItem> productItems;
 
     @ManyToMany
+    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private List<Tag> tags;
 
     @Column(nullable = false)
     @NotNull
+    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private BigDecimal price;
 
     public Product(long id) {

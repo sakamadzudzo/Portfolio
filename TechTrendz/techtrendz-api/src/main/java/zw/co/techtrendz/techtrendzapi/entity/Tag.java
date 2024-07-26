@@ -5,6 +5,7 @@
 package zw.co.techtrendz.techtrendzapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.envers.Audited;
+import zw.co.techtrendz.techtrendzapi.views.View;
 
 /**
  *
@@ -27,6 +29,7 @@ import org.hibernate.envers.Audited;
 @Data
 @Entity
 @Audited
+@JsonView({View.ProductView.class, View.CartView.class})
 public class Tag {
 
     @Id

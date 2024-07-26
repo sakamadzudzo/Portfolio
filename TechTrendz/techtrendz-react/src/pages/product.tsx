@@ -42,7 +42,7 @@ export const Product = () => {
             if (!item) {
                 item = {}
             }
-            if (user) {
+            if (!item.user && user) {
                 item.user = user
             }
             setCart(item)
@@ -109,7 +109,8 @@ export const Product = () => {
                     </div> :
                     <div>
                         Product not found
-                    </div>}
+                    </div>
+                }
             </div>
         </div>
     )

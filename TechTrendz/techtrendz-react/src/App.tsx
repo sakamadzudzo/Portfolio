@@ -11,6 +11,7 @@ import { AuthProvider } from './components/utils/authContext';
 import RouteGuard from './components/utils/routeGuard';
 import { Product } from './pages/product';
 import { NotFound } from './pages/404';
+import { Cart } from './pages/cart';
 
 function App() {
   if (localStorage.token) {
@@ -28,6 +29,7 @@ function App() {
               <Route path='examples' element={<Examples />} />
               <Route path='products' element={<Products />} />
               <Route path='product/:id' element={<Product />} />
+              <Route path='cart' element={<Cart />} />
               <Route path='*' element={<NotFound />} />
             </Route>
           </Routes>
