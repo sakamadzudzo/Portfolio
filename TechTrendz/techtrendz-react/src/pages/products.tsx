@@ -112,7 +112,7 @@ const Products = () => {
                                 </div>
                                 <div className="flex gap-1">
                                     <div className="font-normal">Product:</div>
-                                    <div>{product.productType.description}</div>
+                                    <div>{product?.productType?.name}</div>
                                 </div>
                                 <div className="flex gap-1">
                                     <div className="font-normal">Price:</div>

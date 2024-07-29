@@ -43,7 +43,7 @@ const Layout = () => {
             />
             <div className={`relative h-dvh w-full overflow-hidden ${dark ? 'dark' : ''} bg-light-50 dark:bg-dark-50`}>
                 <button className="absolute top-0 right-0 focus:outline-none z-50" onClick={() => setDark(!dark)}>
-                    <div className="flex h-7 border rounded-lg rounded-tr-none overflow-hidden">
+                    <div className="flex h-7 aspect-square border rounded-lg rounded-tr-none overflow-hidden">
                         {!dark ?
                             <div className="bg-transparent dark:bg-dark-100">
                                 <IconMoon className="h-full py-1 px-1 -rotate-45" />

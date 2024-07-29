@@ -57,7 +57,7 @@ export const Product = () => {
         if (!cart?.productItems) {
             return 0
         }
-        let itemsIdsInProduct = product.productItems.map((item: any) => { return item.id })
+        let itemsIdsInProduct = product?.productItems ? product?.productItems?.map((item: any) => { return item.id }) : []
         return cart.productItems.filter((item: any) => itemsIdsInProduct.includes(item.id)).length
     }
 
@@ -87,10 +87,10 @@ export const Product = () => {
                                     <div>{product?.productItems?.length > 0 ? product?.productItems?.length + " left" : "Out of stock"} </div>
                                 </div>
                                 <div className="flex justify-between">
-                                    <div className="font-normal">{product.brand?.name} | {product.productType?.description}</div>
-                                    <div>${numformat(product.price)}</div>
+                                    <div className="font-normal">{product.brand?.name} | {product?.productType?.name}</div>
+                                    <div>${numformat(product?.price)}</div>
                                 </div>
-                                <div className="overflow-y-auto">{product.description}</div>
+                                <div className="overflow-y-auto">{product?.description}</div>
                             </div>
                         </div>
                         <div className="w-full flex justify-center">
@@ -101,8 +101,8 @@ export const Product = () => {
                                         className=" px-0 w-full" />
                                     <div>{itemsInCart()} in cart</div>
                                 </div>
-                                <button className="btn-hollow h-10 py-2 px-2 w-full flex gap-2" disabled={product?.productItems?.length <= 0} onClick={addItemToCart}>
-                                    <IconCartPlus className="w-fit h-4 icon" /> <div className="text-inherit">Add to cart</div>
+                                <button className="btn-hollow h-10 py-2 px-2 w-full flex justify-center gap-2" disabled={product?.productItems?.length <= 0} onClick={addItemToCart}>
+                                    <IconCartPlus className="w-4 h-4 icon" /> <div className="text-inherit whitespace-nowrap">Add to cart</div>
                                 </button>
                             </div>
                         </div>

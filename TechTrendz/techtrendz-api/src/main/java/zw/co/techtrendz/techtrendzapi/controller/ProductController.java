@@ -26,7 +26,6 @@ import zw.co.techtrendz.techtrendzapi.views.View;
  * @author smadzudzo
  */
 @RestController
-@JsonView({View.ProductView.class})
 public class ProductController {
 
     @Autowired
@@ -49,6 +48,7 @@ public class ProductController {
         return productService.getProductAll();
     }
 
+    @JsonView({View.ProductView.class})
     @RequestMapping(name = "/getproductallpaged", value = "/getproductallpaged", method = RequestMethod.POST)
     public Page<Product> getProductAllPaged(@RequestBody PagedProductsRequestDto pagedProductsRequestDto) {
         return productService.getProductAllPaged(pagedProductsRequestDto);
