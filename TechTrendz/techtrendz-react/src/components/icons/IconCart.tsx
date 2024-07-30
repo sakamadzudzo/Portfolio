@@ -1,4 +1,4 @@
-const IconCart = ({
+export const IconCart = ({
     className
 }: {
     className?: string
@@ -11,5 +11,3 @@ const IconCart = ({
         </>
     )
 }
-
-export default IconCart

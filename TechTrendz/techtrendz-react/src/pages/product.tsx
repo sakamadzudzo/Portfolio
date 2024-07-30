@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { AuthState } from "../components/utils/authSlice";
 import cat from './../assets/img/cat1.webp'
 // import { ProductStatus } from "../components/utils/misc";
-import IconCartPlus from "../components/icons/IconCartPlus";
+import { IconCartPlus } from "../components/icons/IconCartPlus";
 import { addToCart, getCartByUserId } from "../components/utils/cartService";
 import { numformat } from "../components/utils/misc";
 import FormInput from "../components/FormInput";
@@ -75,43 +75,39 @@ export const Product = () => {
 
     return (
         <div className="wrapper">
-            <div className="h-full w-full p-3">
-                {product ?
-                    <div className="h-full w-full flex flex-col justify-between overflow-hidden">
-                        <div className="rounded-sm flex md:justify-center h-[88%]">
-                            <div className="flex flex-col gap-1 md:w-96">
-                                <img src={cat} alt="Cat 1" className="aspect-square" />
-                                {/* <ProductStatus product={product} /> */}
-                                <div className="flex justify-between">
-                                    <div className="font-medium">{product?.name}</div>
-                                    <div>{product?.productItems?.length > 0 ? product?.productItems?.length + " left" : "Out of stock"} </div>
-                                </div>
-                                <div className="flex justify-between">
-                                    <div className="font-normal">{product.brand?.name} | {product?.productType?.name}</div>
-                                    <div>${numformat(product?.price)}</div>
-                                </div>
-                                <div className="overflow-y-auto">{product?.description}</div>
+            {product ?
+                <div className="rounded-sm flex md:justify-center h-full portrait:flex-col portrait:justify-between landscape:items-center gap-1 portrait:md:w-96">
+                    <img src={cat} alt="Cat 1" className="aspect-square landscape:h-96" />
+                    <div className="flex flex-col h-[48%] landscape:h-96 portrait:justify-between">
+                        <div className="flex flex-col h-[33%] flex-grow landscape:w-96">
+                            <div className="flex justify-between portrait:h-7">
+                                <div className="font-medium">{product?.name}</div>
+                                <div>{product?.productItems?.length > 0 ? product?.productItems?.length + " left" : "Out of stock"} </div>
                             </div>
-                        </div>
-                        <div className="w-full flex justify-center">
-                            <div className="w-full md:w-96 flex flex-col gap-2">
-                                <div className="w-full flex justify-between">
-                                    <FormInput value={count} id="count" name="count" label="Count" key="count"
-                                        type="number" onChange={setCount}
-                                        className=" px-0 w-full" />
-                                    <div>{itemsInCart()} in cart</div>
-                                </div>
-                                <button className="btn-hollow h-10 py-2 px-2 w-full flex justify-center gap-2" disabled={product?.productItems?.length <= 0} onClick={addItemToCart}>
-                                    <IconCartPlus className="w-4 h-4 icon" /> <div className="text-inherit whitespace-nowrap">Add to cart</div>
-                                </button>
+                            <div className="flex justify-between portrait:h-7">
+                                <div className="font-normal">{product.brand?.name} | {product?.productType?.name}</div>
+                                <div>${numformat(product?.price)}</div>
                             </div>
+                            <div className="overflow-y-auto flex flex-grow mb-1">{product?.description}</div>
                         </div>
-                    </div> :
-                    <div>
-                        Product not found
+                        <div className="w-full md:w-96 flex flex-col gap-2 h-20 justify-end">
+                            <div className="w-full flex justify-between">
+                                <FormInput value={count} id="count" name="count" label="Count" key="count"
+                                    type="number" onChange={setCount}
+                                    className=" px-0 w-full" />
+                                <div>{itemsInCart()} in cart</div>
+                            </div>
+                            <button className="btn-hollow h-10 py-2 px-2 w-full flex justify-center gap-2" disabled={product?.productItems?.length <= 0} onClick={addItemToCart}>
+                                <IconCartPlus className="w-4 h-4 icon" /> <div className="text-inherit whitespace-nowrap">Add to cart</div>
+                            </button>
+                        </div>
                     </div>
-                }
-            </div>
+                </div>
+                :
+                <div>
+                    Product not found
+                </div>
+            }
         </div>
     )
 }

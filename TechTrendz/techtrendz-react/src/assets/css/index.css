@@ -48,7 +48,7 @@
     }
 
     .wrapper {
-        @apply h-full w-full flex justify-center items-center overflow-hidden
+        @apply h-[96%] w-full flex justify-center items-center overflow-hidden p-3
     }
 
     .error-div {
@@ -57,5 +57,13 @@
 
     .icon {
         @apply fill-light-950 dark:fill-dark-950
+    }
+
+    .menu-link {
+        @apply hover:font-normal
+    }
+
+    .background {
+        @apply bg-light-50 dark:bg-dark-50
     }
 }

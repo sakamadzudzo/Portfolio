@@ -1,4 +1,4 @@
-const IconMoon = ({
+export const IconMoon = ({
     className
 }: {
     className?: string
@@ -11,5 +11,3 @@ const IconMoon = ({
         </>
     )
 }
-
-export default IconMoon

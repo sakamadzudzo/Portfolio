@@ -1,4 +1,4 @@
-const IconSun = ({
+export const IconSun = ({
     className
 }: {
     className?: string
@@ -11,5 +11,3 @@ const IconSun = ({
         </>
     )
 }
-
-export default IconSun

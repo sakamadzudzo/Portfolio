@@ -64,7 +64,7 @@ export const Pagination = ({
         <>
             <div className="flex gap-2 justify-center">
                 <div>Size: </div>
-                <select value={size} onChange={(e: any) => { setSize(e.target.value) }} className="bg-white dark:bg-black -mt-1">
+                <select value={size} onChange={(e: any) => { setSize(e.target.value) }} className="background -mt-1">
                     <option value={5} label="5" />
                     <option value={10} label="10" />
                     <option value={25} label="25" />

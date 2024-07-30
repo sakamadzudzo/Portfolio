@@ -91,7 +91,7 @@ const Products = () => {
     }, []);
 
     return (
-        <div className="wrapper p-2 pt-0">
+        <div className="wrapper">
             <div className="h-full w-full">
                 <div className="w-full">
                     <Pagination first={first} last={last} offset={offset} entries={offsetLast} size={pageSize}

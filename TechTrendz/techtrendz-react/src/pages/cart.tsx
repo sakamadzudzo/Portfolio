@@ -72,7 +72,7 @@ export const Cart = () => {
     }, []);
 
     return (
-        <div className="wrapper p-3">
+        <div className="wrapper">
             <div className="h-full w-full flex flex-col md:items-start md:w-96 gap-3">
                 {cartDto && cartDto.length > 0 ? cartDto.map((item: CartDTO) =>
                     <div className="w-full shadow-inherit shadow-sm rounded-sm p-1" key={item.id}>

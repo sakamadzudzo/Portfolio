@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Slide, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-import IconSun from './icons/IconSun';
-import IconMoon from './icons/IconMoon';
+import { Header } from './Header';
 
 const Layout = () => {
     const [dark, setDark] = useState(false);
@@ -29,7 +28,7 @@ const Layout = () => {
 
     return (
         <>
-            <ToastContainer
+            {/* <ToastContainer
                 position="top-right"
                 autoClose={5000}
                 hideProgressBar={false}
@@ -40,20 +39,9 @@ const Layout = () => {
                 theme="light"
                 pauseOnFocusLoss={false}
                 draggable={false}
-            />
+            /> */}
             <div className={`relative h-dvh w-full overflow-hidden ${dark ? 'dark' : ''} bg-light-50 dark:bg-dark-50`}>
-                <button className="absolute top-0 right-0 focus:outline-none z-50" onClick={() => setDark(!dark)}>
-                    <div className="flex h-7 aspect-square border rounded-lg rounded-tr-none overflow-hidden">
-                        {!dark ?
-                            <div className="bg-transparent dark:bg-dark-100">
-                                <IconMoon className="h-full py-1 px-1 -rotate-45" />
-                            </div> :
-                            <div className="bg-light-200 dark:bg-transparent">
-                                <IconSun className="h-full py-1 px-1" />
-                            </div>}
-                    </div>
-                </button>
-                {/* <div className="opacity-90 -z-50 absolute top-0 left-0 h-full w-full" style={{ backgroundImage: `url(${bg})` }}></div> */}
+                <Header dark={dark} setDark={setDark} key={`header`} />
                 <Outlet />
                 <ToastContainer
                     position="top-right"
