@@ -38,6 +38,12 @@ const Login = () => {
         }
     }
 
+    const closeTab = () => {
+        window.opener = null;
+        window.open("", "_self");
+        window.close();
+    };
+
     useEffect(() => {
         if (username === "") {
             setDisableLogin(true)
@@ -84,7 +90,7 @@ const Login = () => {
                         <FormInput id="password" name="password" className="w-full" type="password" label="Password" onChange={(value: string) => { setPassword(value) }} value={password} placeholder="Password..." />
                     </FormBody>
                     <FormFooter className="justify-end p-2">
-                        <button className={`btn-hollow`}>Cancel</button>
+                        <button className={`btn-hollow`} onClick={() => { closeTab() }}>Cancel</button>
                         <button className={`btn-hollow`} disabled={disableLogin} onClick={async () => { await doLogin(); }}> Login</button>
                         {/* <button className={`btn-hollow`} onClick={() => getPrincipal()}> Auth</button> */}
                     </FormFooter>

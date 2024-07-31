@@ -28,19 +28,17 @@ public class BrandController {
     @Autowired
     private BrandService brandService;
 
-    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     @RequestMapping(name = "/savebrand", value = "/savebrand", method = RequestMethod.POST)
     public Brand saveBrand(@Valid @RequestBody Brand brand) {
         return brandService.saveBrand(brand);
     }
 
-    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     @RequestMapping(name = "/getbrandbyid", value = "/getbrandbyid", method = RequestMethod.GET)
     public Optional<Brand> getBrandById(@RequestParam(required = true) Long id) {
+        System.out.println("\n\n\n\n\n" + id + "\n\n\n\n\n");
         return brandService.getBrandById(id);
     }
 
-    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     @RequestMapping(name = "/getbrandall", value = "/getbrandall", method = RequestMethod.GET)
     public List<Brand> getBrandAll() {
         return brandService.getBrandAll();

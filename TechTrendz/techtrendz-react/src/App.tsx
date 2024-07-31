@@ -12,6 +12,7 @@ import RouteGuard from './components/utils/routeGuard';
 import { Product } from './pages/product';
 import { NotFound } from './pages/404';
 import { Cart } from './pages/cart';
+import { BrandEdit } from './pages/brandEdit';
 
 function App() {
   if (localStorage.token) {
@@ -30,6 +31,7 @@ function App() {
               <Route path='products' element={<Products />} />
               <Route path='product/:id' element={<Product />} />
               <Route path='cart' element={<Cart />} />
+              <Route path='brandedit/:id?' element={<BrandEdit />} />
               <Route path='*' element={<NotFound />} />
             </Route>
           </Routes>

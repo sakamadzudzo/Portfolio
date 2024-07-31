@@ -31,6 +31,7 @@ export const Menu = ({
                         <div className="mt-8 ml-0.5 flex flex-col">
                             <NavLink to={`products`} className="menu-link" >Products</NavLink>
                             <NavLink to={`cart`} className="menu-link" >Cart</NavLink>
+                            <NavLink to={`brandedit`} className="menu-link" >Add Brand</NavLink>
                         </div>
                     </div>
                 </>
