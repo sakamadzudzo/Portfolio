@@ -4,7 +4,6 @@
  */
 package zw.co.techtrendz.techtrendzapi.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -17,14 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import zw.co.techtrendz.techtrendzapi.entity.Role;
 import zw.co.techtrendz.techtrendzapi.entity.Users;
 import zw.co.techtrendz.techtrendzapi.service.UserService;
-import zw.co.techtrendz.techtrendzapi.views.View;
 
 /**
  *
  * @author smadzudzo
  */
 @RestController
-@JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
 public class UserController {
 
     @Autowired

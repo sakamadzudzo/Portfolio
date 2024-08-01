@@ -15,9 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Service;
 import zw.co.techtrendz.techtrendzapi.entity.Address;
 import zw.co.techtrendz.techtrendzapi.entity.BankAccount;
@@ -234,17 +232,17 @@ public class DummyDataServiceImpl {
         contactTypeService.saveContactTypes(contactTypes);
 
         List<Role> roles = Arrays.asList(
-                new Role(1L, "Role for purchasing customer.", "CUSTOMER"),
-                new Role(2L, "Role for site administrator.", "ADMINISTRATOR"),
-                new Role(3L, "Role for maintaining site products, prices, and all other shop data.", "MAINTAINER")
+                new Role(1L, "CUSTOMER", "Role for purchasing customer."),
+                new Role(2L, "ADMINISTRATOR", "Role for site administrator."),
+                new Role(3L, "MAINTAINER", "Role for maintaining site products, prices, and all other shop data.")
         );
         roleService.saveRoles(roles);
 
-        orderStatusService.saveOrderStatus(new OrderStatus(1L, "Order placed", "ORDERED"));
-        orderStatusService.saveOrderStatus(new OrderStatus(2L, "Order pending", "PENDING"));
-        orderStatusService.saveOrderStatus(new OrderStatus(3L, "Order being processed", "PROCESSING"));
-        orderStatusService.saveOrderStatus(new OrderStatus(4L, "Order approved", "APPROVED"));
-        orderStatusService.saveOrderStatus(new OrderStatus(5L, "Purchase successful", "PURCHASED"));
+        orderStatusService.saveOrderStatus(new OrderStatus(1L, "ORDERED", "Order placed"));
+        orderStatusService.saveOrderStatus(new OrderStatus(2L, "PENDING", "Order pending"));
+        orderStatusService.saveOrderStatus(new OrderStatus(3L, "PROCESSING", "Order being processed"));
+        orderStatusService.saveOrderStatus(new OrderStatus(4L, "APPROVED", "Order approved"));
+        orderStatusService.saveOrderStatus(new OrderStatus(5L, "PURCHASED", "Purchase successful"));
 
         List<Users> users = Arrays.asList(
                 new Users(null, new Salutation(1L), "Erick", "Leonard", "Abraham", "elabraham", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{34, 68, 75, 87}), null),
@@ -366,7 +364,7 @@ public class DummyDataServiceImpl {
                 new Address(102L, 900L, "Fifty-Fourth Avenue", "Fifty-Fourth Avenue", "Mashonaland West", "Kariba", "Mashonaland West", "Mashonaland West", "Zimbabwe", "64093", null)
         );
         addressService.saveAddresses(addresses);
-        
+
         List<BankAccount> bankAccounts = Arrays.asList(
                 new BankAccount(1L, 66527445610001L, "CBZ", "Jeanine", "", new Address(74), LocalDateTime.parse("2008-09-24 12:23:41.568000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(1)),
                 new BankAccount(2L, 66527445610002L, "CBZ", "Tabatha", "", new Address(11), LocalDateTime.parse("2008-04-17 07:01:08.992000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(2)),

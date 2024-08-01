@@ -4,7 +4,6 @@
  */
 package zw.co.techtrendz.techtrendzapi.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zw.co.techtrendz.techtrendzapi.entity.Tag;
 import zw.co.techtrendz.techtrendzapi.service.TagService;
-import zw.co.techtrendz.techtrendzapi.views.View;
 
 /**
  *
@@ -28,19 +26,16 @@ public class TagController {
     @Autowired
     private TagService tagService;
 
-    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     @RequestMapping(name = "/savetag", value = "/savetag", method = RequestMethod.POST)
     public Tag saveTag(@Valid @RequestBody Tag tag) {
         return tagService.saveTag(tag);
     }
 
-    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     @RequestMapping(name = "/gettagbyid", value = "/gettagbyid", method = RequestMethod.GET)
     public Optional<Tag> getTagById(@RequestParam(required = true) Long id) {
         return tagService.getTagById(id);
     }
 
-    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     @RequestMapping(name = "/gettagall", value = "/gettagall", method = RequestMethod.GET)
     public List<Tag> getTagAll() {
         return tagService.getTagAll();

@@ -51,7 +51,9 @@ export const Cart = () => {
         }
     }, [cart])
 
+    let count = 1;
     const getCart = useCallback(async () => {
+        console.log("Iteration #" + count++)
         let item = await getCartByUserId(token!, user ? user.id : 0)
         if (!item || item === undefined) {
             item = {}
@@ -61,7 +63,7 @@ export const Cart = () => {
         }
         setCart(item)
         showCart()
-    }, [showCart, token, user])
+    }, [showCart, token, user, count])
 
     useEffect(() => {
         getCart()

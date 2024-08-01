@@ -4,7 +4,6 @@
  */
 package zw.co.techtrendz.techtrendzapi.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zw.co.techtrendz.techtrendzapi.entity.Brand;
 import zw.co.techtrendz.techtrendzapi.service.BrandService;
-import zw.co.techtrendz.techtrendzapi.views.View;
 
 /**
  *

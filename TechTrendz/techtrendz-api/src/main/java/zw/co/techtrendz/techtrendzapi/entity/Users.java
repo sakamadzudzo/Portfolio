@@ -5,7 +5,6 @@
 package zw.co.techtrendz.techtrendzapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +24,6 @@ import org.hibernate.envers.Audited;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import zw.co.techtrendz.techtrendzapi.views.View;
 
 /**
  *
@@ -36,7 +34,6 @@ import zw.co.techtrendz.techtrendzapi.views.View;
 @Data
 @Entity
 @Audited
-@JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
 public class Users implements UserDetails {
 
     @Id

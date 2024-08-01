@@ -14,6 +14,9 @@ import { NotFound } from './pages/404';
 import { Cart } from './pages/cart';
 import { BrandEdit } from './pages/brandEdit';
 import { ContactTypeEdit } from './pages/contactTypeEdit';
+import { OrderStatusEdit } from './pages/orderStatusEdit';
+import { ProductTypeEdit } from './pages/productTypeEdit';
+import { ProductStatusEdit } from './pages/productStatusEdit';
 
 function App() {
   if (localStorage.token) {
@@ -34,6 +37,9 @@ function App() {
               <Route path='cart' element={<Cart />} />
               <Route path='brandedit/:id?' element={<BrandEdit />} />
               <Route path='contacttypeedit/:id?' element={<ContactTypeEdit />} />
+              <Route path='orderstatusedit/:id?' element={<OrderStatusEdit />} />
+              <Route path='producttypeedit/:id?' element={<ProductTypeEdit />} />
+              <Route path='productstatusedit/:id?' element={<ProductStatusEdit />} />
               <Route path='*' element={<NotFound />} />
             </Route>
           </Routes>

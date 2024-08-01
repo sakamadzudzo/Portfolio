@@ -4,12 +4,9 @@
  */
 package zw.co.techtrendz.techtrendzapi.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,11 +14,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,28 +36,23 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private Long id;
 
     @Column(nullable = false)
     @NotNull
-    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private String name;
 
     @Column(columnDefinition = "TEXT")
-    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     @NotNull
-    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private Brand brand;
 
     @ManyToOne
     @NotNull
     @JoinColumn(name = "productType_id", nullable = false)
-    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private ProductType productType;
 
     @OneToMany(mappedBy = "product")
@@ -70,12 +60,10 @@ public class Product {
     private List<ProductItem> productItems;
 
     @ManyToMany
-    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private List<Tag> tags;
 
     @Column(nullable = false)
     @NotNull
-    @JsonView({View.CartView.class, View.ProductItemView.class, View.ProductView.class})
     private BigDecimal price;
 
     public Product(long id) {
