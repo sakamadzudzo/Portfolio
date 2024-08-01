@@ -6,20 +6,20 @@ import FormHeader from "../components/FormHeader"
 import FormInput from "../components/FormInput"
 import { useSelector } from "react-redux"
 import { AuthState } from "../components/utils/authSlice"
-import { getBrandById, saveBrand } from "../components/service/brandService"
+import { getContactTypeById, saveContactType } from "../components/service/contactTypeService"
 import { useNavigate, useParams } from "react-router-dom"
 
-export const BrandEdit = () => {
+export const ContactTypeEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
     const [disableSave, setDisableSave] = useState(false)
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const { id } = useParams()
     const navigate = useNavigate()
-    const [header, setHeader] = useState("New Brand")
+    const [header, setHeader] = useState("New Contact Type")
 
-    const getBrand = useCallback(async () => {
-        let result = await getBrandById(token!, id ? Number(id) : 0)
+    const getContactType = useCallback(async () => {
+        let result = await getContactTypeById(token!, id ? Number(id) : 0)
         if (result) {
             setName(result.name)
             setDescription(result.description)
@@ -28,9 +28,9 @@ export const BrandEdit = () => {
 
     const save = async () => {
         const dto = { id: id ? Number(id) : 0, name: name, description: description }
-        let result = await saveBrand(token!, dto)
+        let result = await saveContactType(token!, dto)
         if (result) {
-            navigate("/brandedit/" + result.id)
+            navigate("/contacttypeedit/" + result.id)
         }
     }
 
@@ -44,17 +44,17 @@ export const BrandEdit = () => {
 
     useEffect(() => {
         if (!id || id === "0") {
-            document.title = 'TechBrandz - New Brand';
-            setHeader("New Brand")
+            document.title = 'TechContactTypez - New Contact Type';
+            setHeader("New Contact Type")
             setName("")
             setDescription("")
 
         } else {
-            document.title = 'TechBrandz - Edit Brand';
-            getBrand()
-            setHeader("Edit Brand")
+            document.title = 'TechContactTypez - Edit Contact Type';
+            getContactType()
+            setHeader("Edit Contact Type")
         }
-    }, [id, getBrand]);
+    }, [id, getContactType]);
 
     return (
         <div className="wrapper">

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux"
 import { AuthState } from "../components/utils/authSlice";
 import { useCallback, useEffect, useState } from "react";
-import { getCartByUserId } from "../components/utils/cartService";
+import { getCartByUserId } from "../components/service/cartService";
 import { numformat } from "../components/utils/misc";
 
 class CartDTO {

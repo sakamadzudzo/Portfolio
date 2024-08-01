@@ -5,7 +5,7 @@ import FormFooter from "../components/FormFooter";
 import FormHeader from "../components/FormHeader";
 import FormInput from "../components/FormInput";
 import { useNavigate } from "react-router-dom";
-import { getPrincipal, login } from "../components/utils/authService";
+import { getPrincipal, login } from "../components/service/authService";
 import { AuthState, setToken, setUser } from "../components/utils/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../components/utils/authContext";

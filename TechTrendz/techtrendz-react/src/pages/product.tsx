@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getProductById } from "../components/utils/productService";
+import { getProductById } from "../components/service/productService";
 import { useSelector } from "react-redux";
 import { AuthState } from "../components/utils/authSlice";
 import cat from './../assets/img/cat1.webp'
-// import { ProductStatus } from "../components/utils/misc";
 import { IconCartPlus } from "../components/icons/IconCartPlus";
-import { addToCart, getCartByUserId } from "../components/utils/cartService";
+import { addToCart, getCartByUserId } from "../components/service/cartService";
 import { numformat } from "../components/utils/misc";
 import FormInput from "../components/FormInput";
 import { toast } from "react-toastify";

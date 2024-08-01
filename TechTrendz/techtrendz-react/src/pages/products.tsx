@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { getProductAllPaged } from "../components/utils/productService";
+import { getProductAllPaged } from "../components/service/productService";
 import { AuthState } from "../components/utils/authSlice";
 import { useCallback, useEffect, useState } from "react";
 import cat from './../assets/img/cat1.webp'

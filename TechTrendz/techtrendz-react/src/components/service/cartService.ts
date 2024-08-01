@@ -1,7 +1,7 @@
 import axios from "axios"
 import { toast } from "react-toastify"
 import { authOrReload } from "./authService"
-import API from "./constants"
+import API from "./../utils/constants"
 
 export const getCartByUserId = async (token: string, userId: number) => {
     authOrReload(token)

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { checkAuth } from './authService';
+import { checkAuth } from './../service/authService';
 import { useDispatch, useSelector } from 'react-redux';
 import { AuthState, setReferer } from './authSlice';
 import { Props } from '../../types/types';

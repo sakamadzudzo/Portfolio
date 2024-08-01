@@ -1,12 +1,15 @@
 import axios from "axios"
-import API from "./constants"
 import { toast } from "react-toastify"
 import { authOrReload } from "./authService"
+import API from "./../utils/constants"
 
-export const getProductAllPaged = async (token: string, pagedProductsRequestDto: any) => {
+export const getContactTypeById = async (token: string, id: number) => {
     authOrReload(token)
-    let data: any = []
-    await axios.post(API + "getproductallpaged", pagedProductsRequestDto, {
+    let data: any = null
+    await axios.get(API + "getcontacttypebyid", {
+        params: {
+            id: id
+        },
         headers: {
             Authorization: token
         }
@@ -17,7 +20,7 @@ export const getProductAllPaged = async (token: string, pagedProductsRequestDto:
         .catch((error) => {
             console.log(error);
             toast(error.response.data)
-            data = []
+            data = null
         })
         .finally(() => {
             return data;
@@ -25,13 +28,10 @@ export const getProductAllPaged = async (token: string, pagedProductsRequestDto:
     return data
 }
 
-export const getProductById = async (token: string, id: string) => {
+export const saveContactType = async (token: string, contactType: Object) => {
     authOrReload(token)
     let data: any = null
-    await axios.get(API + "getproductbyid", {
-        params: {
-            id: id
-        },
+    await axios.post(API + "savecontacttype", contactType, {
         headers: {
             Authorization: token
         }

@@ -1,15 +1,12 @@
 import axios from "axios"
+import API from "./../utils/constants"
 import { toast } from "react-toastify"
 import { authOrReload } from "./authService"
-import API from "./constants"
 
-export const getBrandById = async (token: string, id: number) => {
+export const getProductAllPaged = async (token: string, pagedProductsRequestDto: any) => {
     authOrReload(token)
-    let data: any = null
-    await axios.get(API + "getbrandbyid", {
-        params: {
-            id: id
-        },
+    let data: any = []
+    await axios.post(API + "getproductallpaged", pagedProductsRequestDto, {
         headers: {
             Authorization: token
         }
@@ -20,7 +17,7 @@ export const getBrandById = async (token: string, id: number) => {
         .catch((error) => {
             console.log(error);
             toast(error.response.data)
-            data = null
+            data = []
         })
         .finally(() => {
             return data;
@@ -28,10 +25,13 @@ export const getBrandById = async (token: string, id: number) => {
     return data
 }
 
-export const saveBrand = async (token: string, brand: Object) => {
+export const getProductById = async (token: string, id: string) => {
     authOrReload(token)
     let data: any = null
-    await axios.post(API + "savebrand", brand, {
+    await axios.get(API + "getproductbyid", {
+        params: {
+            id: id
+        },
         headers: {
             Authorization: token
         }

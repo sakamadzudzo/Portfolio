@@ -13,6 +13,7 @@ import { Product } from './pages/product';
 import { NotFound } from './pages/404';
 import { Cart } from './pages/cart';
 import { BrandEdit } from './pages/brandEdit';
+import { ContactTypeEdit } from './pages/contactTypeEdit';
 
 function App() {
   if (localStorage.token) {
@@ -32,6 +33,7 @@ function App() {
               <Route path='product/:id' element={<Product />} />
               <Route path='cart' element={<Cart />} />
               <Route path='brandedit/:id?' element={<BrandEdit />} />
+              <Route path='contacttypeedit/:id?' element={<ContactTypeEdit />} />
               <Route path='*' element={<NotFound />} />
             </Route>
           </Routes>

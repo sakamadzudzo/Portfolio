@@ -1,5 +1,5 @@
 import axios from 'axios';
-import API from './constants';
+import API from "./../utils/constants"
 
 export const login = async (username: string, password: string) => {
     let res: string = ""
