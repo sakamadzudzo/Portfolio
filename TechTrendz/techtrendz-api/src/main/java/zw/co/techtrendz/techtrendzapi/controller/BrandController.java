@@ -35,7 +35,6 @@ public class BrandController {
 
     @RequestMapping(name = "/getbrandbyid", value = "/getbrandbyid", method = RequestMethod.GET)
     public Optional<Brand> getBrandById(@RequestParam(required = true) Long id) {
-        System.out.println("\n\n\n\n\n" + id + "\n\n\n\n\n");
         return brandService.getBrandById(id);
     }
 

@@ -46,6 +46,8 @@ export const BrandEdit = () => {
         if (!id || id === "0") {
             document.title = 'TechBrandz - New Brand';
             setHeader("New Brand")
+            setName("")
+            setDescription("")
 
         } else {
             document.title = 'TechBrandz - Edit Brand';
