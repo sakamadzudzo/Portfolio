@@ -51,9 +51,7 @@ export const Cart = () => {
         }
     }, [cart])
 
-    let count = 1;
     const getCart = useCallback(async () => {
-        console.log("Iteration #" + count++)
         let item = await getCartByUserId(token!, user ? user.id : 0)
         if (!item || item === undefined) {
             item = {}
@@ -62,12 +60,17 @@ export const Cart = () => {
             }
         }
         setCart(item)
-        showCart()
-    }, [showCart, token, user, count])
+        // showCart()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [token, user])
 
     useEffect(() => {
         getCart()
     }, [getCart])
+
+    useEffect(() => {
+        showCart()
+    }, [cart, showCart])
 
     useEffect(() => {
         document.title = 'TechBrandz - Cart';
