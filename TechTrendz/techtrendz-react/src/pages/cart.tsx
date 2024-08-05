@@ -5,6 +5,7 @@ import { getCartByUserId } from "../components/service/cartService";
 import { numformat } from "../components/utils/misc";
 import { useOutletContext } from "react-router-dom";
 import { OverlayContextType } from "../components/Layout";
+import { CartItemModal } from "../components/CartItemModal";
 
 class CartDTO {
     id: number = 0
@@ -98,7 +99,7 @@ export const Cart = () => {
             <div className="h-full w-full flex flex-col md:items-start md:w-96 gap-3">
                 {cartDto && cartDto.length > 0 ?
                     <>
-                        <div className="grow">
+                        <div className="grow w-full">
                             {cartDto.map((item: CartDTO) =>
                                 <div className="w-full shadow-inherit shadow-sm rounded-sm p-1" key={item.id}>
                                     <div className="flex justify-between">
@@ -114,6 +115,7 @@ export const Cart = () => {
                                 </div>
                             )}
                         </div>
+                        <CartItemModal />
                         <div className="h-12 flex">
                             <div>${totalValue()}</div>
                         </div>

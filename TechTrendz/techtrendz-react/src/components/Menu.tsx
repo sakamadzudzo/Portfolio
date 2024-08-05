@@ -17,7 +17,7 @@ export const Menu = ({
 
     return (
         <>
-            <button className={`absolute top-0.5 left-0.5 focus:outline-none z-50 cursor-pointer ${className}`} onClick={() => { setOpen(!open); }}>
+            <button className={`absolute top-0.5 left-0.5 focus:outline-none z-40 cursor-pointer ${className}`} onClick={() => { setOpen(!open); }}>
                 <div className="flex h-7 aspect-square border rounded-lg rounded-tl-none overflow-hidden p-1">
                     {open ?
                         < IconMenuClose /> : <IconMenuOpen />}
