@@ -4,7 +4,7 @@ import { authOrReload } from "./authService"
 import API from "./../utils/constants"
 
 export const getCartByUserId = async (token: string, userId: number) => {
-    authOrReload(token)
+    await authOrReload(token)
     let data: any = null
     await axios.get(API + "getcartbyuserid", {
         params: {
@@ -29,7 +29,7 @@ export const getCartByUserId = async (token: string, userId: number) => {
 }
 
 export const addToCart = async (token: string, productId: number, count: number) => {
-    authOrReload(token)
+    await authOrReload(token)
     let data: any = null
     await axios.post(API + "addtocart", null, {
         params: {

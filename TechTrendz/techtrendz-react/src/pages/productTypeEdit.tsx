@@ -65,21 +65,6 @@ export const ProductTypeEdit = () => {
                 <FormBody className=" flex flex-col gap-5 pt-5">
                     <FormInput id="name" name="name" className="w-full" type="text" label="Name" onChange={(value: string) => { setName(value) }} value={name} autoFocus={true} placeholder="Name..." />
                     <FormInput id="description" name="description" className="w-full" type="text" label="Description" onChange={(value: string) => { setDescription(value) }} value={description} placeholder="Description..." />
-                    {/* <div className="w-16 aspect-square relative overflow-hidden rounded-full">
-                        <div className="absolute top-0 left-0 w-full h-full bg-light-50 rounded-full animate-spin">
-                            <div className="w-full h-[50%] bg-dark-50"></div>
-                        </div>
-                        <div className="absolute top-0 left-0 w-full h-full bg-light-50 rounded-full invert animate-spin-fast">
-                            <div className="w-full h-[50%] bg-dark-50"></div>
-                        </div>
-                        <div className="absolute top-0 left-0 w-full h-full bg-light-50 rounded-full invert animate-spin-slow">
-                            <div className="w-full h-[50%] bg-dark-50"></div>
-                        </div>
-                        <div className="absolute top-0 left-0 w-full h-full inset-0 p-1 rounded-full bg-transparent">
-                            <div className="w-full h-full rounded-full bg-dark-50"></div>
-                        </div>
-                    </div> */}
-                    <div className="loader"></div>
                 </FormBody>
                 <FormFooter className="justify-end">
                     <button className={`btn-hollow`} onClick={() => { navigate(-1); }}>Cancel</button>

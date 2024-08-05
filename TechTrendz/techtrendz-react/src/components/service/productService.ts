@@ -4,7 +4,7 @@ import { toast } from "react-toastify"
 import { authOrReload } from "./authService"
 
 export const getProductAllPaged = async (token: string, pagedProductsRequestDto: any) => {
-    authOrReload(token)
+    await await authOrReload(token)
     let data: any = []
     await axios.post(API + "getproductallpaged", pagedProductsRequestDto, {
         headers: {
@@ -26,7 +26,7 @@ export const getProductAllPaged = async (token: string, pagedProductsRequestDto:
 }
 
 export const getProductById = async (token: string, id: string) => {
-    authOrReload(token)
+    await authOrReload(token)
     let data: any = null
     await axios.get(API + "getproductbyid", {
         params: {

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { getProductById } from "../components/service/productService";
 import { useSelector } from "react-redux";
 import { AuthState } from "../components/utils/authSlice";
@@ -9,6 +9,7 @@ import { addToCart, getCartByUserId } from "../components/service/cartService";
 import { numformat } from "../components/utils/misc";
 import FormInput from "../components/FormInput";
 import { toast } from "react-toastify";
+import { OverlayContextType } from "../components/Layout";
 
 export const Product = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -17,13 +18,18 @@ export const Product = () => {
     const [product, setProduct] = useState(Object)
     const [cart, setCart] = useState(Object)
     const [count, setCount] = useState(1)
+    const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
 
     const getProduct = useCallback(async () => {
+        setLoading(true)
         const item = await getProductById(token!, id!)
         setProduct(item)
-    }, [token, id])
+        setLoading(false)
+        setEmpty(product === undefined)
+    }, [setLoading, token, id, setEmpty])
 
     const getCart = useCallback(async () => {
+        setLoading(true)
         let item = await getCartByUserId(token!, user ? user.id : 0)
         if (!item) {
             item = {}
@@ -32,7 +38,8 @@ export const Product = () => {
             item.user = user
         }
         setCart(item)
-    }, [token, user])
+        setLoading(false)
+    }, [setLoading, token, user])
 
     const addItemToCart = async () => {
         // let similar = cart.productItems.filter(item => {item.})

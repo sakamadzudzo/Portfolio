@@ -4,7 +4,7 @@ import { authOrReload } from "./authService"
 import API from "./../utils/constants"
 
 export const getContactTypeById = async (token: string, id: number) => {
-    authOrReload(token)
+    await authOrReload(token)
     let data: any = null
     await axios.get(API + "getcontacttypebyid", {
         params: {
@@ -29,7 +29,7 @@ export const getContactTypeById = async (token: string, id: number) => {
 }
 
 export const saveContactType = async (token: string, contactType: Object) => {
-    authOrReload(token)
+    await authOrReload(token)
     let data: any = null
     await axios.post(API + "savecontacttype", contactType, {
         headers: {

@@ -4,7 +4,7 @@ import { authOrReload } from "./authService"
 import API from "../utils/constants"
 
 export const getProductTypeById = async (token: string, id: number) => {
-    authOrReload(token)
+    await authOrReload(token)
     let data: any = null
     await axios.get(API + "getproducttypebyid", {
         params: {
@@ -29,7 +29,7 @@ export const getProductTypeById = async (token: string, id: number) => {
 }
 
 export const saveProductType = async (token: string, productType: Object) => {
-    authOrReload(token)
+    await authOrReload(token)
     let data: any = null
     await axios.post(API + "saveproducttype", productType, {
         headers: {
