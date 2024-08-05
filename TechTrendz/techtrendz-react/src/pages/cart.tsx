@@ -3,6 +3,8 @@ import { AuthState } from "../components/utils/authSlice";
 import { useCallback, useEffect, useState } from "react";
 import { getCartByUserId } from "../components/service/cartService";
 import { numformat } from "../components/utils/misc";
+import { useOutletContext } from "react-router-dom";
+import { OverlayContextType } from "../components/Layout";
 
 class CartDTO {
     id: number = 0
@@ -20,8 +22,10 @@ export const Cart = () => {
     const user: any = useSelector((state: AuthState) => state.auth ? state.auth.user : {})
     const [cart, setCart] = useState(Object)
     const [cartDto, setCartDto] = useState<CartDTO[]>([])
+    const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
 
     const showCart = useCallback(async () => {
+        setLoading(true)
         if (JSON.stringify(cart) === JSON.stringify({})) {
             setCartDto([])
         } else {
@@ -49,20 +53,33 @@ export const Cart = () => {
             }
             setCartDto(cartViews)
         }
-    }, [cart])
+        setLoading(false)
+    }, [cart, setLoading])
 
     const getCart = useCallback(async () => {
+        setLoading(true)
         let item = await getCartByUserId(token!, user ? user.id : 0)
         if (!item || item === undefined) {
             item = {}
             if (user) {
                 item.user = user
             }
+            setEmpty(true)
+        } else {
+            setEmpty(false)
         }
         setCart(item)
-        // showCart()
+        setLoading(false)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token, user])
+
+    const totalValue = () => {
+        let value = 0
+        cartDto.forEach((item: CartDTO) => {
+            value += item.price * item.count!
+        })
+        return numformat(value)
+    }
 
     useEffect(() => {
         getCart()
@@ -79,20 +96,28 @@ export const Cart = () => {
     return (
         <div className="wrapper">
             <div className="h-full w-full flex flex-col md:items-start md:w-96 gap-3">
-                {cartDto && cartDto.length > 0 ? cartDto.map((item: CartDTO) =>
-                    <div className="w-full shadow-inherit shadow-sm rounded-sm p-1" key={item.id}>
-                        <div className="flex justify-between">
-                            <div className="font-medium">{item.name}</div>
-                            <div className="font-normal">${numformat(item.price)}</div>
+                {cartDto && cartDto.length > 0 ?
+                    <>
+                        <div className="grow">
+                            {cartDto.map((item: CartDTO) =>
+                                <div className="w-full shadow-inherit shadow-sm rounded-sm p-1" key={item.id}>
+                                    <div className="flex justify-between">
+                                        <div className="font-medium">{item.name}</div>
+                                        <div className="font-normal">${numformat(item.price)}</div>
+                                    </div>
+                                    <div className="text-xs font-thin">
+                                        <div>{item.brand} | {item.type}</div>
+                                    </div>
+                                    <div className="text-xs font-thin">
+                                        <div>{item.count} {item.count! > 1 ? "items" : "item"} in cart</div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
-                        <div className="text-xs font-thin">
-                            <div>{item.brand} | {item.type}</div>
+                        <div className="h-12 flex">
+                            <div>${totalValue()}</div>
                         </div>
-                        <div className="text-xs font-thin">
-                            <div>{item.count} items in cart</div>
-                        </div>
-                    </div>
-                )
+                    </>
                     :
                     <div className="w-full h-full flex justify-center items-center">
                         Cart is empty

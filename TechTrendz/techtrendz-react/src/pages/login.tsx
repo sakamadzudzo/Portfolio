@@ -4,11 +4,12 @@ import FormBody from "../components/FormBody";
 import FormFooter from "../components/FormFooter";
 import FormHeader from "../components/FormHeader";
 import FormInput from "../components/FormInput";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { getPrincipal, login } from "../components/service/authService";
 import { AuthState, setToken, setUser } from "../components/utils/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../components/utils/authContext";
+import { OverlayContextType } from "../components/Layout";
 
 const Login = () => {
     const [username, setUsername] = useState("")
@@ -20,8 +21,10 @@ const Login = () => {
     const referer = useSelector((state: AuthState) => state.auth ? state.auth.referer : "/")
     const { isAuthenticated, setIsAuthenticated } = useAuth();
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
+    const { setLoading } = useOutletContext<OverlayContextType>();
 
     const doLogin = async () => {
+        setLoading(true)
         setError("")
         const data = await login(username, password)
         if (data !== "") {
@@ -36,6 +39,7 @@ const Login = () => {
         } else {
             setError("Network issue. Contact administrator.")
         }
+        setLoading(false)
     }
 
     const closeTab = () => {

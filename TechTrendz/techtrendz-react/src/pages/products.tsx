@@ -4,8 +4,9 @@ import { AuthState } from "../components/utils/authSlice";
 import { useCallback, useEffect, useState } from "react";
 import cat from './../assets/img/cat1.webp'
 import { Pagination } from "../components/Pagination";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { ProductStatus } from "../components/utils/misc";
+import { OverlayContextType } from "../components/Layout";
 
 const Products = () => {
     const navigate = useNavigate()
@@ -21,8 +22,10 @@ const Products = () => {
     const [empty, setEmpty] = useState(true)
     const [first, setFirst] = useState(true)
     const [last, setLast] = useState(true)
+    const { setLoading } = useOutletContext<OverlayContextType>();
 
     const getProducts = useCallback(async () => {
+        setLoading(true)
         const pagedProductsRequestDto = { pageNumber: pageNumber, pageSize: pageSize, sortFields: sortFields, sortDirection: "ASC" }
         const pagedProducts = await getProductAllPaged(token!, pagedProductsRequestDto)
         if (pagedProducts) {
@@ -40,27 +43,8 @@ const Products = () => {
             setOffset(pagedProducts.pageable.offset + 1);
             setOffsetLast(pagedProducts.pageable.offset + pagedProducts.numberOfElements);
         }
-    }, [pageNumber, pageSize, sortFields, token])
-
-    // const getStatus = (items: any[]) => {
-    //     let free = items.filter(item => item.productStatus.name === "FREE");
-    //     let carted = items.filter(item => item.productStatus.name === "CARTED");
-    //     let orderd = items.filter(item => item.productStatus.name === "ORDERED");
-    //     let purchased = items.filter(item => item.productStatus.name === "PURCHASED");
-    //     if (free.length > 0) {
-    //         return "bg-green-600"
-    //     } else if (carted.length > 0) {
-    //         return "bg-yellow-500"
-    //     }
-    //     else if (orderd.length > 0) {
-    //         return "bg-orange-500"
-    //     }
-    //     else if (purchased.length > 0) {
-    //         return "bg-red-500"
-    //     } else {
-    //         return "bg-gray-700"
-    //     }
-    // }
+        setLoading(false)
+    }, [pageNumber, pageSize, setLoading, sortFields, token])
 
     const nextPage = () => {
         setPageNumber(pageNumber + 1)

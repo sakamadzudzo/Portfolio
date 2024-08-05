@@ -6,23 +6,23 @@ import FormHeader from "../components/FormHeader"
 import FormInput from "../components/FormInput"
 import { useSelector } from "react-redux"
 import { AuthState } from "../components/utils/authSlice"
-import { getBrandById, saveBrand } from "../components/service/brandService"
+import { getRoleById, saveRole } from "../components/service/roleService"
 import { useNavigate, useOutletContext, useParams } from "react-router-dom"
 import { OverlayContextType } from "../components/Layout"
 
-export const BrandEdit = () => {
+export const RoleEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
     const [disableSave, setDisableSave] = useState(false)
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const { id } = useParams()
     const navigate = useNavigate()
-    const [header, setHeader] = useState("New Brand")
+    const [header, setHeader] = useState("New Role")
     const { setLoading } = useOutletContext<OverlayContextType>();
 
-    const getBrand = useCallback(async () => {
+    const getRole = useCallback(async () => {
         setLoading(true)
-        let result = await getBrandById(token!, id ? Number(id) : 0)
+        let result = await getRoleById(token!, id ? Number(id) : 0)
         if (result) {
             setName(result.name)
             setDescription(result.description)
@@ -33,9 +33,9 @@ export const BrandEdit = () => {
     const save = async () => {
         setLoading(true)
         const dto = { id: id ? Number(id) : 0, name: name, description: description }
-        let result = await saveBrand(token!, dto)
+        let result = await saveRole(token!, dto)
         if (result) {
-            navigate("/brandedit/" + result.id)
+            navigate("/roleedit/" + result.id)
         }
         setLoading(false)
     }
@@ -50,17 +50,17 @@ export const BrandEdit = () => {
 
     useEffect(() => {
         if (!id || id === "0") {
-            document.title = 'TechBrandz - New Brand';
-            setHeader("New Brand")
+            document.title = 'TechRolez - New Role';
+            setHeader("New Role")
             setName("")
             setDescription("")
 
         } else {
-            document.title = 'TechBrandz - Edit Brand';
-            getBrand()
-            setHeader("Edit Brand")
+            document.title = 'TechRolez - Edit Role';
+            getRole()
+            setHeader("Edit Role")
         }
-    }, [id, getBrand]);
+    }, [id, getRole]);
 
     return (
         <div className="wrapper">

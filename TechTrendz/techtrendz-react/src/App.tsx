@@ -17,6 +17,7 @@ import { ContactTypeEdit } from './pages/contactTypeEdit';
 import { OrderStatusEdit } from './pages/orderStatusEdit';
 import { ProductTypeEdit } from './pages/productTypeEdit';
 import { ProductStatusEdit } from './pages/productStatusEdit';
+import { RoleEdit } from './pages/roleEdit';
 
 function App() {
   if (localStorage.token) {
@@ -40,6 +41,7 @@ function App() {
               <Route path='orderstatusedit/:id?' element={<OrderStatusEdit />} />
               <Route path='producttypeedit/:id?' element={<ProductTypeEdit />} />
               <Route path='productstatusedit/:id?' element={<ProductStatusEdit />} />
+              <Route path='roleedit/:id?' element={<RoleEdit />} />
               <Route path='*' element={<NotFound />} />
             </Route>
           </Routes>

@@ -25,7 +25,7 @@ export const Product = () => {
         const item = await getProductById(token!, id!)
         setProduct(item)
         setLoading(false)
-        setEmpty(product === undefined)
+        setEmpty(item === undefined)
     }, [setLoading, token, id, setEmpty])
 
     const getCart = useCallback(async () => {
@@ -42,7 +42,7 @@ export const Product = () => {
     }, [setLoading, token, user])
 
     const addItemToCart = async () => {
-        // let similar = cart.productItems.filter(item => {item.})
+        setLoading(true)
         if (count > 0) {
             let item = await addToCart(token!, product.id, count)
             if (!item) {
@@ -57,6 +57,7 @@ export const Product = () => {
         } else {
             toast.error("Amount to add to cart cannot be less than zero")
         }
+        setLoading(false)
     }
 
     const itemsInCart = () => {

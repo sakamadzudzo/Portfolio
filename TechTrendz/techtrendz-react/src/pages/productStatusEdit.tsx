@@ -7,7 +7,8 @@ import FormInput from "../components/FormInput"
 import { useSelector } from "react-redux"
 import { AuthState } from "../components/utils/authSlice"
 import { getProductStatusById, saveProductStatus } from "../components/service/productStatusService"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useOutletContext, useParams } from "react-router-dom"
+import { OverlayContextType } from "../components/Layout"
 
 export const ProductStatusEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -17,21 +18,26 @@ export const ProductStatusEdit = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const [header, setHeader] = useState("New Product Status")
+    const { setLoading } = useOutletContext<OverlayContextType>();
 
     const getProductStatus = useCallback(async () => {
+        setLoading(true)
         let result = await getProductStatusById(token!, id ? Number(id) : 0)
         if (result) {
             setName(result.name)
             setDescription(result.description)
         }
-    }, [token, id])
+        setLoading(false)
+    }, [setLoading, token, id])
 
     const save = async () => {
+        setLoading(true)
         const dto = { id: id ? Number(id) : 0, name: name, description: description }
         let result = await saveProductStatus(token!, dto)
         if (result) {
             navigate("/productstatusedit/" + result.id)
         }
+        setLoading(false)
     }
 
     useEffect(() => {

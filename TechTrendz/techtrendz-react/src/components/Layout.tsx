@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { Slide, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { Header } from './Header';
@@ -12,6 +12,7 @@ const Layout = () => {
     const [loaded, setLoaded] = useState(false)
     const [loading, setLoading] = useState(false)
     const [empty, setEmpty] = useState(false)
+    const location = useLocation()
 
     useEffect(() => {
         if (!loaded) {
@@ -29,6 +30,10 @@ const Layout = () => {
             }
         }
     }, [dark, loaded])
+
+    useEffect(() => {
+        setEmpty(false)
+    }, [location.pathname])
 
     return (
         <>
