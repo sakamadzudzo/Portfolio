@@ -58,4 +58,10 @@ public class CartController {
         return cartService.addToCart(productId, count);
     }
 
+    @JsonView({View.CartView.class})
+    @RequestMapping(name = "/subtractfromcart", value = "/subtractfromcart", method = RequestMethod.POST)
+    public Cart subtractFromCart(@RequestParam(required = true) Long productId, @RequestParam(required = true) Long count) {
+        return cartService.subtractFromCart(productId, count);
+    }
+
 }

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useOutletContext, useParams } from "react-router-dom";
-import { getProductById } from "../components/service/productService";
+import { countProductItemsAvialableByProductId, getProductById } from "../components/service/productService";
 import { useSelector } from "react-redux";
 import { AuthState } from "../components/utils/authSlice";
 import cat from './../assets/img/cat1.webp'
@@ -19,6 +19,8 @@ export const Product = () => {
     const [cart, setCart] = useState(Object)
     const [count, setCount] = useState(1)
     const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
+    const [totalItems, setTotalItems] = useState(0)
+    const [disableSave, setDisableSave] = useState(false)
 
     const getProduct = useCallback(async () => {
         setLoading(true)
@@ -68,6 +70,29 @@ export const Product = () => {
         return cart.productItems.filter((item: any) => itemsIdsInProduct.includes(item.id)).length
     }
 
+    const getTotalItemsCount = useCallback(async () => {
+        const count = await countProductItemsAvialableByProductId(token!, Number(id))
+        setTotalItems(count)
+    }, [id, token])
+
+    const changeCount = (value: number) => {
+        setCount(value)
+
+        if (Number(itemsInCart()) + Number(value) > totalItems) {
+            toast.warning("Not enough items to fullfil request")
+            setDisableSave(true)
+        } else if (value < 0) {
+            toast.warning("Cannot add negative number of items")
+            setDisableSave(true)
+        } else {
+            setDisableSave(false)
+        }
+    }
+
+    useEffect(() => {
+        getTotalItemsCount()
+    }, [getTotalItemsCount])
+
     useEffect(() => {
         getProduct()
     }, [getProduct])
@@ -100,11 +125,11 @@ export const Product = () => {
                         <div className="w-full md:w-96 flex flex-col gap-2 h-20 justify-end">
                             <div className="w-full flex justify-between">
                                 <FormInput value={count} id="count" name="count" label="Count" key="count"
-                                    type="number" onChange={setCount}
+                                    type="number" onChange={(value: any) => { changeCount(value) }}
                                     className=" px-0 w-full" />
                                 <div>{itemsInCart()} in cart</div>
                             </div>
-                            <button className="btn-hollow h-10 py-2 px-2 w-full flex justify-center gap-2" disabled={product?.productItems?.length <= 0} onClick={addItemToCart}>
+                            <button className="btn-hollow h-10 py-2 px-2 w-full flex justify-center gap-2" disabled={product?.productItems?.length <= 0 || disableSave || count <= 0} onClick={addItemToCart}>
                                 <IconCartPlus className="w-4 h-4 icon" /> <div className="text-inherit whitespace-nowrap">Add to cart</div>
                             </button>
                         </div>

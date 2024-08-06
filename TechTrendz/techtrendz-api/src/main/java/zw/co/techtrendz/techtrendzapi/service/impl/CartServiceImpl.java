@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -89,6 +90,15 @@ public class CartServiceImpl implements CartService {
                 cart.setUser(user);
             }
 
+            long totalItems = productItemService.countProductItemsAvialableByProductId(productId);
+            if (totalItems < (cart.getProductItems() == null ? 0 : cart.getProductItems().size()) + count) {
+                throw new Exception("Not enough items to fullfil request");
+            }
+
+            if (count < 0) {
+                throw new Exception("Quantity is less than zero");
+            }
+
             Product product = productService.getProductById(productId).get();
             List<ProductItem> productItems = product.getProductItems();
             productItems.stream().filter(item -> {
@@ -105,6 +115,36 @@ public class CartServiceImpl implements CartService {
                 toCart.add(productItems.get(iter));
             }
             cart.setProductItems(toCart);
+            return this.saveCart(cart);
+        } catch (Exception ex) {
+            Logger.getLogger(CartServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public Cart subtractFromCart(long productId, long count) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String currentUsername = authentication.getName();
+            Users user = userService.getUserByUsername(currentUsername);
+            Optional<Cart> loadedCart = this.getCartByUserId(user.getId());
+            Cart cart = new Cart();
+            if (loadedCart.isPresent()) {
+                cart = loadedCart.get();
+            } else {
+                cart.setUser(user);
+            }
+
+            if (count < 0) {
+                throw new Exception("Quantity is less than zero");
+            }
+
+            List<ProductItem> itemsInCart = new ArrayList<>();
+            itemsInCart.addAll(cart.getProductItems());
+            Collections.sort(itemsInCart, Comparator.comparing(ProductItem::getSerialNumber, Comparator.nullsFirst(Comparator.naturalOrder())));
+            int endIndex = itemsInCart.size() - (int) count;
+            itemsInCart.subList(0, endIndex > 0 ? endIndex : 0);
+            cart.setProductItems(new HashSet<>(itemsInCart));
             return this.saveCart(cart);
         } catch (Exception ex) {
             Logger.getLogger(CartServiceImpl.class.getName()).log(Level.SEVERE, null, ex);

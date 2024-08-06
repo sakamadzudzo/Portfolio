@@ -15,7 +15,7 @@ import zw.co.techtrendz.techtrendzapi.entity.ProductItem;
  */
 @Service
 public interface ProductItemService {
-    
+
     public ProductItem saveProductItem(ProductItem productItem);
 
     public List<ProductItem> saveProductItems(List<ProductItem> productItems);
@@ -23,4 +23,6 @@ public interface ProductItemService {
     public Optional<ProductItem> getProductItemById(long id);
 
     public List<ProductItem> getProductItemAll();
+
+    public long countProductItemsAvialableByProductId(long productId);
 }

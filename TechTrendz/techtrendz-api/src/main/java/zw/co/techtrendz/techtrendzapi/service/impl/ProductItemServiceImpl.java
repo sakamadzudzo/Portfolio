@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+import zw.co.techtrendz.techtrendzapi.entity.Product;
 import zw.co.techtrendz.techtrendzapi.entity.ProductItem;
 import zw.co.techtrendz.techtrendzapi.repository.ProductItemDao;
 
@@ -42,5 +44,12 @@ public class ProductItemServiceImpl implements ProductItemService {
 
     public List<ProductItem> getProductItemAll() {
         return productItemDao.findAll();
+    }
+
+    public long countProductItemsAvialableByProductId(long productId) {
+        Product product = new Product(productId);
+        ProductItem productItem = new ProductItem();
+        Example<ProductItem> productItemExample = Example.of(productItem);
+        return productItemDao.count(productItemExample);
     }
 }

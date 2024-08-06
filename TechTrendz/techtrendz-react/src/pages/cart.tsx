@@ -24,6 +24,8 @@ export const Cart = () => {
     const [cart, setCart] = useState(Object)
     const [cartDto, setCartDto] = useState<CartDTO[]>([])
     const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
+    const [showCartItemModal, setShowCartItemModal] = useState(false)
+    const [editCartItem, setEditCartItem] = useState<CartDTO>(Object)
 
     const showCart = useCallback(async () => {
         setLoading(true)
@@ -31,7 +33,7 @@ export const Cart = () => {
             setCartDto([])
         } else {
             let cartViews: CartDTO[] = []
-            let id = 1;
+            // let id = 1;
             if (cart.productItems) {
                 cart.productItems.forEach((item: any) => {
                     let itemIndex = cartViews.findIndex((view: CartDTO) => view.name === item?.product?.name)
@@ -39,7 +41,7 @@ export const Cart = () => {
                         cartViews[itemIndex].count! += 1
                     } else {
                         let cartView = new CartDTO()
-                        cartView.id = id
+                        cartView.id = item.product?.id
                         cartView.name = item.product?.name
                         cartView.description = item.product?.description
                         cartView.price = item.product?.price
@@ -49,7 +51,7 @@ export const Cart = () => {
                         cartView.count = 1
                         cartViews.push(cartView)
                     }
-                    id += 1
+                    // id += 1
                 })
             }
             setCartDto(cartViews)
@@ -109,16 +111,17 @@ export const Cart = () => {
                                     <div className="text-xs font-thin">
                                         <div>{item.brand} | {item.type}</div>
                                     </div>
-                                    <div className="text-xs font-thin">
+                                    <div className="text-xs font-thin" onClick={() => { setEditCartItem(item); setShowCartItemModal(true); }}>
                                         <div>{item.count} {item.count! > 1 ? "items" : "item"} in cart</div>
                                     </div>
                                 </div>
                             )}
                         </div>
-                        <CartItemModal />
                         <div className="h-12 flex">
                             <div>${totalValue()}</div>
                         </div>
+                        {showCartItemModal &&
+                            <CartItemModal close={setShowCartItemModal} cartItem={editCartItem} key={`editCartItem`} token={token!} />}
                     </>
                     :
                     <div className="w-full h-full flex justify-center items-center">
@@ -129,3 +132,5 @@ export const Cart = () => {
         </div>
     )
 }
+
+export { CartDTO }

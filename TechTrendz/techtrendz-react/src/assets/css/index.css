@@ -56,7 +56,7 @@
     }
 
     .icon {
-        @apply fill-light-950 dark:fill-dark-950
+        @apply fill-dark-50 dark:fill-light-50
     }
 
     .menu-link {

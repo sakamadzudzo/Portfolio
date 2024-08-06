@@ -49,3 +49,28 @@ export const getProductById = async (token: string, id: string) => {
         })
     return data
 }
+
+export const countProductItemsAvialableByProductId = async (token: string, productId: number) => {
+    await authOrReload(token)
+    let data: any = null
+    await axios.get(API + "countProductItemsAvialableByProductId", {
+        params: {
+            productId: productId
+        },
+        headers: {
+            Authorization: token
+        }
+    })
+        .then((response) => {
+            data = response.data
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+            data = null
+        })
+        .finally(() => {
+            return data;
+        })
+    return data
+}
