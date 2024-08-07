@@ -217,7 +217,12 @@ public class DummyDataServiceImpl {
                 new ProductItem(10l, new ProductStatus(1L), new Product(1L), null, "9PQ67890MNA010"),
                 new ProductItem(11l, new ProductStatus(1L), new Product(1L), null, "9PQ67890MNA011"),
                 new ProductItem(12l, new ProductStatus(1L), new Product(1L), null, "9PQ67890MNA012"),
-                new ProductItem(13l, new ProductStatus(1L), new Product(1L), null, "9PQ67890MNA013")
+                new ProductItem(13l, new ProductStatus(1L), new Product(8L), null, "9PQ67890MNA013"),
+                new ProductItem(14l, new ProductStatus(1L), new Product(8L), null, "9PQ67890MNA014"),
+                new ProductItem(15l, new ProductStatus(1L), new Product(8L), null, "9PQ67890MNA015"),
+                new ProductItem(16l, new ProductStatus(1L), new Product(8L), null, "9PQ67890MNA016"),
+                new ProductItem(17l, new ProductStatus(1L), new Product(8L), null, "9PQ67890MNA017"),
+                new ProductItem(18l, new ProductStatus(1L), new Product(8L), null, "9PQ67890MNA018")
         );
 
         productItemService.saveProductItems(productItems);

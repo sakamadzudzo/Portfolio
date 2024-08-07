@@ -67,6 +67,10 @@
         @apply bg-light-50 dark:bg-dark-50
     }
 
+    .link {
+        @apply text-picton-500 active:text-picton-800 hover:text-picton-600 underline
+    }
+
     .loader {
         @apply relative block w-full h-full aspect-square
     }

@@ -37,6 +37,8 @@ export const Menu = ({
                             <NavLink to={`producttypeedit`} className="menu-link" >Add Product Type</NavLink>
                             <NavLink to={`productstatusedit`} className="menu-link" >Add Product Status</NavLink>
                             <NavLink to={`roleedit`} className="menu-link" >Add Role</NavLink>
+                            <NavLink to={`salutationedit`} className="menu-link" >Add Salutation</NavLink>
+                            <NavLink to={`tagedit`} className="menu-link" >Add Tag</NavLink>
                         </div>
                     </div>
                 </>

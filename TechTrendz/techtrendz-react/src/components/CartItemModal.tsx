@@ -41,15 +41,6 @@ export const CartItemModal = ({
         }
     }
 
-    // const changeCartFromModal = () => {
-    //     if(newCount > oldCount) {
-    //         addToCart with difference
-    //     } else {
-    //         remove items from cart object
-    //         save cart
-    //     }
-    // }
-
     const save = async () => {
         let item = null
         if (newCount! > cartItem.count!) {

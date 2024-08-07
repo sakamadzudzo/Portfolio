@@ -6,23 +6,23 @@ import FormHeader from "../components/FormHeader"
 import FormInput from "../components/FormInput"
 import { useSelector } from "react-redux"
 import { AuthState } from "../components/utils/authSlice"
-import { getOrderStatusById, saveOrderStatus } from "../components/service/orderStatusService"
+import { getTagById, saveTag } from "../components/service/tagService"
 import { useNavigate, useOutletContext, useParams } from "react-router-dom"
 import { OverlayContextType } from "../components/Layout"
 
-export const OrderStatusEdit = () => {
+export const TagEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
     const [disableSave, setDisableSave] = useState(false)
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const { id } = useParams()
     const navigate = useNavigate()
-    const [header, setHeader] = useState("New Order Status")
+    const [header, setHeader] = useState("New Tag")
     const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
 
-    const getOrderStatus = useCallback(async () => {
+    const getTag = useCallback(async () => {
         setLoading(true)
-        let result = await getOrderStatusById(token!, id ? Number(id) : 0)
+        let result = await getTagById(token!, id ? Number(id) : 0)
         if (result) {
             setName(result.name)
             setDescription(result.description)
@@ -34,9 +34,9 @@ export const OrderStatusEdit = () => {
     const save = async () => {
         setLoading(true)
         const dto = { id: id ? Number(id) : 0, name: name, description: description }
-        let result = await saveOrderStatus(token!, dto)
+        let result = await saveTag(token!, dto)
         if (result) {
-            navigate("/orderstatusedit/" + result.id)
+            navigate("/tagedit/" + result.id)
         }
         setLoading(false)
     }
@@ -51,17 +51,17 @@ export const OrderStatusEdit = () => {
 
     useEffect(() => {
         if (!id || id === "0") {
-            document.title = 'TechOrderStatusz - New Order Status';
-            setHeader("New Order Status")
+            document.title = 'TechTagz - New Tag';
+            setHeader("New Tag")
             setName("")
             setDescription("")
 
         } else {
-            document.title = 'TechOrderStatusz - Edit Order Status';
-            getOrderStatus()
-            setHeader("Edit Order Status")
+            document.title = 'TechTagz - Edit Tag';
+            getTag()
+            setHeader("Edit Tag")
         }
-    }, [id, getOrderStatus]);
+    }, [id, getTag]);
 
     return (
         <div className="wrapper">

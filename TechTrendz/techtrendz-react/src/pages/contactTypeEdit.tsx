@@ -18,7 +18,7 @@ export const ContactTypeEdit = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const [header, setHeader] = useState("New Contact Type")
-    const { setLoading } = useOutletContext<OverlayContextType>();
+    const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
 
     const getContactType = useCallback(async () => {
         setLoading(true)
@@ -27,8 +27,9 @@ export const ContactTypeEdit = () => {
             setName(result.name)
             setDescription(result.description)
         }
+        setEmpty(!result)
         setLoading(false)
-    }, [setLoading, token, id])
+    }, [setLoading, token, id, setEmpty])
 
     const save = async () => {
         setLoading(true)

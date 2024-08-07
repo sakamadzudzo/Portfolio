@@ -26,8 +26,8 @@ export const Product = () => {
         setLoading(true)
         const item = await getProductById(token!, id!)
         setProduct(item)
+        setEmpty(!item)
         setLoading(false)
-        setEmpty(item === undefined)
     }, [setLoading, token, id, setEmpty])
 
     const getCart = useCallback(async () => {

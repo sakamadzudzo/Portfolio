@@ -18,7 +18,7 @@ export const ProductStatusEdit = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const [header, setHeader] = useState("New Product Status")
-    const { setLoading } = useOutletContext<OverlayContextType>();
+    const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
 
     const getProductStatus = useCallback(async () => {
         setLoading(true)
@@ -27,8 +27,9 @@ export const ProductStatusEdit = () => {
             setName(result.name)
             setDescription(result.description)
         }
+        setEmpty(!result)
         setLoading(false)
-    }, [setLoading, token, id])
+    }, [setLoading, token, id, setEmpty])
 
     const save = async () => {
         setLoading(true)

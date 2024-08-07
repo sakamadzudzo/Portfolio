@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zw.co.techtrendz.techtrendzapi.entity.Salutation;
 import zw.co.techtrendz.techtrendzapi.service.SalutationService;
@@ -31,12 +32,12 @@ public class SalutationController {
     }
 
     @RequestMapping(name = "/getsalutationbyid", value = "/getsalutationbyid", method = RequestMethod.GET)
-    public Optional<Salutation> getSalutationById(@RequestBody(required = true) Long id) {
+    public Optional<Salutation> getSalutationById(@RequestParam(required = true) Long id) {
         return salutationService.getSalutationById(id);
     }
 
     @RequestMapping(name = "/getsalutationbytitle", value = "/getsalutationbytitle", method = RequestMethod.GET)
-    public Optional<Salutation> getSalutationByTitle(@RequestBody(required = true) String title) {
+    public Optional<Salutation> getSalutationByTitle(@RequestParam(required = true) String title) {
         return salutationService.getSalutationByTitle(title);
     }
 

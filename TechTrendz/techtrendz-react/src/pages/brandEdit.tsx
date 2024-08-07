@@ -18,7 +18,7 @@ export const BrandEdit = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const [header, setHeader] = useState("New Brand")
-    const { setLoading } = useOutletContext<OverlayContextType>();
+    const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
 
     const getBrand = useCallback(async () => {
         setLoading(true)
@@ -27,8 +27,9 @@ export const BrandEdit = () => {
             setName(result.name)
             setDescription(result.description)
         }
+        setEmpty(!result)
         setLoading(false)
-    }, [setLoading, token, id])
+    }, [setLoading, token, id, setEmpty])
 
     const save = async () => {
         setLoading(true)
