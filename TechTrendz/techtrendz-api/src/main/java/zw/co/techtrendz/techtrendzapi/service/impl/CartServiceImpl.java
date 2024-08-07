@@ -143,7 +143,7 @@ public class CartServiceImpl implements CartService {
             itemsInCart.addAll(cart.getProductItems());
             Collections.sort(itemsInCart, Comparator.comparing(ProductItem::getSerialNumber, Comparator.nullsFirst(Comparator.naturalOrder())));
             int endIndex = itemsInCart.size() - (int) count;
-            itemsInCart.subList(0, endIndex > 0 ? endIndex : 0);
+            itemsInCart = itemsInCart.subList(0, endIndex > 0 ? endIndex : 0);
             cart.setProductItems(new HashSet<>(itemsInCart));
             return this.saveCart(cart);
         } catch (Exception ex) {

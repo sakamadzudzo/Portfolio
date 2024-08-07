@@ -33,7 +33,7 @@ export const CartItemModal = ({
         if (Number(value) > totalItems) {
             toast.warning("Not enough items to fullfil request")
             setDisableSave(true)
-        } else if (value <= 0) {
+        } else if (value < 0) {
             toast.warning("Cannot add negative number of items")
             setDisableSave(true)
         } else {
@@ -55,7 +55,7 @@ export const CartItemModal = ({
         if (newCount! > cartItem.count!) {
             item = await addToCart(token!, cartItem.id, newCount! - cartItem.count!)
         } else {
-            item = await subtractFromCart(token!, cartItem.id, newCount! - cartItem.count!)
+            item = await subtractFromCart(token!, cartItem.id, (cartItem.count! - newCount!))
         }
         if (item) {
             window.location.reload()

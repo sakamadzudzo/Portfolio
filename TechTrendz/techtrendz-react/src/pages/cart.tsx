@@ -111,8 +111,8 @@ export const Cart = () => {
                                     <div className="text-xs font-thin">
                                         <div>{item.brand} | {item.type}</div>
                                     </div>
-                                    <div className="text-xs font-thin" onClick={() => { setEditCartItem(item); setShowCartItemModal(true); }}>
-                                        <div>{item.count} {item.count! > 1 ? "items" : "item"} in cart</div>
+                                    <div className="text-xs font-thin cursor-pointer w-full" onClick={() => { setEditCartItem(item); setShowCartItemModal(true); }}>
+                                        <div className="hover:scale-x-105 w-fit">{item.count} {item.count! > 1 ? "items" : "item"} in cart</div>
                                     </div>
                                 </div>
                             )}
