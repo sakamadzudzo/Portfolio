@@ -249,21 +249,6 @@ public class DummyDataServiceImpl {
         orderStatusService.saveOrderStatus(new OrderStatus(4L, "APPROVED", "Order approved"));
         orderStatusService.saveOrderStatus(new OrderStatus(5L, "PURCHASED", "Purchase successful"));
 
-        List<Users> users = Arrays.asList(
-                new Users(null, new Salutation(1L), "Erick", "Leonard", "Abraham", "elabraham", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{34, 68, 75, 87}), null),
-                new Users(null, new Salutation(1L), "Gretchen", null, "Proctor", "gproctor", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{72}), null),
-                new Users(null, new Salutation(1L), "Robbie", "Wilkins", "Erich", "rwerich", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{58}), null),
-                new Users(null, new Salutation(1L), "Heath", "Dickson", "Cherie", "hdcherie", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{18, 31}), null),
-                new Users(null, new Salutation(1L), "Brandie", "Finley", "Arthur", "bfarthur", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{26}), null),
-                new Users(null, new Salutation(1L), "Robinson", null, "Lara", "rlara", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{62}), null),
-                new Users(null, new Salutation(1L), "Randal", null, "Dickerson", "rdickerson", "test", makeRoles(new long[]{1}), null, null),
-                new Users(null, new Salutation(2L), "Keri", null, "Lesley", "klesley", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{73}), null),
-                new Users(null, new Salutation(1L), "Roberta", null, "Morse", "rmorse", "test", makeRoles(new long[]{1}), null, null),
-                new Users(null, new Salutation(1L), "Cornelius", "Herring", "Emily", "chemily", "test", makeRoles(new long[]{1}), null, null),
-                new Users(null, new Salutation(1L), "Saka", "Shingirai", "Madzudzo", "ssmadzudzo", "test", makeRoles(new long[]{1, 2, 3}), makeAddresses(new long[]{72, 84}), null)
-        );
-        userService.saveUsers(users);
-
         List<Address> addresses = Arrays.asList(
                 new Address(1L, 123L, "Main Street", "Main Street", "Newlands", "Harare", null, "Harare", "Zimbabwe", "12345", null),
                 new Address(2L, 456L, "High Street", "High Street", "Hillside", "Bulawayo", null, "Bulawayo", "Zimbabwe", "67890", null),
@@ -369,6 +354,21 @@ public class DummyDataServiceImpl {
                 new Address(102L, 900L, "Fifty-Fourth Avenue", "Fifty-Fourth Avenue", "Mashonaland West", "Kariba", "Mashonaland West", "Mashonaland West", "Zimbabwe", "64093", null)
         );
         addressService.saveAddresses(addresses);
+
+        List<Users> users = Arrays.asList(
+                new Users(null, new Salutation(1L), "Erick", "Leonard", "Abraham", "elabraham", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{34, 68, 75, 87}), null),
+                new Users(null, new Salutation(1L), "Gretchen", null, "Proctor", "gproctor", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{72}), null),
+                new Users(null, new Salutation(1L), "Robbie", "Wilkins", "Erich", "rwerich", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{58}), null),
+                new Users(null, new Salutation(1L), "Heath", "Dickson", "Cherie", "hdcherie", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{18, 31}), null),
+                new Users(null, new Salutation(1L), "Brandie", "Finley", "Arthur", "bfarthur", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{26}), null),
+                new Users(null, new Salutation(1L), "Robinson", null, "Lara", "rlara", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{62}), null),
+                new Users(null, new Salutation(1L), "Randal", null, "Dickerson", "rdickerson", "test", makeRoles(new long[]{1}), null, null),
+                new Users(null, new Salutation(2L), "Keri", null, "Lesley", "klesley", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{73}), null),
+                new Users(null, new Salutation(1L), "Roberta", null, "Morse", "rmorse", "test", makeRoles(new long[]{1}), null, null),
+                new Users(null, new Salutation(1L), "Cornelius", "Herring", "Emily", "chemily", "test", makeRoles(new long[]{1}), null, null),
+                new Users(null, new Salutation(1L), "Saka", "Shingirai", "Madzudzo", "ssmadzudzo", "test", makeRoles(new long[]{1, 2, 3}), makeAddresses(new long[]{72, 84}), null)
+        );
+        userService.saveUsers(users);
 
         List<BankAccount> bankAccounts = Arrays.asList(
                 new BankAccount(1L, 66527445610001L, "CBZ", "Jeanine", "", new Address(74), LocalDateTime.parse("2008-09-24 12:23:41.568000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")), new Users(1)),
