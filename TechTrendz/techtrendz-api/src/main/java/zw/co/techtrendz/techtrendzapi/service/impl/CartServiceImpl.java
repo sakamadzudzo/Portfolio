@@ -13,8 +13,10 @@ import zw.co.techtrendz.techtrendzapi.service.ProductItemService;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -136,9 +138,16 @@ public class CartServiceImpl implements CartService {
         List<ProductItem> itemsInCart = new ArrayList<>();
         itemsInCart.addAll(cart.getProductItems());
         Collections.sort(itemsInCart, Comparator.comparing(ProductItem::getSerialNumber, Comparator.nullsFirst(Comparator.naturalOrder())));
-        int endIndex = itemsInCart.size() - (int) count;
-        itemsInCart = itemsInCart.subList(0, endIndex > 0 ? endIndex : 0);
-        cart.setProductItems(new HashSet<>(itemsInCart));
+        Predicate<ProductItem> ofProduct = item -> item.getProduct().getId().equals(productId);
+        Predicate<ProductItem> notOfProduct = item -> !item.getProduct().getId().equals(productId);
+        List<ProductItem> itemsOfProduct = itemsInCart.stream().filter(ofProduct).collect(Collectors.toList());
+        List<ProductItem> otherItems = itemsInCart.stream().filter(notOfProduct).collect(Collectors.toList());
+        int endIndex = itemsOfProduct.size() - (int) count;
+        itemsOfProduct = itemsOfProduct.subList(0, endIndex > 0 ? endIndex : 0);
+        Set<ProductItem> newItemsSet = new HashSet<>();
+        newItemsSet.addAll(otherItems);
+        newItemsSet.addAll(itemsOfProduct);
+        cart.setProductItems(newItemsSet);
         return this.saveCart(cart);
     }
 }
