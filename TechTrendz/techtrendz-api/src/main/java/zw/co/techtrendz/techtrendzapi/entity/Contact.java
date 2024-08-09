@@ -37,10 +37,6 @@ public class Contact {
     private String value;
 
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
-    private Users user;
-
-    @ManyToOne
     @JoinColumn(name = "contactTypeId", nullable = false)
     private ContactType contactType;
 }

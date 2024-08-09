@@ -51,7 +51,7 @@ public class ContactServiceImpl implements ContactService {
         Users user = new Users();
         user.setId(userId);
         Contact contact = new Contact();
-        contact.setUser(user);
+//        contact.setUser(user);
 
         Example<Contact> contactExample = Example.of(contact);
         return contactDao.findAll(contactExample);
@@ -65,7 +65,7 @@ public class ContactServiceImpl implements ContactService {
 
         Users user = new Users();
         user.setId(userId);
-        contact.setUser(user);
+//        contact.setUser(user);
 
         Example<Contact> contactExample = Example.of(contact);
         return contactDao.findAll(contactExample);

@@ -65,15 +65,14 @@ public class Users implements UserDetails {
     @ManyToMany
     private Set<Role> roles;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "userAddress",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id"))
+    @ManyToMany
     private Set<Address> addresses;
 
-    @OneToMany(mappedBy = "user")
+    @ManyToMany
     private Set<BankAccount> bankAccounts;
+    
+    @ManyToMany
+    private Set<Contact> contacts;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

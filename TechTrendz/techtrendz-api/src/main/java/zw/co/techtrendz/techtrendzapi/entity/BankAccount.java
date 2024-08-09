@@ -56,7 +56,7 @@ public class BankAccount {
     @Column(nullable = false)
     private LocalDateTime dateTimeOpened = LocalDateTime.now();
 
-    @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
-    private Users user;
+    public BankAccount(long id) {
+        this.id = id;
+    }
 }

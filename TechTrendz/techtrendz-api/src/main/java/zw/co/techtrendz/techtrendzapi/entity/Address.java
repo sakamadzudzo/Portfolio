@@ -52,9 +52,6 @@ public class Address {
 
     private String postalCode;
 
-    @ManyToMany(mappedBy = "addresses")
-    private Set<Users> users;
-
     public Address(long id) {
         this.id = id;
     }
