@@ -7,9 +7,12 @@ package zw.co.techtrendz.techtrendzapi.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -62,7 +65,11 @@ public class Users implements UserDetails {
     @ManyToMany
     private Set<Role> roles;
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "userAddress",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id"))
     private Set<Address> addresses;
 
     @OneToMany(mappedBy = "user")
@@ -95,18 +102,25 @@ public class Users implements UserDetails {
 
     public String getName() {
         String name = "";
+        if (this.salutation != null && !this.salutation.getTitle().equals("")) {
+            name += this.salutation.getTitle() + ".";
+        }
         if (!this.forename.equals("")) {
-            name += this.forename;
+            if (name.equals("")) {
+                name += this.forename;
+            } else {
+                name += " " + this.forename;
+            }
         }
         if (!this.otherNames.equals("")) {
-            if (!name.equals("")) {
+            if (name.equals("")) {
                 name += this.otherNames;
             } else {
                 name += " " + this.otherNames;
             }
         }
         if (!this.lastname.equals("")) {
-            if (!name.equals("")) {
+            if (name.equals("")) {
                 name += this.lastname;
             } else {
                 name += " " + this.lastname;

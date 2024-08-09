@@ -8,8 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotNull;
 import java.util.Set;
@@ -54,11 +52,7 @@ public class Address {
 
     private String postalCode;
 
-    @ManyToMany
-    @JoinTable(
-            name = "userAddress",
-            joinColumns = @JoinColumn(name = "address_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @ManyToMany(mappedBy = "addresses")
     private Set<Users> users;
 
     public Address(long id) {
