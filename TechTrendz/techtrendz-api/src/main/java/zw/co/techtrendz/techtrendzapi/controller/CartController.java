@@ -54,13 +54,13 @@ public class CartController {
 
     @JsonView({View.CartView.class})
     @RequestMapping(name = "/addtocart", value = "/addtocart", method = RequestMethod.POST)
-    public Cart addToCart(@RequestParam(required = true) Long productId, @RequestParam(required = true) Long count) {
+    public Cart addToCart(@RequestParam(required = true) Long productId, @RequestParam(required = true) Long count) throws Exception {
         return cartService.addToCart(productId, count);
     }
 
     @JsonView({View.CartView.class})
     @RequestMapping(name = "/subtractfromcart", value = "/subtractfromcart", method = RequestMethod.POST)
-    public Cart subtractFromCart(@RequestParam(required = true) Long productId, @RequestParam(required = true) Long count) {
+    public Cart subtractFromCart(@RequestParam(required = true) Long productId, @RequestParam(required = true) Long count) throws Exception {
         return cartService.subtractFromCart(productId, count);
     }
 

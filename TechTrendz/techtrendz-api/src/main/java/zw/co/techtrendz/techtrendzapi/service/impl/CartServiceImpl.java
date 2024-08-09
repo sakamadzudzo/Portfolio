@@ -77,78 +77,68 @@ public class CartServiceImpl implements CartService {
         return cartDao.findAll(cartExample, sort);
     }
 
-    public Cart addToCart(long productId, long count) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String currentUsername = authentication.getName();
-            Users user = userService.getUserByUsername(currentUsername);
-            Optional<Cart> loadedCart = this.getCartByUserId(user.getId());
-            Cart cart = new Cart();
-            if (loadedCart.isPresent()) {
-                cart = loadedCart.get();
-            } else {
-                cart.setUser(user);
-            }
-
-            long totalItems = productItemService.countProductItemsAvialableByProductId(productId);
-            if (totalItems < (cart.getProductItems() == null ? 0 : cart.getProductItems().size()) + count) {
-                throw new Exception("Not enough items to fullfil request");
-            }
-
-            if (count < 0) {
-                throw new Exception("Quantity is less than zero");
-            }
-
-            Product product = productService.getProductById(productId).get();
-            List<ProductItem> productItems = product.getProductItems();
-            productItems.stream().filter(item -> {
-                return item.getProductStatus().getId() == 1 || item.getProductStatus().getId() == 2 ? true : false;
-            });
-            Collections.sort(productItems, Comparator.comparing(ProductItem::getSerialNumber, Comparator.nullsFirst(Comparator.naturalOrder())));
-            Set<ProductItem> toCart = cart.getProductItems() != null ? cart.getProductItems() : new HashSet<>();
-            for (int iter = 0; iter < count; iter++) {
-                if (toCart.contains(productItems.get(iter))) {
-                    count = count + 1;
-                    continue;
-                }
-                productItems.get(iter).setProductStatus(new ProductStatus(2L));
-                toCart.add(productItems.get(iter));
-            }
-            cart.setProductItems(toCart);
-            return this.saveCart(cart);
-        } catch (Exception ex) {
-            Logger.getLogger(CartServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+    public Cart addToCart(long productId, long count) throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+        Users user = userService.getUserByUsername(currentUsername);
+        Optional<Cart> loadedCart = this.getCartByUserId(user.getId());
+        Cart cart = new Cart();
+        if (loadedCart.isPresent()) {
+            cart = loadedCart.get();
+        } else {
+            cart.setUser(user);
         }
-        return null;
+
+        long totalItems = productItemService.countProductItemsAvialableByProductId(productId);
+        if (totalItems < (cart.getProductItems() == null ? 0 : cart.getProductItems().size()) + count) {
+            throw new Exception("Not enough items to fullfil request");
+        }
+
+        if (count < 0) {
+            throw new Exception("Quantity is less than zero");
+        }
+
+        Product product = productService.getProductById(productId).get();
+        List<ProductItem> productItems = product.getProductItems();
+        productItems.stream().filter(item -> {
+            return item.getProductStatus().getId() == 1 || item.getProductStatus().getId() == 2 ? true : false;
+        });
+        Collections.sort(productItems, Comparator.comparing(ProductItem::getSerialNumber, Comparator.nullsFirst(Comparator.naturalOrder())));
+        Set<ProductItem> toCart = cart.getProductItems() != null ? cart.getProductItems() : new HashSet<>();
+        for (int iter = 0; iter < count; iter++) {
+            if (toCart.contains(productItems.get(iter))) {
+                count = count + 1;
+                continue;
+            }
+            productItems.get(iter).setProductStatus(new ProductStatus(2L));
+            toCart.add(productItems.get(iter));
+        }
+        cart.setProductItems(toCart);
+        return this.saveCart(cart);
     }
 
-    public Cart subtractFromCart(long productId, long count) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String currentUsername = authentication.getName();
-            Users user = userService.getUserByUsername(currentUsername);
-            Optional<Cart> loadedCart = this.getCartByUserId(user.getId());
-            Cart cart = new Cart();
-            if (loadedCart.isPresent()) {
-                cart = loadedCart.get();
-            } else {
-                cart.setUser(user);
-            }
-
-            if (count < 0) {
-                throw new Exception("Quantity is less than zero");
-            }
-
-            List<ProductItem> itemsInCart = new ArrayList<>();
-            itemsInCart.addAll(cart.getProductItems());
-            Collections.sort(itemsInCart, Comparator.comparing(ProductItem::getSerialNumber, Comparator.nullsFirst(Comparator.naturalOrder())));
-            int endIndex = itemsInCart.size() - (int) count;
-            itemsInCart = itemsInCart.subList(0, endIndex > 0 ? endIndex : 0);
-            cart.setProductItems(new HashSet<>(itemsInCart));
-            return this.saveCart(cart);
-        } catch (Exception ex) {
-            Logger.getLogger(CartServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+    public Cart subtractFromCart(long productId, long count) throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+        Users user = userService.getUserByUsername(currentUsername);
+        Optional<Cart> loadedCart = this.getCartByUserId(user.getId());
+        Cart cart = new Cart();
+        if (loadedCart.isPresent()) {
+            cart = loadedCart.get();
+        } else {
+            cart.setUser(user);
         }
-        return null;
+
+        if (count < 0) {
+            throw new Exception("Quantity is less than zero");
+        }
+
+        List<ProductItem> itemsInCart = new ArrayList<>();
+        itemsInCart.addAll(cart.getProductItems());
+        Collections.sort(itemsInCart, Comparator.comparing(ProductItem::getSerialNumber, Comparator.nullsFirst(Comparator.naturalOrder())));
+        int endIndex = itemsInCart.size() - (int) count;
+        itemsInCart = itemsInCart.subList(0, endIndex > 0 ? endIndex : 0);
+        cart.setProductItems(new HashSet<>(itemsInCart));
+        return this.saveCart(cart);
     }
 }

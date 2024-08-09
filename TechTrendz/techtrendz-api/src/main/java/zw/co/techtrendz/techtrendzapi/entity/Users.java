@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -72,6 +73,7 @@ public class Users implements UserDetails {
     private Set<BankAccount> bankAccounts;
     
     @ManyToMany
+    @JsonIgnore
     private Set<Contact> contacts;
 
     @Override
