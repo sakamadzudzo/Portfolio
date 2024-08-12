@@ -21,6 +21,7 @@ import { RoleEdit } from './pages/roleEdit';
 import { SalutationEdit } from './pages/salutationEdit';
 import { TagEdit } from './pages/tagEdit';
 import { AddressEdit } from './pages/addressEdit';
+import { BankAccountEdit } from './pages/bankAccountEdit';
 
 function App() {
   if (localStorage.token) {
@@ -48,6 +49,7 @@ function App() {
               <Route path='salutationedit/:id?' element={<SalutationEdit />} />
               <Route path='tagedit/:id?' element={<TagEdit />} />
               <Route path='addressedit/:id?' element={<AddressEdit />} />
+              <Route path='bankaccountedit/:id?' element={<BankAccountEdit />} />
               <Route path='*' element={<NotFound />} />
             </Route>
           </Routes>

@@ -356,21 +356,21 @@ public class DummyDataServiceImpl {
         addressService.saveAddresses(addresses);
 
         List<BankAccount> bankAccounts = Arrays.asList(
-                new BankAccount(1L, 66527445610001L, "CBZ", "Jeanine", "", new Address(74), LocalDateTime.parse("2008-09-24 12:23:41.568000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
-                new BankAccount(2L, 66527445610002L, "CBZ", "Tabatha", "", new Address(11), LocalDateTime.parse("2008-04-17 07:01:08.992000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
-                new BankAccount(3L, 66527445610003L, "CBZ", "Clinton", "", new Address(42), LocalDateTime.parse("2008-11-25 20:18:55.872000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
-                new BankAccount(4L, 66527445610004L, "CBZ", "Casey", "", new Address(41), LocalDateTime.parse("2008-01-02 10:30:24.376000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
-                new BankAccount(5L, 66527445610005L, "CBZ", "Alexis", "", new Address(21), LocalDateTime.parse("2008-06-30 18:05:21.024000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
-                new BankAccount(6L, 66527445610006L, "CBZ", "Orlando", "", new Address(4), LocalDateTime.parse("2008-11-08 17:31:00.736000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
-                new BankAccount(7L, 66527445610007L, "CBZ", "Autumn", "", new Address(34), LocalDateTime.parse("2008-12-26 17:56:34.688000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
-                new BankAccount(8L, 66527445610008L, "CBZ", "Kendall", "", new Address(66), LocalDateTime.parse("2008-01-13 02:22:41.728000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
-                new BankAccount(9L, 66527445610009L, "CBZ", "Brad", "", new Address(97), LocalDateTime.parse("2008-11-09 14:58:39.488000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
-                new BankAccount(10L, 66527445610010L, "CBZ", "Sharon", "", new Address(72), LocalDateTime.parse("2008-12-03 18:43:35.808000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
-                new BankAccount(11L, 66527445610011L, "CBZ", "Ted", "", new Address(1), LocalDateTime.parse("2008-12-27 07:30:14.912000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
-                new BankAccount(12L, 66527445610012L, "CBZ", "Curtis", "", new Address(16), LocalDateTime.parse("2008-06-14 15:53:15.264000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
-                new BankAccount(13L, 66527445610013L, "CBZ", "Alissa", "", new Address(97), LocalDateTime.parse("2008-03-24 10:08:19.712000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
-                new BankAccount(14L, 66527445610014L, "CBZ", "Terry", "", new Address(16), LocalDateTime.parse("2008-07-09 05:15:01.760000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
-                new BankAccount(15L, 66527445610015L, "CBZ", "Cecil", "", new Address(94), LocalDateTime.parse("2008-01-28 06:59:19.936000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")))
+                new BankAccount(1L, 66527445610001L, "CBZ", "Jeanine", "", LocalDateTime.parse("2008-09-24 12:23:41.568000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
+                new BankAccount(2L, 66527445610002L, "CBZ", "Tabatha", "", LocalDateTime.parse("2008-04-17 07:01:08.992000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
+                new BankAccount(3L, 66527445610003L, "CBZ", "Clinton", "", LocalDateTime.parse("2008-11-25 20:18:55.872000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
+                new BankAccount(4L, 66527445610004L, "CBZ", "Casey", "", LocalDateTime.parse("2008-01-02 10:30:24.376000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
+                new BankAccount(5L, 66527445610005L, "CBZ", "Alexis", "", LocalDateTime.parse("2008-06-30 18:05:21.024000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
+                new BankAccount(6L, 66527445610006L, "CBZ", "Orlando", "", LocalDateTime.parse("2008-11-08 17:31:00.736000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
+                new BankAccount(7L, 66527445610007L, "CBZ", "Autumn", "", LocalDateTime.parse("2008-12-26 17:56:34.688000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
+                new BankAccount(8L, 66527445610008L, "CBZ", "Kendall", "", LocalDateTime.parse("2008-01-13 02:22:41.728000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
+                new BankAccount(9L, 66527445610009L, "CBZ", "Brad", "", LocalDateTime.parse("2008-11-09 14:58:39.488000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
+                new BankAccount(10L, 66527445610010L, "CBZ", "Sharon", "", LocalDateTime.parse("2008-12-03 18:43:35.808000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
+                new BankAccount(11L, 66527445610011L, "CBZ", "Ted", "", LocalDateTime.parse("2008-12-27 07:30:14.912000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
+                new BankAccount(12L, 66527445610012L, "CBZ", "Curtis", "", LocalDateTime.parse("2008-06-14 15:53:15.264000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
+                new BankAccount(13L, 66527445610013L, "CBZ", "Alissa", "", LocalDateTime.parse("2008-03-24 10:08:19.712000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
+                new BankAccount(14L, 66527445610014L, "CBZ", "Terry", "", LocalDateTime.parse("2008-07-09 05:15:01.760000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
+                new BankAccount(15L, 66527445610015L, "CBZ", "Cecil", "", LocalDateTime.parse("2008-01-28 06:59:19.936000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")))
         );
         bankAccountService.saveBankAccounts(bankAccounts);
 

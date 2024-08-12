@@ -49,10 +49,6 @@ public class BankAccount {
     @Column(nullable = false)
     private String ifscCode;
 
-    @ManyToOne
-    @JoinColumn(name = "accountHolderAddress", nullable = false)
-    private Address address;
-
     @Column(nullable = false)
     private LocalDateTime dateTimeOpened = LocalDateTime.now();
 

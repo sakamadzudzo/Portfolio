@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,10 +22,13 @@ import zw.co.techtrendz.techtrendzapi.service.BankAccountService;
 public class BankAccountServiceImpl implements BankAccountService {
 
     @Autowired
-    private BankAccountDao addressDao;
+    private BankAccountDao bankAccountDao;
 
-    public BankAccount saveBankAccount(BankAccount address) {
-        return addressDao.save(address);
+    public BankAccount saveBankAccount(BankAccount bankAccount) {
+        if (bankAccount.getId() == null || bankAccount.getId() == 0) {
+            bankAccount.setDateTimeOpened(LocalDateTime.now());
+        }
+        return bankAccountDao.save(bankAccount);
     }
 
     public List<BankAccount> saveBankAccounts(List<BankAccount> bankAccounts) {
@@ -36,11 +40,11 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     public Optional<BankAccount> getBankAccountById(long id) {
-        return addressDao.findById(id);
+        return bankAccountDao.findById(id);
     }
 
     public List<BankAccount> getBankAccountAll() {
-        return addressDao.findAll();
+        return bankAccountDao.findAll();
     }
 
 }
