@@ -20,12 +20,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import zw.co.techtrendz.techtrendzapi.entity.Contact;
 import zw.co.techtrendz.techtrendzapi.entity.ContactType;
-import zw.co.techtrendz.techtrendzapi.entity.Order;
+import zw.co.techtrendz.techtrendzapi.entity.Checkout;
 import zw.co.techtrendz.techtrendzapi.entity.Users;
 import zw.co.techtrendz.techtrendzapi.service.ContactService;
 import zw.co.techtrendz.techtrendzapi.service.ContactTypeService;
-import zw.co.techtrendz.techtrendzapi.service.OrderService;
 import zw.co.techtrendz.techtrendzapi.service.ReminderMailService;
+import zw.co.techtrendz.techtrendzapi.service.CheckoutService;
 
 /**
  *
@@ -37,7 +37,7 @@ public class ReminderMailServiceImpl implements ReminderMailService {
     @Autowired
     private JavaMailSender mailSender;
     @Autowired
-    private OrderService orderService;
+    private CheckoutService checkoutService;
     @Autowired
     private ContactService contactService;
     @Autowired
@@ -46,22 +46,22 @@ public class ReminderMailServiceImpl implements ReminderMailService {
 //    @Scheduled(cron = "0 0/1 * * * ?")
     public void sendReminderMails() {
         System.out.println("\n\n\n\n\nStarting periodic email sending\n\n\n\n\n");
-        List<Order> orders = orderService.getOrderAll();
-        orders.stream().forEach(order -> {
+        List<Checkout> checkouts = checkoutService.getCheckoutAll();
+        checkouts.stream().forEach(checkout -> {
             Optional<ContactType> contactType = contactTypeService.getContactTypeByName("EMAIL");
             if (contactType.isEmpty()) {
                 return;
             }
-            Users user = order.getUser();
+            Users user = checkout.getUser();
             List<Contact> contacts = contactService.getContactAllByUserIdByContactTypeId(user.getId(), contactType.get().getId());
             if (contacts.size() == 0) {
                 return;
             }
             SimpleMailMessage msg = new SimpleMailMessage();
-            msg.setTo(contacts.get(0).getValue());
+            msg.setTo(contacts.get(0).getContent());
             msg.setText(
                     "Dear " + user.getName()
-                    + ",\n\nYour order '" + order.getId() + "'  is ready for payment.\n\nWarm regards,\nEvent Booking");
+                    + ",\n\nYour checkout '" + checkout.getId() + "'  is ready for payment.\n\nWarm regards,\nEvent Booking");
             try {
                 this.mailSender.send(msg);
             } catch (MailException ex) {

@@ -6,13 +6,13 @@ package zw.co.techtrendz.techtrendzapi.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import zw.co.techtrendz.techtrendzapi.entity.Order;
+import zw.co.techtrendz.techtrendzapi.entity.Checkout;
 
 /**
  *
  * @author smadzudzo
  */
 @Repository
-public interface OrderDao extends JpaRepository<Order, Long> {
+public interface CheckoutDao extends JpaRepository<Checkout, Long> {
 
 }

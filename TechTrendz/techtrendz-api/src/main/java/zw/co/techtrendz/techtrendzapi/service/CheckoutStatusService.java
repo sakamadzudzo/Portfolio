@@ -7,18 +7,18 @@ package zw.co.techtrendz.techtrendzapi.service;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
-import zw.co.techtrendz.techtrendzapi.entity.OrderStatus;
+import zw.co.techtrendz.techtrendzapi.entity.CheckoutStatus;
 
 /**
  *
  * @author smadzudzo
  */
 @Service
-public interface OrderStatusService {
+public interface CheckoutStatusService {
 
-    public OrderStatus saveOrderStatus(OrderStatus orderStatus);
+    public CheckoutStatus saveCheckoutStatus(CheckoutStatus checkoutStatus);
 
-    public Optional<OrderStatus> getOrderStatusById(long id);
+    public Optional<CheckoutStatus> getCheckoutStatusById(long id);
 
-    public List<OrderStatus> getOrderStatusAll();
+    public List<CheckoutStatus> getCheckoutStatusAll();
 }

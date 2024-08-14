@@ -8,29 +8,29 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import zw.co.techtrendz.techtrendzapi.entity.OrderStatus;
-import zw.co.techtrendz.techtrendzapi.repository.OrderStatusDao;
-import zw.co.techtrendz.techtrendzapi.service.OrderStatusService;
+import zw.co.techtrendz.techtrendzapi.entity.Checkout;
+import zw.co.techtrendz.techtrendzapi.service.CheckoutService;
+import zw.co.techtrendz.techtrendzapi.repository.CheckoutDao;
 
 /**
  *
  * @author smadzudzo
  */
 @Service
-public class OrderStatusServiceImpl implements OrderStatusService {
+public class CheckoutServiceImpl implements CheckoutService {
 
     @Autowired
-    private OrderStatusDao addressDao;
+    private CheckoutDao addressDao;
 
-    public OrderStatus saveOrderStatus(OrderStatus address) {
+    public Checkout saveCheckout(Checkout address) {
         return addressDao.save(address);
     }
 
-    public Optional<OrderStatus> getOrderStatusById(long id) {
+    public Optional<Checkout> getCheckoutById(long id) {
         return addressDao.findById(id);
     }
 
-    public List<OrderStatus> getOrderStatusAll() {
+    public List<Checkout> getCheckoutAll() {
         return addressDao.findAll();
     }
 

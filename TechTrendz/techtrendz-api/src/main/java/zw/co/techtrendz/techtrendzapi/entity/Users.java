@@ -73,7 +73,6 @@ public class Users implements UserDetails {
     private Set<BankAccount> bankAccounts;
     
     @ManyToMany
-    @JsonIgnore
     private Set<Contact> contacts;
 
     @Override

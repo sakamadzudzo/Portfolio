@@ -21,7 +21,7 @@ import zw.co.techtrendz.techtrendzapi.entity.Address;
 import zw.co.techtrendz.techtrendzapi.entity.BankAccount;
 import zw.co.techtrendz.techtrendzapi.entity.Brand;
 import zw.co.techtrendz.techtrendzapi.entity.ContactType;
-import zw.co.techtrendz.techtrendzapi.entity.OrderStatus;
+import zw.co.techtrendz.techtrendzapi.entity.CheckoutStatus;
 import zw.co.techtrendz.techtrendzapi.entity.Product;
 import zw.co.techtrendz.techtrendzapi.entity.ProductItem;
 import zw.co.techtrendz.techtrendzapi.entity.ProductStatus;
@@ -34,7 +34,6 @@ import zw.co.techtrendz.techtrendzapi.service.AddressService;
 import zw.co.techtrendz.techtrendzapi.service.BankAccountService;
 import zw.co.techtrendz.techtrendzapi.service.BrandService;
 import zw.co.techtrendz.techtrendzapi.service.ContactTypeService;
-import zw.co.techtrendz.techtrendzapi.service.OrderStatusService;
 import zw.co.techtrendz.techtrendzapi.service.ProductService;
 import zw.co.techtrendz.techtrendzapi.service.ProductStatusService;
 import zw.co.techtrendz.techtrendzapi.service.ProductTypeService;
@@ -42,6 +41,7 @@ import zw.co.techtrendz.techtrendzapi.service.RoleService;
 import zw.co.techtrendz.techtrendzapi.service.SalutationService;
 import zw.co.techtrendz.techtrendzapi.service.TagService;
 import zw.co.techtrendz.techtrendzapi.service.UserService;
+import zw.co.techtrendz.techtrendzapi.service.CheckoutStatusService;
 
 /**
  *
@@ -61,7 +61,7 @@ public class DummyDataServiceImpl {
     @Autowired
     private RoleService roleService;
     @Autowired
-    private OrderStatusService orderStatusService;
+    private CheckoutStatusService checkoutStatusService;
     @Autowired
     private AddressService addressService;
     @Autowired
@@ -156,7 +156,7 @@ public class DummyDataServiceImpl {
 
         productStatusService.saveProductStatus(new ProductStatus(1L, "FREE", "Product is available"));
         productStatusService.saveProductStatus(new ProductStatus(2L, "CARTED", "Product has been put in a cart"));
-        productStatusService.saveProductStatus(new ProductStatus(3L, "ORDERED", "Product has been ordered by someone"));
+        productStatusService.saveProductStatus(new ProductStatus(3L, "ORDERED", "Product has been checkouted by someone"));
         productStatusService.saveProductStatus(new ProductStatus(4L, "PURCHASED", "Product has been purchased"));
 
         productTypeService.saveProductType(new ProductType(1L, "REFRIDGERATOR", "Refridgerator"));
@@ -243,11 +243,11 @@ public class DummyDataServiceImpl {
         );
         roleService.saveRoles(roles);
 
-        orderStatusService.saveOrderStatus(new OrderStatus(1L, "ORDERED", "Order placed"));
-        orderStatusService.saveOrderStatus(new OrderStatus(2L, "PENDING", "Order pending"));
-        orderStatusService.saveOrderStatus(new OrderStatus(3L, "PROCESSING", "Order being processed"));
-        orderStatusService.saveOrderStatus(new OrderStatus(4L, "APPROVED", "Order approved"));
-        orderStatusService.saveOrderStatus(new OrderStatus(5L, "PURCHASED", "Purchase successful"));
+        checkoutStatusService.saveCheckoutStatus(new CheckoutStatus(1L, "ORDERED", "Order placed"));
+        checkoutStatusService.saveCheckoutStatus(new CheckoutStatus(2L, "PENDING", "Order pending"));
+        checkoutStatusService.saveCheckoutStatus(new CheckoutStatus(3L, "PROCESSING", "Order being processed"));
+        checkoutStatusService.saveCheckoutStatus(new CheckoutStatus(4L, "APPROVED", "Order approved"));
+        checkoutStatusService.saveCheckoutStatus(new CheckoutStatus(5L, "PURCHASED", "Purchase successful"));
 
         List<Address> addresses = Arrays.asList(
                 new Address(1L, 123L, "Main Street", "Main Street", "Newlands", "Harare", null, "Harare", "Zimbabwe", "12345"),

@@ -7,18 +7,18 @@ package zw.co.techtrendz.techtrendzapi.service;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
-import zw.co.techtrendz.techtrendzapi.entity.Order;
+import zw.co.techtrendz.techtrendzapi.entity.Checkout;
 
 /**
  *
  * @author smadzudzo
  */
 @Service
-public interface OrderService {
+public interface CheckoutService {
 
-    public Order saveOrder(Order order);
+    public Checkout saveCheckout(Checkout checkout);
 
-    public Optional<Order> getOrderById(long id);
+    public Optional<Checkout> getCheckoutById(long id);
 
-    public List<Order> getOrderAll();
+    public List<Checkout> getCheckoutAll();
 }

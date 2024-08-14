@@ -34,7 +34,7 @@ public class Contact {
 
     @NotNull
     @Column(nullable = false)
-    private String value;
+    private String content;
 
     @ManyToOne
     @JoinColumn(name = "contactTypeId", nullable = false)

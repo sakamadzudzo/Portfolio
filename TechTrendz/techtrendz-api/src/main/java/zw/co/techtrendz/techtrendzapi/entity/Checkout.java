@@ -4,12 +4,15 @@
  */
 package zw.co.techtrendz.techtrendzapi.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,16 +27,23 @@ import org.hibernate.envers.Audited;
 @Data
 @Entity
 @Audited
-public class OrderStatus {
+public class Checkout {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Column(nullable = false, unique = true)
-    private String name;
+    @ManyToMany
+    @JoinTable(
+            name = "checkoutProduct",
+            joinColumns = @JoinColumn(name = "checkoutId"),
+            inverseJoinColumns = @JoinColumn(name = "productId"))
+    private Set<ProductItem> productItems;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
+    private Users user;
+    
+    @ManyToOne
+    private CheckoutStatus checkoutStatus;
 }
