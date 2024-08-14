@@ -1,7 +1,7 @@
 import axios from "axios"
 import { toast } from "react-toastify"
 import { authOrReload } from "./authService"
-import API from "./../utils/constants"
+import API from "../utils/constants"
 
 export const getSalutationById = async (token: string, id: number) => {
     await authOrReload(token)

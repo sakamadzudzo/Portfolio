@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,14 @@ public class ContactServiceImpl implements ContactService {
 
     public Contact saveContact(Contact contact) {
         return contactDao.save(contact);
+    }
+
+    public List<Contact> saveContacts(List<Contact> contacts) {
+        List<Contact> savedContacts = new ArrayList<>();
+        contacts.forEach(contact -> {
+            savedContacts.add(this.saveContact(contact));
+        });
+        return savedContacts;
     }
 
     public Optional<Contact> getContactById(long id) {

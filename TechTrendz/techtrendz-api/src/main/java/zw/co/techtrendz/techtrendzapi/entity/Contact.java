@@ -39,4 +39,8 @@ public class Contact {
     @ManyToOne
     @JoinColumn(name = "contactTypeId", nullable = false)
     private ContactType contactType;
+
+    public Contact(long id) {
+        this.id = id;
+    }
 }

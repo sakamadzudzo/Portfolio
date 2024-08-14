@@ -18,6 +18,8 @@ public interface ContactService {
 
     public Contact saveContact(Contact contact);
 
+    public List<Contact> saveContacts(List<Contact> contacts);
+
     public Optional<Contact> getContactById(long id);
 
     public List<Contact> getContactAll();

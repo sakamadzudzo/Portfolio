@@ -3,10 +3,10 @@ import { toast } from "react-toastify"
 import { authOrReload } from "./authService"
 import API from "./../utils/constants"
 
-export const getContactTypeById = async (token: string, id: number) => {
+export const getContactById = async (token: string, id: number) => {
     await authOrReload(token)
     let data: any = null
-    await axios.get(API + "getcontacttypebyid", {
+    await axios.get(API + "getcontactbyid", {
         params: {
             id: id
         },
@@ -28,32 +28,10 @@ export const getContactTypeById = async (token: string, id: number) => {
     return data
 }
 
-export const saveContactType = async (token: string, contactType: Object) => {
+export const saveContact = async (token: string, contact: Object) => {
     await authOrReload(token)
     let data: any = null
-    await axios.post(API + "savecontacttype", contactType, {
-        headers: {
-            Authorization: token
-        }
-    })
-        .then((response) => {
-            data = response.data
-        })
-        .catch((error) => {
-            console.log(error);
-            toast(error.response.data)
-            data = null
-        })
-        .finally(() => {
-            return data;
-        })
-    return data
-}
-
-export const getContactTypeAll = async (token: string) => {
-    await authOrReload(token)
-    let data: any = null
-    await axios.get(API + "getcontacttypeall", {
+    await axios.post(API + "savecontact", contact, {
         headers: {
             Authorization: token
         }

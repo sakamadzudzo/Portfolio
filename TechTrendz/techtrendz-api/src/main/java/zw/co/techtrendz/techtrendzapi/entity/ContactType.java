@@ -36,4 +36,8 @@ public class ContactType {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    public ContactType(long id) {
+        this.id = id;
+    }
 }
