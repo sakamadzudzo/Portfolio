@@ -100,7 +100,8 @@ export const ContactEdit = () => {
                 </FormHeader>
                 <FormBody className=" flex flex-col gap-5 pt-5">
                     <FormInput id="content" name="content" className="w-full" type="text" label="Content" onChange={(value: string) => { setContent(value) }} value={content} autoFocus={true} placeholder="Content..." />
-                    <FormSelect id="contactTypeId" name="contactTypeId" className="w-full" type="text" label="Contact Type" onChange={(value: string) => { setContactTypeId(value) }} value={contactTypeId} placeholder="Contact Type..." options={typesToOptions()} />
+                    <FormSelect id="contactTypeId" name="contactTypeId" className="w-full" type="text" label="Contact Type" onChange={(value: string) => { setContactTypeId(value) }} value={typesToOptions().find(opt => opt.value === contactTypeId)!} placeholder="Contact Type..."
+                     options={typesToOptions()} />
                 </FormBody>
                 <FormFooter className="justify-end">
                     <button className={`btn-hollow`} onClick={() => { navigate(-1); }}>Cancel</button>

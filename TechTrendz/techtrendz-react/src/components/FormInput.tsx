@@ -21,7 +21,7 @@ const FormInput = ({
 }) => {
     return (
         <div className="relative focus-within:dark:text-dark-600 focus-within:text-light-600">
-            <input className={`border border-t-0 rounded-tl-none borders bg-transparent rounded-md px-3 focus:border-light-600 dark:focus:border-dark-600 autofill:!text-black autofill:dark:!text-white autofill:bg-white autofill:dark:bg-black autofill:shadow-none text-ellipsis ${className}`} autoFocus={autoFocus} onChange={(e) => onChange(e.target.value)} value={value} id={id} name={name} type={type}
+            <input className={`border border-t-0 rounded-tl-none borders bg-transparent rounded-md px-3 focus:border-light-600 dark:focus:border-dark-600 autofill:!text-dark-50 autofill:dark:!text-light-50 autofill:bg-light-50 autofill:dark:bg-dark-50 autofill:shadow-none text-ellipsis ${className}`} autoFocus={autoFocus} onChange={(e) => onChange(e.target.value)} value={value} id={id} name={name} type={type}
                 placeholder={placeholder} />
             <div className="absolute -top-3 left-0.5 text-xs focus:italic text-inherit">{label}</div>
         </div>
