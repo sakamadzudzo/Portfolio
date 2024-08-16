@@ -1,7 +1,4 @@
-import Select from 'react-select'
-import makeAnimated from 'react-select/animated'
-
-const animatedComponents = makeAnimated()
+import Select from 'react-dropdown-select'
 
 export type SelectOption = { value: string | number, label: string }
 
@@ -25,7 +22,7 @@ const FormSelect = ({
     label?: string
     autoFocus?: boolean
     onChange: Function
-    value: SelectOption
+    value: SelectOption[]
     id?: string,
     name?: string,
     type?: string,
@@ -45,9 +42,9 @@ const FormSelect = ({
                     <option value={item.value} label={item.label} className="text-dark-50 dark:text-light-50 bg-light-50 dark:bg-dark-50 selection:!bg-light-500 dark:selection:!bg-dark-500" />
                 )}
             </select> */}
-            <Select className={`border border-t-0 rounded-tl-none borders bg-transparent rounded-md px-3 focus:border-light-600 dark:focus:border-dark-600 autofill:!text-dark-50 autofill:dark:!text-light-50 autofill:bg-light-50 autofill:dark:bg-dark-50 autofill:shadow-none text-ellipsis ${className}`}
-                isClearable={clearable} isSearchable={searchable} isDisabled={disabled} pageSize={size} onChange={(e) => onChange(e)} id={id} name={name} autoFocus={autoFocus}
-                value={value} options={options} components={animatedComponents} classNamePrefix="select" />
+            <Select className={`border-0 border-t-0 rounded-tl-none borders bg-transparent rounded-md px-3 focus:border-light-600 dark:focus:border-dark-600 autofill:!text-dark-50 autofill:dark:!text-light-50 autofill:bg-light-50 autofill:dark:bg-dark-50 autofill:shadow-none text-ellipsis ${className}`}
+                 onChange={(e) => onChange(e)}  name={name} autoFocus={autoFocus} multi={false}
+                 options={options} values={value} />
             <div className="absolute -top-3 left-0.5 text-xs focus:italic text-inherit">{label}</div>
         </div>
     )
