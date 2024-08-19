@@ -71,7 +71,7 @@ const FormSelect = ({
                 {(isOpen && !disabled) &&
                     options.map((item, index) => (
                         <li
-                            className={`px-3 shadow-sm flex flex-col focus:border-light-600 dark:focus:border-dark-600 autofill:!text-dark-50 autofill:dark:!text-light-50 autofill:bg-light-50 autofill:dark:bg-dark-50 autofill:shadow-none text-ellipsis ${highlightedIndex === index && ''} ${selectedItem === item && 'active text-green-600'}`}
+                            className={`px-3 shadow-sm flex flex-col hover:bg-light-300 dark:hover:bg-dark-600 text-ellipsis ${highlightedIndex === index && ''} ${selectedItem === item && 'active text-green-600'} ${index === options.length ? '' : 'border-b'}`}
                             key={item.value}
                             {...getItemProps({ item, index })}
                         >
