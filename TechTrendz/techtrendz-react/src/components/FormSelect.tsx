@@ -1,9 +1,8 @@
 import { useCombobox } from 'downshift'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IconClose } from './icons/IconClose'
 
 export type SelectOption = { value: string | number, label: string, description?: string }
-
 
 const FormSelect = ({
     className,
@@ -33,7 +32,7 @@ const FormSelect = ({
     options: SelectOption[],
     size?: number,
     disabled?: boolean,
-    clearable?: boolean,
+    clearable?: boolean
     searchable?: boolean
 }) => {
 
@@ -41,24 +40,18 @@ const FormSelect = ({
         return item ? item.label : ''
     }
 
-    const [items, setItems] = useState(options)
+    const [items, setItems] = useState<SelectOption[]>(options)
     const [selectedItem, setSelectedItem] = useState<SelectOption>(value)
     const [inputValue, setInputValue] = useState(value.label)
-    const [oldInputValue, setOldInputValue] = useState('')
 
     const getOptionsFilter = (inputValue: string) => {
-        if (inputValue === undefined) inputValue = ""
         const lowerCasedInputValue = inputValue.toLowerCase()
 
         return function optionsFilter(option: SelectOption) {
-            if (!inputValue) {
-                return options
-            } else {
-                return (
-                    option.label.toLowerCase().includes(lowerCasedInputValue) ||
-                    option.description?.toLowerCase().includes(lowerCasedInputValue)
-                )
-            }
+            return (
+                option.label.toLowerCase().includes(lowerCasedInputValue) ||
+                option.description?.toLowerCase().includes(lowerCasedInputValue)
+            )
         }
     }
 
@@ -75,25 +68,26 @@ const FormSelect = ({
         itemToString,
         inputValue,
         selectedItem,
-        onIsOpenChange({ selectedItem: newSelectedItem }) {
+        onIsOpenChange: ({ isOpen, selectedItem: newSelectedItem }) => {
             if (!isOpen) {
-                setOldInputValue(inputValue)
-                downshiftSetInputValue("")
+                downshiftSetInputValue(newSelectedItem ? newSelectedItem.label : selectedItem ? selectedItem.label : "")
+                setInputValue(newSelectedItem ? newSelectedItem.label : selectedItem ? selectedItem.label : "")
             }
             if (isOpen) {
-                setInputValue(newSelectedItem ? newSelectedItem.label : oldInputValue)
-                setOldInputValue("")
-                downshiftSetInputValue(newSelectedItem ? newSelectedItem.label : oldInputValue)
+                setInputValue("")
+                downshiftSetInputValue("")
             }
         },
-        onInputValueChange({ inputValue }) {
-            setInputValue(inputValue);
-            setItems(items.filter(getOptionsFilter(inputValue)))
+        onInputValueChange: ({ inputValue }) => {
+            setInputValue(inputValue || '');
+            downshiftSetInputValue(inputValue || '');
+            setItems(options.filter(getOptionsFilter(inputValue || '')))
         },
         onSelectedItemChange: ({ selectedItem: newSelectedItem }) => {
             setSelectedItem(newSelectedItem)
             onChange(newSelectedItem)
-        }
+            setInputValue(newSelectedItem ? newSelectedItem.label : "")
+        },
     })
 
     const showClearIcon = () => {
@@ -102,6 +96,24 @@ const FormSelect = ({
         if (inputValue === value.label && !isOpen) return false
         return true
     }
+
+    useEffect(() => {
+        setItems(options)
+        setInputValue(value.label)
+        downshiftSetInputValue("")
+        setSelectedItem(value)
+    }, [options, value, downshiftSetInputValue]);
+
+    useEffect(() => {
+        if (!isOpen) {
+            downshiftSetInputValue(selectedItem ? selectedItem.label : "")
+            setInputValue(selectedItem ? selectedItem.label : "")
+        }
+        if (isOpen) {
+            setInputValue("")
+            downshiftSetInputValue("")
+        }
+    }, [downshiftSetInputValue, isOpen, selectedItem])
 
     return (
         <div className="relative focus-within:dark:text-dark-600 focus-within:text-light-600">
@@ -114,7 +126,7 @@ const FormSelect = ({
                         {...getInputProps()}
                     />
                     {showClearIcon() && <div className="absolute h-4 w-4 top-1.5 right-9 cursor-pointer"
-                        onClick={() => { setInputValue(value.label) }}>
+                        onClick={() => { setInputValue("") }}>
                         <IconClose className="" />
                     </div>}
                     <button
