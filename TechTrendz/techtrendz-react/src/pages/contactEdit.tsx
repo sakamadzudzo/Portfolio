@@ -16,9 +16,7 @@ export const ContactEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
     const [disableSave, setDisableSave] = useState(false)
     const [content, setContent] = useState("")
-    const [contactTypeId, setContactTypeId] = useState("")
-    const [contactTypeName, setContactTypeName] = useState("")
-    const [contactTypeDescription, setContactTypeDescription] = useState("")
+    const [contactType, setContactType] = useState<SelectOption>(Object)
     const { id } = useParams()
     const navigate = useNavigate()
     const [header, setHeader] = useState("New Contact")
@@ -30,11 +28,11 @@ export const ContactEdit = () => {
         let result = await getContactById(token!, id ? Number(id) : 0)
         if (result) {
             setContent(result.content)
+            let dto: SelectOption = { value: 0, label: "" }
             if (result.contactType) {
-                setContactTypeId(result.contactType.id)
-                setContactTypeName(result.contactType.name)
-                setContactTypeDescription(result.contactType.description)
+                dto = { value: result.contactType.id, label: result.contactType.name, description: result.contactType.description }
             }
+            setContactType(dto)
         }
         setEmpty(!result)
         setLoading(false)
@@ -51,7 +49,7 @@ export const ContactEdit = () => {
 
     const save = async () => {
         setLoading(true)
-        const dto = { id: id ? Number(id) : 0, content: content, contactType: { id: contactTypeId } }
+        const dto = { id: id ? Number(id) : 0, content: content, contactType: { id: contactType.value } }
         let result = await saveContact(token!, dto)
         if (result) {
             navigate("/contactedit/" + result.id)
@@ -65,18 +63,16 @@ export const ContactEdit = () => {
 
     const reset = () => {
         setContent("")
-        setContactTypeId("")
-        setContactTypeName("")
-        setContactTypeDescription("")
+        setContactType(Object)
     }
 
     useEffect(() => {
-        if (content && contactTypeId) {
+        if (content && contactType.value) {
             setDisableSave(false)
         } else {
             setDisableSave(true)
         }
-    }, [content, contactTypeId])
+    }, [content, contactType])
 
     useEffect(() => {
         if (!id || id === "0") {
@@ -100,7 +96,7 @@ export const ContactEdit = () => {
                 </FormHeader>
                 <FormBody className=" flex flex-col gap-5 pt-5">
                     <FormInput id="content" name="content" className="w-full" type="text" label="Content" onChange={(value: string) => { setContent(value) }} value={content} autoFocus={true} placeholder="Content..." />
-                    <FormSelect id="contactTypeId" name="contactTypeId" className="w-full" type="text" label="Contact Type" onChange={(value: string) => { setContactTypeId(value) }} value={typesToOptions().find(opt => opt.value === contactTypeId)!} placeholder="Contact Type..."
+                    <FormSelect id="contactTypeId" name="contactTypeId" className="w-full" type="text" label="Contact Type" onChange={(value: SelectOption) => { setContactType(value) }} value={contactType} placeholder="Contact Type..."
                         options={typesToOptions()} />
                 </FormBody>
                 <FormFooter className="justify-end">
