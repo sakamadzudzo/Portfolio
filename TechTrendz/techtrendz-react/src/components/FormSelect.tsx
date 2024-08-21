@@ -1,15 +1,15 @@
 import { useCombobox } from 'downshift'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { IconClose } from './icons/IconClose'
 
 export type SelectOption = { value: string | number, label: string, description?: string }
 
 const FormSelect = ({
+    value,
     className,
     label,
     autoFocus,
     onChange,
-    value,
     id,
     name,
     type,
@@ -20,11 +20,11 @@ const FormSelect = ({
     clearable,
     searchable
 }: {
+    value: SelectOption
     className?: string
     label?: string
     autoFocus?: boolean
     onChange: Function
-    value: SelectOption
     id?: string,
     name?: string,
     type?: string,
@@ -35,14 +35,13 @@ const FormSelect = ({
     clearable?: boolean
     searchable?: boolean
 }) => {
-
     const itemToString = (item: SelectOption | null) => {
         return item ? item.label : ''
     }
 
     const [items, setItems] = useState<SelectOption[]>(options)
     const [selectedItem, setSelectedItem] = useState<SelectOption>(value)
-    const [inputValue, setInputValue] = useState(value.label)
+    const [inputValue, setInputValue] = useState(value.label || "");
 
     const getOptionsFilter = (inputValue: string) => {
         const lowerCasedInputValue = inputValue.toLowerCase()
@@ -79,9 +78,11 @@ const FormSelect = ({
             }
         },
         onInputValueChange: ({ inputValue }) => {
-            setInputValue(inputValue || '');
-            downshiftSetInputValue(inputValue || '');
-            setItems(options.filter(getOptionsFilter(inputValue || '')))
+            if (isOpen) {
+                setInputValue(inputValue || '');
+                downshiftSetInputValue(inputValue || '');
+                setItems(options.filter(getOptionsFilter(inputValue || '')))
+            }
         },
         onSelectedItemChange: ({ selectedItem: newSelectedItem }) => {
             setSelectedItem(newSelectedItem)
@@ -98,22 +99,27 @@ const FormSelect = ({
     }
 
     useEffect(() => {
-        setItems(options)
-        setInputValue(value.label)
+        setInputValue(value.label ? value.label : "")
         downshiftSetInputValue("")
         setSelectedItem(value)
-    }, [options, value, downshiftSetInputValue]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value]);
+
+    useEffect(() => {
+        setItems(options)
+    }, [options])
 
     useEffect(() => {
         if (!isOpen) {
-            downshiftSetInputValue(selectedItem ? selectedItem.label : "")
-            setInputValue(selectedItem ? selectedItem.label : "")
+            downshiftSetInputValue(selectedItem.label ? selectedItem.label : value.label ? value.label : "")
+            setInputValue(selectedItem.label ? selectedItem.label : value.label ? value.label : "")
         }
         if (isOpen) {
             setInputValue("")
             downshiftSetInputValue("")
         }
-    }, [downshiftSetInputValue, isOpen, selectedItem])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpen])
 
     return (
         <div className="relative focus-within:dark:text-dark-600 focus-within:text-light-600">
@@ -159,4 +165,4 @@ const FormSelect = ({
     )
 }
 
-export default FormSelect
+export default memo(FormSelect)
