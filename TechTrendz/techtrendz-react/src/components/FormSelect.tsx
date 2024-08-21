@@ -1,5 +1,5 @@
 import { useCombobox } from 'downshift'
-import { memo, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IconClose } from './icons/IconClose'
 
 export type SelectOption = { value: string | number, label: string, description?: string }
@@ -12,10 +12,8 @@ const FormSelect = ({
     onChange,
     id,
     name,
-    type,
     placeholder,
     options,
-    size,
     disabled,
     clearable,
     searchable
@@ -27,10 +25,8 @@ const FormSelect = ({
     onChange: Function
     id?: string,
     name?: string,
-    type?: string,
     placeholder?: string,
     options: SelectOption[],
-    size?: number,
     disabled?: boolean,
     clearable?: boolean
     searchable?: boolean
@@ -69,12 +65,13 @@ const FormSelect = ({
         selectedItem,
         onIsOpenChange: ({ isOpen, selectedItem: newSelectedItem }) => {
             if (!isOpen) {
-                downshiftSetInputValue(newSelectedItem ? newSelectedItem.label : selectedItem ? selectedItem.label : "")
-                setInputValue(newSelectedItem ? newSelectedItem.label : selectedItem ? selectedItem.label : "")
+                downshiftSetInputValue(newSelectedItem ? newSelectedItem.label : selectedItem ? selectedItem.label : value.label ? value.label : "")
+                setInputValue(newSelectedItem ? newSelectedItem.label : selectedItem ? selectedItem.label : value.label ? value.label : "")
             }
             if (isOpen) {
                 setInputValue("")
                 downshiftSetInputValue("")
+                setItems(options.filter(getOptionsFilter(inputValue || '')))
             }
         },
         onInputValueChange: ({ inputValue }) => {
@@ -92,6 +89,7 @@ const FormSelect = ({
     })
 
     const showClearIcon = () => {
+        if (!clearable) return false
         if (inputValue === "") return false
         if (inputValue === undefined) return false
         if (inputValue === value.label && !isOpen) return false
@@ -122,16 +120,17 @@ const FormSelect = ({
     }, [isOpen])
 
     return (
-        <div className="relative focus-within:dark:text-dark-600 focus-within:text-light-600">
+        <div className="relative focus-within:dark:text-dark-600 focus-within:text-light-600" id={id}>
             <div className="w-full flex flex-col gap-1">
                 <label className="absolute -top-3 left-0.5 text-xs focus:italic text-inherit" {...getLabelProps()}>{label}</label>
-                <div className={`border border-t-0 rounded-tl-none borders bg-transparent rounded-md px-3 text-ellipsis py-0.5 flex justify-between cursor-pointer ${isOpen && 'rounded-b-none'}`}>
+                <div className={`border border-t-0 rounded-tl-none borders bg-transparent rounded-md px-3 text-ellipsis py-0.5 flex justify-between cursor-pointer ${className} ${isOpen && 'rounded-b-none'}`}>
                     <input
-                        placeholder="Select an option"
-                        className="w-full bg-inherit text-inherit relative pr-5"
-                        {...getInputProps()}
+                        id={id + '-input'} name={name} placeholder={placeholder}
+                        className={`w-full bg-inherit text-inherit relative pr-5 cursor-pointer ${!searchable && 'hidden'}`}
+                        {...getInputProps()} autoFocus={autoFocus} disabled={!searchable}
                     />
-                    {showClearIcon() && <div className="absolute h-4 w-4 top-1.5 right-9 cursor-pointer"
+                    {!searchable && <div className={`w-full bg-inherit text-inherit relative pr-5 cursor-pointer ${!inputValue && 'italic font-extralight text-sm'}`}>{inputValue ? inputValue : placeholder}</div>}
+                    {showClearIcon() && <div className="absolute h-4 w-4 top-1.5 right-9 cursor-pointer icon"
                         onClick={() => { setInputValue("") }}>
                         <IconClose className="" />
                     </div>}
@@ -165,4 +164,4 @@ const FormSelect = ({
     )
 }
 
-export default memo(FormSelect)
+export default FormSelect
