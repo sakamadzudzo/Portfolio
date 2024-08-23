@@ -49,3 +49,25 @@ export const saveTag = async (token: string, tag: Object) => {
         })
     return data
 }
+
+export const getTagAll = async (token: string) => {
+    await authOrReload(token)
+    let data: any = null
+    await axios.get(API + "gettagall", {
+        headers: {
+            Authorization: token
+        }
+    })
+        .then((response) => {
+            data = response.data
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+            data = null
+        })
+        .finally(() => {
+            return data;
+        })
+    return data
+}

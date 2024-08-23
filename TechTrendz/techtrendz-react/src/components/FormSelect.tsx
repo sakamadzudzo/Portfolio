@@ -1,8 +1,7 @@
 import { useCombobox } from 'downshift'
 import { useEffect, useState } from 'react'
 import { IconClose } from './icons/IconClose'
-
-export type SelectOption = { value: string | number, label: string, description?: string }
+import { SelectOption } from '../types/types'
 
 const FormSelect = ({
     value,
@@ -16,7 +15,8 @@ const FormSelect = ({
     options,
     disabled,
     clearable,
-    searchable
+    searchable,
+    returnEvent
 }: {
     value: SelectOption
     className?: string
@@ -28,8 +28,9 @@ const FormSelect = ({
     placeholder?: string,
     options: SelectOption[],
     disabled?: boolean,
-    clearable?: boolean
-    searchable?: boolean
+    clearable?: boolean,
+    searchable?: boolean,
+    returnEvent?: boolean
 }) => {
     const itemToString = (item: SelectOption | null) => {
         return item ? item.label : ''
@@ -83,7 +84,11 @@ const FormSelect = ({
         },
         onSelectedItemChange: ({ selectedItem: newSelectedItem }) => {
             setSelectedItem(newSelectedItem)
-            onChange(newSelectedItem)
+            if (returnEvent) {
+                onChange({ name: name, value: newSelectedItem })
+            } else {
+                onChange(newSelectedItem)
+            }
             setInputValue(newSelectedItem ? newSelectedItem.label : "")
         },
     })
@@ -152,7 +157,7 @@ const FormSelect = ({
                 </div>
             </div>
             <ul
-                className={`absolute w-full bg-inherit text-inherit border rounded-md rounded-t-none mt-1 shadow-md max-h-80 overflow-y-auto p-0 z-10 ${!isOpen && 'hidden'}`}
+                className={`absolute w-full bg-light-50 dark:bg-dark-50 text-inherit border rounded-md rounded-t-none mt-1 shadow-md max-h-80 overflow-y-auto p-0 z-10 ${!isOpen && 'hidden'}`}
                 {...getMenuProps()}
             >
                 {isOpen &&

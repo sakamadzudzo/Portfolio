@@ -10,7 +10,8 @@ import { getContactById, saveContact } from "../components/service/contactServic
 import { useNavigate, useOutletContext, useParams } from "react-router-dom"
 import { OverlayContextType } from "../components/Layout"
 import { getContactTypeAll } from "../components/service/contactTypeService"
-import FormSelect, { SelectOption } from "../components/FormSelect"
+import FormSelect from "../components/FormSelect"
+import { SelectOption } from "../types/types"
 
 export const ContactEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -58,7 +59,9 @@ export const ContactEdit = () => {
     }
 
     const typesToOptions = (): SelectOption[] => {
-        return contactTypes.map((item) => { return { value: item.id, label: item.name, description: item.description } })
+        return contactTypes
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((item) => { return { value: item.id, label: item.name, description: item.description } })
     }
 
     const reset = () => {

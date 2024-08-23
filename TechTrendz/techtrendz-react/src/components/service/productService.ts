@@ -74,3 +74,25 @@ export const countProductItemsAvialableByProductId = async (token: string, produ
         })
     return data
 }
+
+export const saveProduct = async (token: string, product: Object) => {
+    await authOrReload(token)
+    let data: any = null
+    await axios.post(API + "saveaddress", product, {
+        headers: {
+            Authorization: token
+        }
+    })
+        .then((response) => {
+            data = response.data
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+            data = null
+        })
+        .finally(() => {
+            return data;
+        })
+    return data
+}
