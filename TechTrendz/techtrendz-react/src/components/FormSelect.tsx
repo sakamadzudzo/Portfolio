@@ -121,17 +121,24 @@ const FormSelect = ({
 
     return (
         <div className="relative focus-within:dark:text-dark-600 focus-within:text-light-600" id={id}>
-            <div className="w-full flex flex-col gap-1">
+            {disabled && <div className="cursor-not-allowed border-light-200 dark:border-dark-200 text-light-200 dark:text-dark-200">
+                <label className="absolute -top-3 left-0.5 text-xs focus:italic cursor-not-allowed border-inherit text-inherit">{label}</label>
+                <div className={`border border-t-0 rounded-tl-none borders bg-transparent rounded-md px-3 text-ellipsis py-0.5 flex justify-between border-inherit text-inherit ${className} ${isOpen && 'rounded-b-none'}`}>
+                    <div className={`absolute ${!value.label ? 'top-0' : 'top-1'} right-3 border-inherit text-inherit`}>&#8595;</div>
+                    <div className={`${!value.label && 'italic font-extralight text-sm'} border-inherit text-inherit`}>{value.label ? value.label : placeholder}</div>
+                </div>
+            </div>}
+            <div className={`w-full flex flex-col gap-1 ${disabled && 'hidden'}`}>
                 <label className="absolute -top-3 left-0.5 text-xs focus:italic text-inherit" {...getLabelProps()}>{label}</label>
                 <div className={`border border-t-0 rounded-tl-none borders bg-transparent rounded-md px-3 text-ellipsis py-0.5 flex justify-between cursor-pointer ${className} ${isOpen && 'rounded-b-none'}`}>
                     <input
                         id={id + '-input'} name={name} placeholder={placeholder}
-                        className={`w-full bg-inherit text-inherit relative pr-5 cursor-pointer ${!searchable && 'hidden'}`}
+                        className={`w-full bg-inherit text-inherit relative pr-5 ${!searchable ? 'hidden cursor-pointer' : 'cursor-text'}`}
                         {...getInputProps()} autoFocus={autoFocus} disabled={!searchable}
                     />
                     {!searchable && <div className={`w-full bg-inherit text-inherit relative pr-5 cursor-pointer ${!inputValue && 'italic font-extralight text-sm'}`}>{inputValue ? inputValue : placeholder}</div>}
                     {showClearIcon() && <div className="absolute h-4 w-4 top-1.5 right-9 cursor-pointer icon"
-                        onClick={() => { setInputValue("") }}>
+                        onClick={() => { setInputValue(""); setInputValue(value.label) }}>
                         <IconClose className="" />
                     </div>}
                     <button
