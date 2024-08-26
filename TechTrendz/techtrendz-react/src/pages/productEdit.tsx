@@ -14,6 +14,7 @@ import { getBrandAll } from "../components/service/brandService"
 import FormSelect from "../components/FormSelect"
 import { getProductTypeAll } from "../components/service/productTypeService"
 import { getTagAll } from "../components/service/tagService"
+import { TagModal } from "../components/TagModal"
 
 export const ProductEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -144,8 +145,7 @@ export const ProductEdit = () => {
                         options={brandsToOptions()} clearable={true} searchable={true} disabled={false} autoFocus={false} key={`brand`} returnEvent={true} />
                     <FormSelect id="productType" name="productType" className="w-full" label="Product Type" onChange={setProductChanges} value={{ value: product?.productType?.id!, label: product?.productType?.name!, description: product?.productType?.description }} placeholder="Product Type..."
                         options={typesToOptions()} clearable={true} searchable={true} disabled={false} autoFocus={false} key={`productType`} returnEvent={true} />
-                        <FormSelect id="tags" name="tags" className="w-full" label="Tags" onChange={setProductChanges} value={{ value: product?.tags?.id!, label: product?.tags?.name!, description: product?.tags?.description }} placeholder="Tags..."
-                        options={typesToOptions()} clearable={true} searchable={true} disabled={false} autoFocus={false} key={`tags`} returnEvent={true} />
+                    <TagModal tags={tags} setTags={setTags} numberToShow={10} className="" key={`productTags`} edit />
                 </FormBody>
                 <FormFooter className="justify-end">
                     <button className={`btn-hollow`} onClick={() => { navigate(-1); }}>Cancel</button>
