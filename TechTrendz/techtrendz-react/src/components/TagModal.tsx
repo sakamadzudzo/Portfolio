@@ -1,6 +1,9 @@
-import { Tag } from "../types/types"
+import { useState } from "react"
+import { SelectOption, Tag } from "../types/types"
 import { Chip } from "./Chip"
 import { Modal } from "./Modal"
+import FormSelect from "./FormSelect"
+import FormMultiSelect from "./FormMultiSelect"
 
 export const TagModal = ({
     tags,
@@ -13,8 +16,17 @@ export const TagModal = ({
     setTags: Function,
     numberToShow: number,
     className?: string,
-    edit?:boolean
+    edit?: boolean
 }) => {
+    const [editModalShow, setEditModalShow] = useState<boolean>(false)
+    const [newTags, setNewTags] = useState<Tag[]>([])
+
+    const tagsToOptions = () => {
+        return tags
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((item) => { return { value: item.id, label: item.name, description: item.description } })
+    }
+
     const remainder = () => {
         return tags.length > 0 ? tags.length - (numberToShow) : 0
     }
@@ -36,7 +48,12 @@ export const TagModal = ({
                     </div>}
                 </div>
                 : <div className={`w-full`}>There are no tags</div>}
-                {edit && <button>Add/Edit</button>}
+            {edit && <button className="underline hover:font-normal" onClick={() => { setEditModalShow(true); }}>Add/Edit</button>}
+            {editModalShow && <Modal key={`editTagsModal`} close={setEditModalShow}>
+                Modal here
+            </Modal>}
+            <FormMultiSelect id="testtags" name="testtags" className="w-full" label="Test Tags" onChange={(e: { name: string, value: SelectOption[] }) => { setNewTags(e.value.map((item) => { return { id: Number(item.value), name: item.label, description: item.description! } })) }} values={newTags.map((tag) => {return {value:tag.id, label:tag.name, description:tag.description}})} placeholder="Testing tags..."
+                options={tagsToOptions()} clearable={true} searchable={true} disabled={false} autoFocus={false} key={`testtags`} returnEvent={true} />
         </div>
     )
 }
