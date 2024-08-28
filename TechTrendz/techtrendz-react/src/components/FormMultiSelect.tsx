@@ -2,6 +2,7 @@ import { useCombobox } from 'downshift'
 import { useEffect, useState } from 'react'
 import { IconClose } from './icons/IconClose'
 import { SelectOption } from '../types/types'
+import { Chip } from './Chip'
 
 const FormMultiSelect = ({
     values,
@@ -16,7 +17,8 @@ const FormMultiSelect = ({
     disabled,
     clearable,
     searchable,
-    returnEvent
+    returnEvent,
+    withChips
 }: {
     values: SelectOption[]
     className?: string
@@ -30,7 +32,8 @@ const FormMultiSelect = ({
     disabled?: boolean,
     clearable?: boolean,
     searchable?: boolean,
-    returnEvent?: boolean
+    returnEvent?: boolean,
+    withChips?: boolean
 }) => {
     const itemToString = (item: SelectOption | null) => {
         return item ? item.label : ''
@@ -55,6 +58,14 @@ const FormMultiSelect = ({
         return selectedItems.length ? `${selectedItems.length} options selected` : 'Select an option'
     }
 
+    const itemInList = (value: SelectOption) => {
+        return selectedItems.find(item => item.value === value.value)
+    }
+
+    const selectedItemsIncludes = (value: SelectOption) => {
+        return !!selectedItems.find(item => item.value === value.value)
+    }
+
     const {
         isOpen,
         getToggleButtonProps,
@@ -62,7 +73,6 @@ const FormMultiSelect = ({
         getMenuProps,
         getInputProps,
         getItemProps,
-        highlightedIndex,
         setInputValue: downshiftSetInputValue,
     } = useCombobox({
         items,
@@ -92,15 +102,16 @@ const FormMultiSelect = ({
                 return
             }
 
-            const itemAtIndex = selectedItems.find(item => item.value === newSelectedItem.value)
+            const itemAtIndex = itemInList(newSelectedItem)
             const index = itemAtIndex ? selectedItems.indexOf(itemAtIndex) : -1
             let newSelection: SelectOption[] = []
-            if (index >= 0) {
-                newSelection = selectedItems.includes(newSelectedItem) ?
-                    [
-                        ...selectedItems.slice(0, index),
-                        ...selectedItems.slice(index + 1),
-                    ] : selectedItems
+            if (index > 0) {
+                newSelection = [
+                    ...selectedItems.slice(0, index),
+                    ...selectedItems.slice(index + 1),
+                ]
+            } else if (index === 0) {
+                newSelection = [...selectedItems.slice(1)]
             } else {
                 newSelection = [...selectedItems, newSelectedItem]
             }
@@ -114,25 +125,25 @@ const FormMultiSelect = ({
             setInputValue(inputPlaceholder)
         },
         stateReducer: (state, actionAndChanges) => {
-            const {changes, type} = actionAndChanges
+            const { changes, type } = actionAndChanges
             switch (type) {
-              case useCombobox.stateChangeTypes.InputKeyDownEnter:
-              case useCombobox.stateChangeTypes.ItemClick:
-                return {
-                  ...changes,
-                  isOpen: true, // keep menu open after selection.
-                  highlightedIndex: state.highlightedIndex,
-                  inputValue: '', // don't add the item string as input value at selection.
-                }
-              case useCombobox.stateChangeTypes.InputBlur:
-                return {
-                  ...changes,
-                  inputValue: '', // don't add the item string as input value at selection.
-                }
-              default:
-                return changes
+                case useCombobox.stateChangeTypes.InputKeyDownEnter:
+                case useCombobox.stateChangeTypes.ItemClick:
+                    return {
+                        ...changes,
+                        isOpen: true, // keep menu open after selection.
+                        highlightedIndex: state.highlightedIndex,
+                        inputValue: '', // don't add the item string as input value at selection.
+                    }
+                case useCombobox.stateChangeTypes.InputBlur:
+                    return {
+                        ...changes,
+                        inputValue: '', // don't add the item string as input value at selection.
+                    }
+                default:
+                    return changes
             }
-          },
+        },
     })
 
     const showClearIcon = () => {
@@ -144,8 +155,6 @@ const FormMultiSelect = ({
     }
 
     useEffect(() => {
-        // setInputValue(inputPlaceholder())
-        // downshiftSetInputValue("")
         setSelectedItems(values)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values]);
@@ -177,6 +186,9 @@ const FormMultiSelect = ({
             </div>}
             <div className={`w-full flex flex-col gap-1 ${disabled && 'hidden'}`}>
                 <label className="absolute -top-3 left-0.5 text-xs focus:italic text-inherit" {...getLabelProps()}>{label}</label>
+                {selectedItems.length && <div className="mt-5 border-r border-l rounded-br-md px-3 py-1 flex gap-1">
+                    {selectedItems.length && selectedItems.map((item) => <Chip data={item.label} tooltip={item.description} onClick={() => { setSelectedItems([...selectedItems.slice(1)]) }} />)}
+                </div>}
                 <div className={`border border-t-0 rounded-tl-none borders bg-transparent rounded-md px-3 text-ellipsis py-0.5 flex justify-between cursor-pointer ${className} ${isOpen && 'rounded-b-none'}`}>
                     <input
                         id={id + '-input'} name={name} placeholder={placeholder}
@@ -205,12 +217,21 @@ const FormMultiSelect = ({
                 {isOpen &&
                     items.map((item, index) => (
                         <li
-                            className={`px-3 shadow-sm flex flex-col hover:bg-light-100 hover:dark:bg-dark-100 text-ellipsis ${selectedItems.length && selectedItems.includes(item) && 'bg-light-200/50 dark:bg-dark-100/60'} ${index === options.length ? '' : 'border-b'}`}
+                            className={`px-3 shadow-sm flex gap-1 items-center hover:bg-light-100 hover:dark:bg-dark-100 text-ellipsis ${selectedItems.length && selectedItems.includes(item) && 'bg-light-200/50 dark:bg-dark-100/60'} ${index === options.length ? '' : 'border-b'}`}
                             key={item.value}
                             {...getItemProps({ item, index })}
                         >
-                            <span className={`${selectedItems.length && selectedItems.includes(item) && 'font-medium'} `}>{item.label}</span>
-                            <span className={`text-sm ${selectedItems.length && selectedItems.includes(item) && 'font-medium'}`}>{item.description}</span>
+                            <input
+                                type="checkbox"
+                                className="h-5 w-5 flex items-center border"
+                                checked={selectedItemsIncludes(item)}
+                                value={item.label}
+                                onChange={() => null}
+                            />
+                            <div className="flex flex-col h-full">
+                                <span className={`${selectedItems.length && selectedItemsIncludes(item) && 'font-medium'} `}>{item.label}</span>
+                                <span className={`text-sm ${selectedItems.length && selectedItemsIncludes(item) && 'font-medium'}`}>{item.description}</span>
+                            </div>
                         </li>
                     ))}
             </ul>
