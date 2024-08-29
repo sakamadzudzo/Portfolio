@@ -1,5 +1,5 @@
-import { useCombobox } from 'downshift'
-import { useEffect, useState } from 'react'
+import { useCombobox, UseComboboxSelectedItemChange } from 'downshift'
+import { useCallback, useEffect, useState } from 'react'
 import { IconClose } from './icons/IconClose'
 import { SelectOption } from '../types/types'
 import { Chip } from './Chip'
@@ -42,6 +42,7 @@ const FormMultiSelect = ({
     const [items, setItems] = useState<SelectOption[]>(options)
     const [selectedItems, setSelectedItems] = useState<SelectOption[]>(values)
     const [inputValue, setInputValue] = useState("");
+    const [inputPlaceholder, setInputPlaceholder] = useState("")
 
     const getOptionsFilter = (inputValue: string) => {
         const lowerCasedInputValue = inputValue.toLowerCase()
@@ -54,16 +55,26 @@ const FormMultiSelect = ({
         }
     }
 
-    const inputPlaceholder = () => {
-        return selectedItems.length ? `${selectedItems.length} options selected` : 'Select an option'
-    }
-
-    const itemInList = (value: SelectOption) => {
+    const itemInList = useCallback((value: SelectOption) => {
         return selectedItems.find(item => item.value === value.value)
-    }
+    }, [selectedItems])
 
     const selectedItemsIncludes = (value: SelectOption) => {
         return !!selectedItems.find(item => item.value === value.value)
+    }
+
+    const updateInputPlaceholder = useCallback(() => {
+        setInputPlaceholder(selectedItems.length ? `${selectedItems.length} options selected` : placeholder!)
+    }, [placeholder, selectedItems])
+
+    const removeItem = (index: number) => {
+        const newSelection = [
+            ...selectedItems.slice(0, index),
+            ...selectedItems.slice(index + 1),
+        ]
+        setSelectedItems(newSelection);
+        setInputPlaceholder(newSelection.length ? `${newSelection.length} options selected` : placeholder!)
+        setInputValue(newSelection.length ? `${newSelection.length} options selected` : placeholder!);
     }
 
     const {
@@ -81,8 +92,8 @@ const FormMultiSelect = ({
         selectedItem: null,
         onIsOpenChange: ({ isOpen, selectedItem: newSelectedItem }) => {
             if (!isOpen) {
-                downshiftSetInputValue(inputPlaceholder())
-                setInputValue(inputPlaceholder())
+                downshiftSetInputValue(inputPlaceholder)
+                setInputValue(inputPlaceholder)
             }
             if (isOpen) {
                 setInputValue("")
@@ -97,12 +108,12 @@ const FormMultiSelect = ({
                 setItems(options.filter(getOptionsFilter(inputValue || '')))
             }
         },
-        onSelectedItemChange: ({ selectedItem: newSelectedItem }) => {
+        onSelectedItemChange: useCallback((newSelectedItem: UseComboboxSelectedItemChange<SelectOption>) => {
             if (!newSelectedItem) {
                 return
             }
 
-            const itemAtIndex = itemInList(newSelectedItem)
+            const itemAtIndex = itemInList(newSelectedItem.selectedItem)
             const index = itemAtIndex ? selectedItems.indexOf(itemAtIndex) : -1
             let newSelection: SelectOption[] = []
             if (index > 0) {
@@ -113,7 +124,7 @@ const FormMultiSelect = ({
             } else if (index === 0) {
                 newSelection = [...selectedItems.slice(1)]
             } else {
-                newSelection = [...selectedItems, newSelectedItem]
+                newSelection = [...selectedItems, newSelectedItem.selectedItem]
             }
             setSelectedItems(newSelection)
 
@@ -122,8 +133,8 @@ const FormMultiSelect = ({
             } else {
                 onChange(newSelection)
             }
-            setInputValue(inputPlaceholder)
-        },
+            setInputValue("")
+        }, [itemInList, name, onChange, returnEvent, selectedItems]),
         stateReducer: (state, actionAndChanges) => {
             const { changes, type } = actionAndChanges
             switch (type) {
@@ -151,6 +162,7 @@ const FormMultiSelect = ({
         if (inputValue === "") return false
         if (inputValue === undefined) return false
         if (JSON.stringify(selectedItems) === JSON.stringify(values) && !isOpen) return false
+        if (inputValue === inputPlaceholder) return false
         return true
     }
 
@@ -165,8 +177,8 @@ const FormMultiSelect = ({
 
     useEffect(() => {
         if (!isOpen) {
-            downshiftSetInputValue(inputPlaceholder())
-            setInputValue(inputPlaceholder())
+            downshiftSetInputValue(inputPlaceholder)
+            setInputValue(inputPlaceholder)
         }
         if (isOpen) {
             setInputValue("")
@@ -175,29 +187,33 @@ const FormMultiSelect = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen])
 
+    useEffect(() => {
+        updateInputPlaceholder()
+    }, [updateInputPlaceholder])
+
     return (
         <div className="relative focus-within:dark:text-dark-600 focus-within:text-light-600" id={id}>
             {disabled && <div className="cursor-not-allowed border-light-200 dark:border-dark-200 text-light-200 dark:text-dark-200">
                 <label className="absolute -top-3 left-0.5 text-xs focus:italic cursor-not-allowed border-inherit text-inherit">{label}</label>
-                <div className={`border border-t-0 rounded-tl-none borders bg-transparent rounded-md px-3 text-ellipsis py-0.5 flex justify-between border-inherit text-inherit ${className} ${isOpen && 'rounded-b-none'}`}>
+                <div className={`bg-transparent px-3 text-ellipsis py-0.5 flex justify-between border-inherit text-inherit ${className} ${isOpen && 'rounded-b-none'}`}>
                     <div className={`absolute ${!values.length ? 'top-0' : 'top-1'} right-3 border-inherit text-inherit`}>&#8595;</div>
-                    <div className={`${!values.length && 'italic font-extralight text-sm'} border-inherit text-inherit`}>{values.length ? inputPlaceholder() : placeholder}</div>
+                    <div className={`${!values.length && 'italic font-extralight text-sm'} border-inherit text-inherit`}>{values.length ? inputPlaceholder : placeholder}</div>
                 </div>
             </div>}
-            <div className={`w-full flex flex-col gap-1 ${disabled && 'hidden'}`}>
+            <div className={`w-full flex flex-col gap-1 border borders border-t-0 rounded-tl-none rounded-md ${disabled && 'hidden'}`}>
                 <label className="absolute -top-3 left-0.5 text-xs focus:italic text-inherit" {...getLabelProps()}>{label}</label>
-                {selectedItems.length && <div className="mt-5 border-r border-l rounded-br-md px-3 py-1 flex gap-1">
-                    {selectedItems.length && selectedItems.map((item) => <Chip data={item.label} tooltip={item.description} onClick={() => { setSelectedItems([...selectedItems.slice(1)]) }} />)}
+                {selectedItems.length > 0 && <div className="px-3 py-1 flex flex-wrap gap-0.5 text-xs">
+                    {selectedItems.map((item, index) => <Chip key={item.value} data={item.label} tooltip={item.description} onClick={() => { removeItem(index) }} removeable />)}
                 </div>}
-                <div className={`border border-t-0 rounded-tl-none borders bg-transparent rounded-md px-3 text-ellipsis py-0.5 flex justify-between cursor-pointer ${className} ${isOpen && 'rounded-b-none'}`}>
+                <div className={`bg-transparent px-3 text-ellipsis py-0.5 flex justify-between cursor-pointer ${className} ${isOpen && 'rounded-b-none'}`}>
                     <input
                         id={id + '-input'} name={name} placeholder={placeholder}
                         className={`w-full bg-inherit text-inherit relative pr-5 ${!searchable ? 'hidden cursor-pointer' : 'cursor-text'}`}
                         {...getInputProps()} autoFocus={autoFocus} disabled={!searchable}
                     />
                     {!searchable && <div className={`w-full bg-inherit text-inherit relative pr-5 cursor-pointer ${!inputValue && 'italic font-extralight text-sm'}`}>{inputValue ? inputValue : placeholder}</div>}
-                    {showClearIcon() && <div className="absolute h-4 w-4 top-1.5 right-9 cursor-pointer icon"
-                        onClick={() => { setInputValue(""); setInputValue(inputPlaceholder()) }}>
+                    {showClearIcon() && <div className="h-4 w-4 mt-1 cursor-pointer icon"
+                        onClick={() => { setInputValue(""); setInputValue(inputPlaceholder) }}>
                         <IconClose className="" />
                     </div>}
                     <button
@@ -217,7 +233,7 @@ const FormMultiSelect = ({
                 {isOpen &&
                     items.map((item, index) => (
                         <li
-                            className={`px-3 shadow-sm flex gap-1 items-center hover:bg-light-100 hover:dark:bg-dark-100 text-ellipsis ${selectedItems.length && selectedItems.includes(item) && 'bg-light-200/50 dark:bg-dark-100/60'} ${index === options.length ? '' : 'border-b'}`}
+                            className={`px-3 shadow-sm flex gap-1 items-center hover:bg-light-100 hover:dark:bg-dark-100 text-ellipsis cursor-pointer ${selectedItems.length && selectedItems.includes(item) && 'bg-light-200/50 dark:bg-dark-100/60'} ${index === options.length ? '' : 'border-b'}`}
                             key={item.value}
                             {...getItemProps({ item, index })}
                         >

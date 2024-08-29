@@ -139,8 +139,8 @@ export const ProductEdit = () => {
                     <>{header}</>
                 </FormHeader>
                 <FormBody className=" flex flex-col gap-5 pt-5">
-                    <FormInput id="name" name="name" className="w-full" type="text" label="Name" onChange={setProductChanges} value={product?.name!} autoFocus={true} placeholder="Name..." returnEvent={true} />
-                    <FormInput id="description" name="description" className="w-full" type="text" label="Description" onChange={setProductChanges} value={product?.description!} placeholder="Description..." returnEvent={true} />
+                    <FormInput id="name" name="name" className="w-full" type="text" label="Name" onChange={setProductChanges} value={product?.name!} autoFocus={true} placeholder="Name..." returnEvent={true} key={`name`} />
+                    <FormInput id="description" name="description" className="w-full" type="text" label="Description" onChange={setProductChanges} value={product?.description!} placeholder="Description..." returnEvent={true} key={`description`} />
                     <FormSelect id="brand" name="brand" className="w-full" label="Brand" onChange={setProductChanges} value={{ value: product?.brand?.id!, label: product?.brand?.name!, description: product?.brand?.description }} placeholder="Brand..."
                         options={brandsToOptions()} clearable={true} searchable={true} disabled={false} autoFocus={false} key={`brand`} returnEvent={true} />
                     <FormSelect id="productType" name="productType" className="w-full" label="Product Type" onChange={setProductChanges} value={{ value: product?.productType?.id!, label: product?.productType?.name!, description: product?.productType?.description }} placeholder="Product Type..."

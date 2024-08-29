@@ -1,3 +1,5 @@
+import { IconClose } from "./icons/IconClose"
+
 // export type ChipVariant = { variant: "success" | "info" | "warning" | "danger" }
 export const ChipVariant = {} as { success?: boolean, info?: boolean, warning?: boolean, danger?: boolean }
 
@@ -6,17 +8,19 @@ export const Chip = ({
     tooltip,
     variant,
     extraItems,
-    onClick
+    onClick,
+    removeable
 }: {
     data: string,
     tooltip?: string,
     variant?: typeof ChipVariant,
-    extraItems?: boolean
-    onClick?: Function
+    extraItems?: boolean,
+    onClick?: Function,
+    removeable?: boolean
 }) => {
 
     return (
-        <div className={`w-fit border px-2 rounded-full bg-inherit/90 cursor-pointer relative group h-full ${!variant?.success && !variant?.info && !variant?.warning && !variant?.danger && 'bg-light-100 dark:bg-dark-100/70 hover:bg-light-200 hover:dark:bg-dark-200'}
+        <div className={`w-fit border px-2 rounded-full bg-inherit/90 cursor-pointer relative group h-full flex ${!variant?.success && !variant?.info && !variant?.warning && !variant?.danger && 'bg-light-100 dark:bg-dark-100/70 hover:bg-light-200 hover:dark:bg-dark-200'}
         ${variant?.success && 'bg-green-400 dark:bg-green-700'} ${variant?.info && 'bg-picton-400 dark:bg-picton-700'} ${variant?.warning && 'bg-yellow-400 dark:bg-yellow-700'} ${variant?.danger && 'bg-red-400 dark:bg-red-700'} ${extraItems && 'text-xs flex justify-center items-center h-full'}`}
             onClick={() => { onClick && onClick() }}>
             {data}
@@ -24,6 +28,7 @@ export const Chip = ({
                 {tooltip}
                 <div className="invisible absolute top-5 left-1/2 transform -translate-x-1/2 h-2 w-2 bg-inherit text-inherit before:visible before:absolute before:h-2 before:w-2 before:rotate-45 before:bg-inherit before:content-['']"></div>
             </div>
+            {removeable && <div className="ml-1 -mr-1.5 icon w-3 aspect-square"><IconClose /></div>}
         </div>
     )
 }
