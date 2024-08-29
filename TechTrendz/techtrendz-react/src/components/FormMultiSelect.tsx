@@ -18,7 +18,8 @@ const FormMultiSelect = ({
     clearable,
     searchable,
     returnEvent,
-    withChips
+    withChips,
+    chipsToShow
 }: {
     values: SelectOption[]
     className?: string
@@ -33,7 +34,8 @@ const FormMultiSelect = ({
     clearable?: boolean,
     searchable?: boolean,
     returnEvent?: boolean,
-    withChips?: boolean
+    withChips?: boolean,
+    chipsToShow?: number
 }) => {
     const itemToString = (item: SelectOption | null) => {
         return item ? item.label : ''
@@ -64,7 +66,7 @@ const FormMultiSelect = ({
     }
 
     const updateInputPlaceholder = useCallback(() => {
-        setInputPlaceholder(selectedItems.length ? `${selectedItems.length} options selected` : placeholder!)
+        setInputPlaceholder(selectedItems && selectedItems.length ? `${selectedItems.length} options selected` : placeholder!)
     }, [placeholder, selectedItems])
 
     const removeItem = (index: number) => {
@@ -166,8 +168,20 @@ const FormMultiSelect = ({
         return true
     }
 
+    const remainder = () => {
+        return chipsToShow ?
+            (selectedItems.length > 0 ? selectedItems.length - (chipsToShow) : 0)
+            : 0
+    }
+
+    const optionsToShow = () => {
+        return chipsToShow ? selectedItems.slice(0, chipsToShow) : selectedItems
+    }
+
     useEffect(() => {
         setSelectedItems(values)
+        setInputPlaceholder(values && values.length ? `${values.length} options selected` : placeholder!)
+        setInputValue(values && values.length ? `${values.length} options selected` : placeholder!);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values]);
 
@@ -189,7 +203,7 @@ const FormMultiSelect = ({
 
     useEffect(() => {
         updateInputPlaceholder()
-    }, [updateInputPlaceholder])
+    }, [updateInputPlaceholder, placeholder, selectedItems])
 
     return (
         <div className="relative focus-within:dark:text-dark-600 focus-within:text-light-600" id={id}>
@@ -202,8 +216,11 @@ const FormMultiSelect = ({
             </div>}
             <div className={`w-full flex flex-col gap-1 border borders border-t-0 rounded-tl-none rounded-md ${disabled && 'hidden'}`}>
                 <label className="absolute -top-3 left-0.5 text-xs focus:italic text-inherit" {...getLabelProps()}>{label}</label>
-                {selectedItems.length > 0 && <div className="px-3 py-1 flex flex-wrap gap-0.5 text-xs">
-                    {selectedItems.map((item, index) => <Chip key={item.value} data={item.label} tooltip={item.description} onClick={() => { removeItem(index) }} removeable />)}
+                {withChips && optionsToShow() && optionsToShow().length > 0 && <div className="px-3 py-1 flex flex-wrap gap-0.5 text-xs">
+                    {optionsToShow().map((item, index) => <Chip key={item.value} data={item.label} tooltip={item.description} onClick={() => { removeItem(index) }} removeable />)}
+                </div>}
+                {withChips && optionsToShow() && remainder() > 0 && <div className="px-3 py-1 flex flex-wrap gap-0.5 text-xs">
+                    <Chip data={"+" + remainder()} tooltip={"Extra items"} variant={{}} key={`extraItems-` + name} extraItems />
                 </div>}
                 <div className={`bg-transparent px-3 text-ellipsis py-0.5 flex justify-between cursor-pointer ${className} ${isOpen && 'rounded-b-none'}`}>
                     <input
