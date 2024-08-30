@@ -28,7 +28,6 @@ const Login = () => {
         setLoading(true)
         setError("")
         const data = await login(username, password)
-        console.log(data)
         if (data !== "" && data !== null) {
             if (data.includes("Bearer ")) {
                 dispatch(setToken(data))

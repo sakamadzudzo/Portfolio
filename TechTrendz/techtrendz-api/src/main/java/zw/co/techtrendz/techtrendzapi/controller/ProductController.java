@@ -32,7 +32,9 @@ public class ProductController {
 
     @RequestMapping(name = "/saveproduct", value = "/saveproduct", method = RequestMethod.POST)
     public Product saveProduct(@Valid @RequestBody Product product) {
-        return productService.saveProduct(product);
+        Product newProduct = productService.saveProduct(product);
+        newProduct.setProductItems(null);
+        return newProduct;
     }
 
     @JsonView({View.ProductView.class})

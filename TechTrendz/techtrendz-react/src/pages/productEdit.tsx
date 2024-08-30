@@ -161,6 +161,7 @@ export const ProductEdit = () => {
                         options={typesToOptions()} clearable={true} searchable={true} disabled={false} autoFocus={false} key={`productType`} returnEvent={true} />
                     <FormMultiSelect id="tags" name="tags" className="w-full" label="Tags" onChange={setProductChanges} values={product?.tags?.map((tag) => { return { value: tag.id, label: tag.name, description: tag.description } })} placeholder="Tags..."
                         options={tagsToOptions()} clearable={true} searchable={true} disabled={false} autoFocus={false} key={`tags`} returnEvent={true} withChips />
+                    <FormInput id="price" name="price" className="w-full" type="number" label="Price" onChange={setProductChanges} value={product?.price!} placeholder="Price..." returnEvent={true} key={`price`} />
                 </FormBody>
                 <FormFooter className="justify-end">
                     <button className={`btn-hollow`} onClick={() => { navigate(-1); }}>Cancel</button>
