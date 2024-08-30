@@ -19,16 +19,16 @@ export const LoadingOverlay = ({
         <>
             <div className={`w-full h-full ${className}`}>
                 {loading ?
-                    <div className="w-full h-full flex items-center justify-center">
+                    <div className={`w-full h-full flex items-center justify-center`}>
                         <IconSpinner className="w-14" />
                     </div>
                     : empty ?
                         <div className="w-full h-full flex items-center justify-center">
                             <div>No data found</div>
                         </div>
-                        : children ? children
-                            : <div>Page error, contact administrator</div>
+                        : !children && <div>Page error, contact administrator</div>
                 }
+                <div className={`w-full h-full ${!loading && !empty && children ? 'block' : 'hidden'}`}>{children}</div>
             </div>
         </>
     )

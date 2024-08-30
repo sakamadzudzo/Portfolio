@@ -10,6 +10,7 @@ import { AuthState, setToken, setUser } from "../components/utils/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../components/utils/authContext";
 import { OverlayContextType } from "../components/Layout";
+import { toast } from "react-toastify";
 
 const Login = () => {
     const [username, setUsername] = useState("")
@@ -27,19 +28,22 @@ const Login = () => {
         setLoading(true)
         setError("")
         const data = await login(username, password)
-        if (data !== "") {
+        console.log(data)
+        if (data !== "" && data !== null) {
             if (data.includes("Bearer ")) {
                 dispatch(setToken(data))
                 const principal = await getPrincipal(data!);
                 dispatch(setUser(principal))
                 navigate(referer!)
             } else {
+                setLoading(false)
                 setError(data)
             }
         } else {
+            await setLoading(false)
+            toast.error("Network issue. Contact administrator.")
             setError("Network issue. Contact administrator.")
         }
-        setLoading(false)
     }
 
     const closeTab = () => {
@@ -75,6 +79,10 @@ const Login = () => {
     useEffect(() => {
         document.title = 'TechBrandz - Login';
     }, []);
+
+    useEffect(() => {
+        console.log("Error changed to:\t'" + error + "'")
+    }, [error])
 
     return (
         <div className="wrapper">
