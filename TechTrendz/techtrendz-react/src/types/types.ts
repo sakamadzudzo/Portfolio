@@ -52,4 +52,6 @@ export type ProductItem = {
   productStatus?: { id: number }
 }
 
+export type User = 
+
 export type SelectOption = { value: string | number, label: string, description?: string }

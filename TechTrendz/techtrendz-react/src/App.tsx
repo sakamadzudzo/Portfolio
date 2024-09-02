@@ -25,6 +25,7 @@ import { BankAccountEdit } from './pages/bankAccountEdit';
 import { ContactEdit } from './pages/contactEdit';
 import { ProductEdit } from './pages/productEdit';
 import { ProductItemEdit } from './pages/productItemEdit';
+import { UserEdit } from './pages/userEdit';
 
 function App() {
   if (localStorage.token) {
@@ -56,6 +57,7 @@ function App() {
               <Route path='contactedit/:id?' element={<ContactEdit />} />
               <Route path='productedit/:id?' element={<ProductEdit />} />
               <Route path='productitemedit/:productId?' element={<ProductItemEdit />} />
+              <Route path='useredit/:id?' element={<UserEdit />} />
               <Route path='*' element={<NotFound />} />
             </Route>
           </Routes>
