@@ -45,4 +45,11 @@ export type Brand = {
   description: string
 }
 
+export type ProductItem = {
+  id: number
+  serialNumber: string
+  product?: { id: number }
+  productStatus?: { id: number }
+}
+
 export type SelectOption = { value: string | number, label: string, description?: string }

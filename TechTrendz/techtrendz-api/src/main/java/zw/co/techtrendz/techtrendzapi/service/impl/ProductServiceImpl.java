@@ -31,7 +31,9 @@ public class ProductServiceImpl implements ProductService {
     private ProductDao productDao;
 
     public Product saveProduct(Product address) {
-        return productDao.save(address);
+        Product newProduct = productDao.save(address);
+        newProduct.setProductItems(null);
+        return newProduct;
     }
 
     public List<Product> saveProducts(List<Product> products) {

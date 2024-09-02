@@ -49,7 +49,16 @@ public class ProductItemServiceImpl implements ProductItemService {
     public long countProductItemsAvialableByProductId(long productId) {
         Product product = new Product(productId);
         ProductItem productItem = new ProductItem();
+        productItem.setProduct(product);
         Example<ProductItem> productItemExample = Example.of(productItem);
         return productItemDao.count(productItemExample);
+    }
+    
+    public List<ProductItem> getProductItemAllByProductId(long productId) {
+        Product product = new Product(productId);
+        ProductItem productItem = new ProductItem();
+        productItem.setProduct(product);
+        Example<ProductItem> productItemExample = Example.of(productItem);
+        return productItemDao.findAll(productItemExample);
     }
 }

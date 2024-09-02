@@ -58,16 +58,17 @@ const FormMultiSelect = ({
     }
 
     const itemInList = useCallback((value: SelectOption) => {
-        return selectedItems.find(item => item.value === value.value)
+        return !selectedItems ? undefined : selectedItems.find(item => item.value === value.value)
     }, [selectedItems])
 
     const selectedItemsIncludes = (value: SelectOption) => {
-        return !!selectedItems.find(item => item.value === value.value)
+        return (!selectedItems) ? false :
+            !!selectedItems.find(item => item.value === value.value)
     }
 
     const updateInputPlaceholder = useCallback(() => {
-        setInputPlaceholder(selectedItems && selectedItems.length ? `${selectedItems.length} options selected` : placeholder!)
-    }, [placeholder, selectedItems])
+        setInputPlaceholder(selectedItems && selectedItems.length ? `${selectedItems.length} options selected` : "")
+    }, [selectedItems])
 
     const removeItem = (index: number) => {
         const newSelection = [
@@ -75,8 +76,8 @@ const FormMultiSelect = ({
             ...selectedItems.slice(index + 1),
         ]
         setSelectedItems(newSelection);
-        setInputPlaceholder(newSelection.length ? `${newSelection.length} options selected` : placeholder!)
-        setInputValue(newSelection.length ? `${newSelection.length} options selected` : placeholder!);
+        setInputPlaceholder(newSelection.length ? `${newSelection.length} options selected` : "")
+        setInputValue(newSelection.length ? `${newSelection.length} options selected` : "");
     }
 
     const {
@@ -126,7 +127,7 @@ const FormMultiSelect = ({
             } else if (index === 0) {
                 newSelection = [...selectedItems.slice(1)]
             } else {
-                newSelection = [...selectedItems, newSelectedItem.selectedItem]
+                newSelection = selectedItems ? [...selectedItems, newSelectedItem.selectedItem] : [newSelectedItem.selectedItem]
             }
             setSelectedItems(newSelection)
 
@@ -180,8 +181,8 @@ const FormMultiSelect = ({
 
     useEffect(() => {
         setSelectedItems(values)
-        setInputPlaceholder(values && values.length ? `${values.length} options selected` : placeholder!)
-        setInputValue(values && values.length ? `${values.length} options selected` : placeholder!);
+        setInputPlaceholder(values && values.length ? `${values.length} options selected` : "")
+        setInputValue(values && values.length ? `${values.length} options selected` : "");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values]);
 
@@ -250,7 +251,7 @@ const FormMultiSelect = ({
                 {isOpen &&
                     items.map((item, index) => (
                         <li
-                            className={`px-3 shadow-sm flex gap-1 items-center hover:bg-light-100 hover:dark:bg-dark-100 text-ellipsis cursor-pointer ${selectedItems.length && selectedItems.includes(item) && 'bg-light-200/50 dark:bg-dark-100/60'} ${index === options.length ? '' : 'border-b'}`}
+                            className={`px-3 shadow-sm flex gap-1 items-center hover:bg-light-100 hover:dark:bg-dark-100 text-ellipsis cursor-pointer ${selectedItems && selectedItems.length && selectedItems.includes(item) && 'bg-light-200/50 dark:bg-dark-100/60'} ${index === options.length ? '' : 'border-b'}`}
                             key={item.value}
                             {...getItemProps({ item, index })}
                         >
@@ -262,8 +263,8 @@ const FormMultiSelect = ({
                                 onChange={() => null}
                             />
                             <div className="flex flex-col h-full">
-                                <span className={`${selectedItems.length && selectedItemsIncludes(item) && 'font-medium'} `}>{item.label}</span>
-                                <span className={`text-sm ${selectedItems.length && selectedItemsIncludes(item) && 'font-medium'}`}>{item.description}</span>
+                                <span className={`${selectedItems && selectedItems.length && selectedItemsIncludes(item) && 'font-medium'} `}>{item.label}</span>
+                                <span className={`text-sm ${selectedItems && selectedItems.length && selectedItemsIncludes(item) && 'font-medium'}`}>{item.description}</span>
                             </div>
                         </li>
                     ))}

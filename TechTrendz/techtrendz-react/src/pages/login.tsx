@@ -79,10 +79,6 @@ const Login = () => {
         document.title = 'TechBrandz - Login';
     }, []);
 
-    useEffect(() => {
-        console.log("Error changed to:\t'" + error + "'")
-    }, [error])
-
     return (
         <div className="wrapper">
             <div className="border w-64 h-80 rounded-lg">

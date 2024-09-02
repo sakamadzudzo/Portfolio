@@ -25,4 +25,6 @@ public interface ProductItemService {
     public List<ProductItem> getProductItemAll();
 
     public long countProductItemsAvialableByProductId(long productId);
+
+    public List<ProductItem> getProductItemAllByProductId(long productId);
 }

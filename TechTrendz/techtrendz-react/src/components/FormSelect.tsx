@@ -163,7 +163,7 @@ const FormSelect = ({
                 {isOpen &&
                     items.map((item, index) => (
                         <li
-                            className={`px-3 shadow-sm flex flex-col hover:bg-light-100 hover:dark:bg-dark-100 text-ellipsis ${JSON.stringify(selectedItem) === JSON.stringify(item) && 'bg-light-200/50 dark:bg-dark-100/60'} ${index === options.length ? '' : 'border-b'}`}
+                            className={`px-3 shadow-sm flex flex-col hover:bg-light-100 hover:dark:bg-dark-100 text-ellipsis cursor-pointer ${JSON.stringify(selectedItem) === JSON.stringify(item) && 'bg-light-200/50 dark:bg-dark-100/60'} ${index === options.length ? '' : 'border-b'}`}
                             key={item.value}
                             {...getItemProps({ item, index })}
                         >
