@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import zw.co.techtrendz.techtrendzapi.entity.Role;
 import zw.co.techtrendz.techtrendzapi.entity.Users;
+import zw.co.techtrendz.techtrendzapi.entity.UsersDto;
 import zw.co.techtrendz.techtrendzapi.repository.UserDao;
 import zw.co.techtrendz.techtrendzapi.service.UserService;
 
@@ -28,20 +29,25 @@ import zw.co.techtrendz.techtrendzapi.service.UserService;
  */
 @Service
 public class UserServiceImpl implements UserService {
-
+    
     @Autowired
     private UserDao userDao;
-
+    
     public Users saveUser(Users user) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        user.setUsername(user.getUsername());
-
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-
+        if (user.getId() == null || user.getId() < 1) {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            user.setUsername(user.getUsername());
+            
+            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encodedPassword);
+        } else {
+            Users savedUser = this.getUserById(user.getId()).get();
+            user.setPassword(savedUser.getPassword());
+        }
+        
         return userDao.save(user);
     }
-
+    
     public List<Users> saveUsers(List<Users> users) {
         List<Users> savedUsers = new ArrayList<>();
         users.forEach(user -> {
@@ -50,15 +56,27 @@ public class UserServiceImpl implements UserService {
         });
         return savedUsers;
     }
-
+    
+    public Users saveUser(UsersDto userDto) {
+        Users user = this.getUserByUsername(userDto.getUsername());
+        
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        user.setUsername(userDto.getUsername());
+        
+        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+        user.setPassword(encodedPassword);
+        
+        return userDao.save(user);
+    }
+    
     public Optional<Users> getUserById(long id) {
         return userDao.findById(id);
     }
-
+    
     public List<Users> getUserAll() {
         return userDao.findAll();
     }
-
+    
     public List<Users> getUserByRole(Role role) {
         Users user = new Users();
         Set<Role> roles = new HashSet<Role>();
@@ -73,7 +91,7 @@ public class UserServiceImpl implements UserService {
         Example<Users> userExample = Example.of(user);
         return userDao.findAll(userExample);
     }
-
+    
     public Users getUserByUsername(String username) {
         Users user = new Users();
         user.setUsername(username);
@@ -83,7 +101,7 @@ public class UserServiceImpl implements UserService {
                 .first());
         return requestUser.isPresent() ? requestUser.get() : null;
     }
-
+    
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users user = new Users();

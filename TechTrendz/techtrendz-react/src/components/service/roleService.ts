@@ -49,3 +49,25 @@ export const saveRole = async (token: string, role: Object) => {
         })
     return data
 }
+
+export const getRoleAll = async (token: string) => {
+    await authOrReload(token)
+    let data: any = null
+    await axios.get(API + "getroleall", {
+        headers: {
+            Authorization: token
+        }
+    })
+        .then((response) => {
+            data = response.data
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+            data = null
+        })
+        .finally(() => {
+            return data;
+        })
+    return data
+}

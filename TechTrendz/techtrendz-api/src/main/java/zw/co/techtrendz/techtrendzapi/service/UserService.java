@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import zw.co.techtrendz.techtrendzapi.entity.Role;
 import zw.co.techtrendz.techtrendzapi.entity.Users;
+import zw.co.techtrendz.techtrendzapi.entity.UsersDto;
 
 /**
  *
@@ -21,6 +22,8 @@ public interface UserService extends UserDetailsService {
     public Users saveUser(Users user);
 
     public List<Users> saveUsers(List<Users> users);
+    
+    public Users saveUser(UsersDto userDto);
 
     public Optional<Users> getUserById(long id);
 

@@ -49,3 +49,25 @@ export const saveSalutation = async (token: string, salutation: Object) => {
         })
     return data
 }
+
+export const getSalutationAll = async (token: string) => {
+    await authOrReload(token)
+    let data: any = null
+    await axios.get(API + "getsalutationall", {
+        headers: {
+            Authorization: token
+        }
+    })
+        .then((response) => {
+            data = response.data
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+            data = null
+        })
+        .finally(() => {
+            return data;
+        })
+    return data
+}

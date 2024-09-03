@@ -52,6 +52,64 @@ export type ProductItem = {
   productStatus?: { id: number }
 }
 
-export type User = 
+export type Address = {
+  id: number
+  houseNumber: number
+  street: string
+  line1: string
+  line2: string
+  city: string
+  state: string
+  province: string
+  country: string
+  postalCode: string
+}
+
+export type BankAccount = {
+  id: number
+  accountNumber: string
+  bankName: string
+  branchName: string
+  ifscCode: string
+  dateTimeOpened: string
+}
+
+export type Salutation = {
+  id: number
+  title: string
+  description: string
+}
+
+export type Role = {
+  id: number
+  name: string
+  description: string
+}
+
+export type ContactType = {
+  id: number
+  name: string
+  description: string
+}
+
+export type Contact = {
+  id: number
+  content: string
+  contactType: ContactType
+}
+
+export type User = {
+  id: number
+  salutation: Salutation
+  forename: string
+  otherNames: string
+  lastname: string
+  username: string
+  password?: string
+  roles?: Role[]
+  addresses: Address[]
+  bankAccounts: BankAccount[]
+  contacts: Contact[]
+}
 
 export type SelectOption = { value: string | number, label: string, description?: string }

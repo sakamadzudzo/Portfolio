@@ -2,6 +2,7 @@ import axios from "axios"
 import { toast } from "react-toastify"
 import { authOrReload } from "./authService"
 import API from "./../utils/constants"
+import { User } from "../../types/types"
 
 export const getUserById = async (token: string, id: number) => {
     await authOrReload(token)
@@ -28,7 +29,7 @@ export const getUserById = async (token: string, id: number) => {
     return data
 }
 
-export const saveUser = async (token: string, user: Object) => {
+export const saveUser = async (token: string, user: User) => {
     await authOrReload(token)
     let data: any = null
     await axios.post(API + "saveuser", user, {
