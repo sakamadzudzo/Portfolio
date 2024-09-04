@@ -51,13 +51,13 @@ export const TagEdit = () => {
 
     useEffect(() => {
         if (!id || id === "0") {
-            document.title = 'TechTagz - New Tag';
+            document.title = 'TechBrandz - New Tag';
             setHeader("New Tag")
             setName("")
             setDescription("")
 
         } else {
-            document.title = 'TechTagz - Edit Tag';
+            document.title = 'TechBrandz - Edit Tag';
             getTag()
             setHeader("Edit Tag")
         }

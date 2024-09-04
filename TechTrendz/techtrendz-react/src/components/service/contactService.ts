@@ -49,3 +49,25 @@ export const saveContact = async (token: string, contact: Object) => {
         })
     return data
 }
+
+export const getContactAll = async (token: string) => {
+    await authOrReload(token)
+    let data: any = null
+    await axios.get(API + "getcontactall", {
+        headers: {
+            Authorization: token
+        }
+    })
+        .then((response) => {
+            data = response.data
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+            data = null
+        })
+        .finally(() => {
+            return data;
+        })
+    return data
+}

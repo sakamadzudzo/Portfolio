@@ -51,13 +51,13 @@ export const OrderStatusEdit = () => {
 
     useEffect(() => {
         if (!id || id === "0") {
-            document.title = 'TechOrderStatusz - New Order Status';
+            document.title = 'TechBrandz - New Order Status';
             setHeader("New Order Status")
             setName("")
             setDescription("")
 
         } else {
-            document.title = 'TechOrderStatusz - Edit Order Status';
+            document.title = 'TechBrandz - Edit Order Status';
             getOrderStatus()
             setHeader("Edit Order Status")
         }

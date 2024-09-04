@@ -128,12 +128,12 @@ export const ProductEdit = () => {
 
     useEffect(() => {
         if (!id || id === "0") {
-            document.title = 'TechProductz - New Product';
+            document.title = 'TechBrandz - New Product';
             setHeader("New Product")
             setProduct({} as Product)
 
         } else {
-            document.title = 'TechProductz - Edit Product';
+            document.title = 'TechBrandz - Edit Product';
             getProduct()
             setHeader("Edit Product")
         }

@@ -9,7 +9,7 @@ import { AuthState } from "../components/utils/authSlice"
 import { getUserById, saveUser } from "../components/service/userService"
 import { useNavigate, useOutletContext, useParams } from "react-router-dom"
 import { OverlayContextType } from "../components/Layout"
-import { Contact, Role, Salutation, SelectOption, User } from "../types/types"
+import { Contact, ContactType, Role, Salutation, SelectOption, User } from "../types/types"
 import { getSalutationAll } from "../components/service/salutationService"
 import FormSelect from "../components/FormSelect"
 import { getRoleAll } from "../components/service/roleService"
@@ -17,6 +17,9 @@ import FormMultiSelect from "../components/FormMultiSelect"
 import { IconMinus } from "../components/icons/IconMinus"
 import { IconPlus } from "../components/icons/IconPlus"
 import { Chip } from "../components/Chip"
+import { AddContactModal } from "../components/AddContactModal"
+import { getContactTypeAll } from "../components/service/contactTypeService"
+import { getContactAll } from "../components/service/contactService"
 
 export const UserEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -24,6 +27,8 @@ export const UserEdit = () => {
     const [user, setUser] = useState<User>({} as User)
     const [salutations, setSalutations] = useState<Salutation[]>([])
     const [roles, setRoles] = useState<Role[]>([])
+    const [contactTypes, setContactTypes] = useState<ContactType[]>([])
+    const [contacts, setContacts] = useState<Contact[]>([])
     const { id } = useParams()
     const navigate = useNavigate()
     const [header, setHeader] = useState("New User")
@@ -123,6 +128,20 @@ export const UserEdit = () => {
         }
     }, [token])
 
+    const getContactTypes = useCallback(async () => {
+        let result = await getContactTypeAll(token!)
+        if (result) {
+            setContactTypes(result)
+        }
+    }, [token])
+
+    const getContacts = useCallback(async () => {
+        let result = await getContactAll(token!)
+        if (result) {
+            setContacts(result)
+        }
+    }, [token])
+
     const save = async () => {
         setLoading(true)
         let dto = user
@@ -144,12 +163,12 @@ export const UserEdit = () => {
 
     useEffect(() => {
         if (!id || id === "0") {
-            document.title = 'TechUserz - New User';
+            document.title = 'TechBrandz - New User';
             setHeader("New User")
             setUser({} as User)
 
         } else {
-            document.title = 'TechUserz - Edit User';
+            document.title = 'TechBrandz - Edit User';
             getUser()
             setHeader("Edit User")
         }
@@ -160,6 +179,8 @@ export const UserEdit = () => {
 
         getSalutations()
         getRoles()
+        getContactTypes()
+        getContacts()
 
         setLoading(false)
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -181,18 +202,26 @@ export const UserEdit = () => {
                     {!id && <FormInput id="password" name="password" className="w-full" type="text" label="Password" onChange={setUserChanges} value={user.password!} placeholder="Password..." returnEvent={true} key={`password`} />}
                     <FormMultiSelect id="roles" name="roles" className="w-full" label="Roles" onChange={setUserChanges} values={user?.roles?.map((tag) => { return { value: tag.id, label: tag.name, description: tag.description } })!} placeholder="Roles..."
                         options={rolesToOptions()} clearable={true} searchable={true} disabled={false} autoFocus={false} key={`roles`} returnEvent={true} withChips />
-                    <div className="w-full flex flex-col">
+                    <div className="w-full flex flex-col border rounded-md p-1 relative">
+                        <div className="absolute left-1 -top-3 text-xs px-1 background">Contacts</div>
                         <div className="flex w-full flex-wrap gap-1">
-                            {user?.contacts && user?.contacts.map((contact, index) =>
-                                <Chip data={contact.content + "-" + contact.contactType?.name} removeable onClick={() => { removeContact(index); }}
+                            {user?.contacts ? user?.contacts.map((contact, index) => <div className="w-fit" key={`contactsdiv-` + index}>
+                                <Chip data={contact.content + " - " + contact.contactType?.name} removeable onClick={() => { removeContact(index); }}
                                     tooltip={contact.contactType?.name}
-                                    key={`contacts-` + index} />)}
+                                    key={`contacts-` + index} />
+                            </div>) : <div>No contacts</div>}
                         </div>
                         <div className="flex justify-end">
                             <div onClick={() => { setShowContactModal(true); }} className="icon h-5 hover:h-6 aspect-square cursor-pointer"><IconPlus /></div>
                         </div>
                     </div>
-                    {showContactModal && "Contact Modal here. Pretty much copy ContactEdit and make it a modal"}
+                    {showContactModal &&
+                        <AddContactModal
+                            close={setShowContactModal}
+                            contactTypes={contactTypes}
+                            addContact={addContact}
+                            contacts={contacts}
+                            key={`addcontactmodal`} />}
                 </FormBody>
                 <FormFooter className="justify-end">
                     <button className={`btn-hollow`} onClick={() => { navigate(-1); }}>Cancel</button>

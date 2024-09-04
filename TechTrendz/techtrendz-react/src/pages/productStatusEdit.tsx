@@ -51,13 +51,13 @@ export const ProductStatusEdit = () => {
 
     useEffect(() => {
         if (!id || id === "0") {
-            document.title = 'TechProductStatusz - New Product Status';
+            document.title = 'TechBrandz - New Product Status';
             setHeader("New Product Status")
             setName("")
             setDescription("")
 
         } else {
-            document.title = 'TechProductStatusz - Edit Product Status';
+            document.title = 'TechBrandz - Edit Product Status';
             getProductStatus()
             setHeader("Edit Product Status")
         }

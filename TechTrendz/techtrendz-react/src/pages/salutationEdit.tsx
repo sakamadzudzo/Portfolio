@@ -51,13 +51,13 @@ export const SalutationEdit = () => {
 
     useEffect(() => {
         if (!id || id === "0") {
-            document.title = 'TechSalutationz - New Salutation';
+            document.title = 'TechBrandz - New Salutation';
             setHeader("New Salutation")
             setTitle("")
             setDescription("")
 
         } else {
-            document.title = 'TechSalutationz - Edit Salutation';
+            document.title = 'TechBrandz - Edit Salutation';
             getSalutation()
             setHeader("Edit Salutation")
         }

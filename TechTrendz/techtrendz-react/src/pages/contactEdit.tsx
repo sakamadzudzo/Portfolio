@@ -11,7 +11,7 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom"
 import { OverlayContextType } from "../components/Layout"
 import { getContactTypeAll } from "../components/service/contactTypeService"
 import FormSelect from "../components/FormSelect"
-import { SelectOption } from "../types/types"
+import { ContactType, SelectOption } from "../types/types"
 
 export const ContactEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -22,7 +22,7 @@ export const ContactEdit = () => {
     const navigate = useNavigate()
     const [header, setHeader] = useState("New Contact")
     const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
-    const [contactTypes, setContactTypes] = useState<{ id: number, name: string, description: string }[]>([])
+    const [contactTypes, setContactTypes] = useState<ContactType[]>([])
 
     const getContact = useCallback(async () => {
         setLoading(true)
@@ -79,12 +79,12 @@ export const ContactEdit = () => {
 
     useEffect(() => {
         if (!id || id === "0") {
-            document.title = 'TechContactz - New Contact';
+            document.title = 'TechBrandz - New Contact';
             setHeader("New Contact")
             reset()
 
         } else {
-            document.title = 'TechContactz - Edit Contact';
+            document.title = 'TechBrandz - Edit Contact';
             getContact()
             setHeader("Edit Contact")
         }
@@ -97,7 +97,7 @@ export const ContactEdit = () => {
                 <FormHeader className="font-normal flex justify-center">
                     <>{header}</>
                 </FormHeader>
-                <FormBody className=" flex flex-col gap-5 pt-5">
+                <FormBody className="flex flex-col gap-5 pt-5">
                     <FormInput id="content" name="content" className="w-full" type="text" label="Content" onChange={(value: string) => { setContent(value) }} value={content} autoFocus={true} placeholder="Content..." />
                     <FormSelect id="contactTypeId" name="contactTypeId" className="w-full" label="Contact Type" onChange={(value: SelectOption) => { setContactType(value) }} value={contactType} placeholder="Contact Type..."
                         options={typesToOptions()} clearable={true} searchable={true} disabled={false} autoFocus={false} key={`contactTypeId`} />

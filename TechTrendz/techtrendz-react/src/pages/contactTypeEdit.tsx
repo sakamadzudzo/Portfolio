@@ -51,13 +51,13 @@ export const ContactTypeEdit = () => {
 
     useEffect(() => {
         if (!id || id === "0") {
-            document.title = 'TechContactTypez - New Contact Type';
+            document.title = 'TechBrandz - New Contact Type';
             setHeader("New Contact Type")
             setName("")
             setDescription("")
 
         } else {
-            document.title = 'TechContactTypez - Edit Contact Type';
+            document.title = 'TechBrandz - Edit Contact Type';
             getContactType()
             setHeader("Edit Contact Type")
         }

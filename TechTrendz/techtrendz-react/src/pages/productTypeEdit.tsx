@@ -51,13 +51,13 @@ export const ProductTypeEdit = () => {
 
     useEffect(() => {
         if (!id || id === "0") {
-            document.title = 'TechProductTypez - New Product Type';
+            document.title = 'TechBrandz - New Product Type';
             setHeader("New Product Type")
             setName("")
             setDescription("")
 
         } else {
-            document.title = 'TechProductTypez - Edit Product Type';
+            document.title = 'TechBrandz - Edit Product Type';
             getProductType()
             setHeader("Edit Product Type")
         }

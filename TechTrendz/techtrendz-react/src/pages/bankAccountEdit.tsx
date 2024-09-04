@@ -75,12 +75,12 @@ export const BankAccountEdit = () => {
 
     useEffect(() => {
         if (!id || id === "0") {
-            document.title = 'TechBankAccountz - New BankAccount';
+            document.title = 'TechBrandz - New Bank Account';
             setHeader("New BankAccount")
             reset()
 
         } else {
-            document.title = 'TechBankAccountz - Edit BankAccount';
+            document.title = 'TechBrandz - Edit Bank Account';
             getBankAccount()
             setHeader("Edit BankAccount")
         }

@@ -81,12 +81,12 @@ export const AddressEdit = () => {
 
     useEffect(() => {
         if (!id || id === "0") {
-            document.title = 'TechAddressz - New Address';
+            document.title = 'TechBrandz - New Address';
             setHeader("New Address")
             resetFields()
 
         } else {
-            document.title = 'TechAddressz - Edit Address';
+            document.title = 'TechBrandz - Edit Address';
             getAddress()
             setHeader("Edit Address")
         }

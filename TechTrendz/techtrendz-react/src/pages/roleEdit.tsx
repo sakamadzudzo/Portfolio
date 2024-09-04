@@ -51,13 +51,13 @@ export const RoleEdit = () => {
 
     useEffect(() => {
         if (!id || id === "0") {
-            document.title = 'TechRolez - New Role';
+            document.title = 'TechBrandz - New Role';
             setHeader("New Role")
             setName("")
             setDescription("")
 
         } else {
-            document.title = 'TechRolez - Edit Role';
+            document.title = 'TechBrandz - Edit Role';
             getRole()
             setHeader("Edit Role")
         }
