@@ -49,3 +49,25 @@ export const saveAddress = async (token: string, address: Object) => {
         })
     return data
 }
+
+export const getAddressAll = async (token: string) => {
+    await authOrReload(token)
+    let data: any = null
+    await axios.get(API + "getaddressall", {
+        headers: {
+            Authorization: token
+        }
+    })
+        .then((response) => {
+            data = response.data
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+            data = null
+        })
+        .finally(() => {
+            return data;
+        })
+    return data
+}

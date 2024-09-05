@@ -386,17 +386,17 @@ public class DummyDataServiceImpl {
         contactService.saveContacts(contacts);
         
         List<Users> users = Arrays.asList(
-                new Users(null, new Salutation(1L), "Erick", "Leonard", "Abraham", "elabraham", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{34, 68, 75, 87}), makeAccounts(new long[]{1L}), null),
-                new Users(null, new Salutation(1L), "Gretchen", null, "Proctor", "gproctor", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{72}), makeAccounts(new long[]{2L, 11L}), null),
-                new Users(null, new Salutation(1L), "Robbie", "Wilkins", "Erich", "rwerich", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{58}), makeAccounts(new long[]{3L, 12L, 15L}), null),
-                new Users(null, new Salutation(1L), "Heath", "Dickson", "Cherie", "hdcherie", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{18, 31}), makeAccounts(new long[]{4L}), null),
-                new Users(null, new Salutation(1L), "Brandie", "Finley", "Arthur", "bfarthur", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{26}), makeAccounts(new long[]{5L}), null),
-                new Users(null, new Salutation(1L), "Robinson", null, "Lara", "rlara", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{62}), makeAccounts(new long[]{6L}), null),
-                new Users(null, new Salutation(1L), "Randal", null, "Dickerson", "rdickerson", "test", makeRoles(new long[]{1}), null, makeAccounts(new long[]{7L, 14L}), null),
-                new Users(null, new Salutation(2L), "Keri", null, "Lesley", "klesley", "test", makeRoles(new long[]{1}), makeAddresses(new long[]{73}), makeAccounts(new long[]{8L, 13L}), null),
-                new Users(null, new Salutation(1L), "Roberta", null, "Morse", "rmorse", "test", makeRoles(new long[]{1}), null, makeAccounts(new long[]{9L}), null),
-                new Users(null, new Salutation(1L), "Cornelius", "Herring", "Emily", "chemily", "test", makeRoles(new long[]{1}), null, makeAccounts(new long[]{10L}), null),
-                new Users(null, new Salutation(1L), "Saka", "Shingirai", "Madzudzo", "ssmadzudzo", "test", makeRoles(new long[]{1, 2, 3}), makeAddresses(new long[]{72, 84}), makeAccounts(new long[]{15L}), makeContacts(new long[]{1L, 2L, 3L}))
+                new Users(null, new Salutation(1L), "Erick", "Leonard", "Abraham", "elabraham", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{34, 68, 75, 87}), makeAccounts(new long[]{1L}), null),
+                new Users(null, new Salutation(1L), "Gretchen", null, "Proctor", "gproctor", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{72}), makeAccounts(new long[]{2L, 11L}), null),
+                new Users(null, new Salutation(1L), "Robbie", "Wilkins", "Erich", "rwerich", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{58}), makeAccounts(new long[]{3L, 12L, 15L}), null),
+                new Users(null, new Salutation(1L), "Heath", "Dickson", "Cherie", "hdcherie", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{18, 31}), makeAccounts(new long[]{4L}), null),
+                new Users(null, new Salutation(1L), "Brandie", "Finley", "Arthur", "bfarthur", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{26}), makeAccounts(new long[]{5L}), null),
+                new Users(null, new Salutation(1L), "Robinson", null, "Lara", "rlara", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{62}), makeAccounts(new long[]{6L}), null),
+                new Users(null, new Salutation(1L), "Randal", null, "Dickerson", "rdickerson", "test", false, makeRoles(new long[]{1}), null, makeAccounts(new long[]{7L, 14L}), null),
+                new Users(null, new Salutation(2L), "Keri", null, "Lesley", "klesley", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{73}), makeAccounts(new long[]{8L, 13L}), null),
+                new Users(null, new Salutation(1L), "Roberta", null, "Morse", "rmorse", "test", false, makeRoles(new long[]{1}), null, makeAccounts(new long[]{9L}), null),
+                new Users(null, new Salutation(1L), "Cornelius", "Herring", "Emily", "chemily", "test", false, makeRoles(new long[]{1}), null, makeAccounts(new long[]{10L}), null),
+                new Users(null, new Salutation(1L), "Saka", "Shingirai", "Madzudzo", "ssmadzudzo", "test", false, makeRoles(new long[]{1, 2, 3}), makeAddresses(new long[]{72, 84}), makeAccounts(new long[]{15L}), makeContacts(new long[]{1L, 2L, 3L}))
         );
         userService.saveUsers(users);
     }

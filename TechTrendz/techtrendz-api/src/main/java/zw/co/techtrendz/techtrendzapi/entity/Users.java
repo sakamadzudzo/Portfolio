@@ -57,6 +57,8 @@ public class Users implements UserDetails {
     @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+    
+    private Boolean changePassword;
 
     @ManyToMany
     private Set<Role> roles;

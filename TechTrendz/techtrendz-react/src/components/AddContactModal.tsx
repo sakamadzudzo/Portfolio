@@ -3,11 +3,9 @@ import { Contact, ContactType, SelectOption } from "../types/types"
 import Form from "./Form"
 import FormBody from "./FormBody"
 import FormFooter from "./FormFooter"
-import FormHeader from "./FormHeader"
 import FormInput from "./FormInput"
 import FormSelect from "./FormSelect"
 import { Modal } from "./Modal"
-import FormMultiSelect from "./FormMultiSelect"
 
 export const AddContactModal = ({
     close,
@@ -35,8 +33,8 @@ export const AddContactModal = ({
 
     const contactsToOptions = (): SelectOption[] => {
         return contacts ? contacts
-            .sort((a, b) => a.content.localeCompare(b.content))
-            .map((item) => { return { value: item.id, label: item.content, description: item.contactType.description } })
+            .sort((a, b) => a?.content?.localeCompare(b?.content))
+            .map((item) => { return { value: item?.id, label: item?.content, description: item?.contactType?.description } })
             : [] as SelectOption[]
     }
 
@@ -62,7 +60,7 @@ export const AddContactModal = ({
                     setContact(currentContact)
                 } else {
                     setContent(currentContact.content)
-                    setContactType({ value: currentContact.contactType.id, label: currentContact.contactType.name, description: currentContact.contactType.name })
+                    setContactType({ value: currentContact?.contactType?.id, label: currentContact?.contactType?.name, description: currentContact?.contactType?.name })
                 }
             }
         }

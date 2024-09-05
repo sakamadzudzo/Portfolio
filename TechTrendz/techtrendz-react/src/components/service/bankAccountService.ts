@@ -49,3 +49,25 @@ export const saveBankAccount = async (token: string, bankAccount: Object) => {
         })
     return data
 }
+
+export const getBankAccountAll = async (token: string) => {
+    await authOrReload(token)
+    let data: any = null
+    await axios.get(API + "getbankaccountall", {
+        headers: {
+            Authorization: token
+        }
+    })
+        .then((response) => {
+            data = response.data
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+            data = null
+        })
+        .finally(() => {
+            return data;
+        })
+    return data
+}
