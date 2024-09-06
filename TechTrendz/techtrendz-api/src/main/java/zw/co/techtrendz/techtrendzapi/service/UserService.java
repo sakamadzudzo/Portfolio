@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import zw.co.techtrendz.techtrendzapi.entity.Role;
+import zw.co.techtrendz.techtrendzapi.entity.UserDto;
 import zw.co.techtrendz.techtrendzapi.entity.Users;
 import zw.co.techtrendz.techtrendzapi.entity.UsersDto;
 
@@ -19,9 +20,9 @@ import zw.co.techtrendz.techtrendzapi.entity.UsersDto;
 @Service
 public interface UserService extends UserDetailsService {
 
-    public Users saveUser(Users user);
+    public Users saveUser(UserDto user);
 
-    public List<Users> saveUsers(List<Users> users);
+    public List<Users> saveUsers(List<UserDto> users);
     
     public Users saveUser(UsersDto userDto);
 

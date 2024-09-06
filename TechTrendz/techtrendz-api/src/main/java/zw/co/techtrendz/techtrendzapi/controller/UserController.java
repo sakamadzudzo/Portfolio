@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zw.co.techtrendz.techtrendzapi.entity.Role;
+import zw.co.techtrendz.techtrendzapi.entity.UserDto;
 import zw.co.techtrendz.techtrendzapi.entity.Users;
 import zw.co.techtrendz.techtrendzapi.entity.UsersDto;
 import zw.co.techtrendz.techtrendzapi.service.UserService;
@@ -29,7 +30,7 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(name = "/saveuser", value = "/saveuser", method = RequestMethod.POST)
-    public Users saveUser(@Valid @RequestBody Users user) {
+    public Users saveUser(@Valid @RequestBody UserDto user) {
         return userService.saveUser(user);
     }
 

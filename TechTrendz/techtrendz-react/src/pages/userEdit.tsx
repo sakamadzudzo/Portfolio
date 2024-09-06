@@ -69,6 +69,11 @@ export const UserEdit = () => {
             : [] as SelectOption[]
     }
 
+    const changePasswordTick = () => {
+        const val: { target: { name: string, value: boolean } } = { target: { name: "changePassword", value: !user.changePassword } }
+        setUserChanges(val)
+    }
+
     const setUserChanges = (e: any) => {
         if (e.value) {
             if (e.value instanceof Array) {
@@ -81,12 +86,12 @@ export const UserEdit = () => {
                 const { name, value } = e as { name: string, value: SelectOption }
                 setUser((prevState: any) => ({
                     ...prevState,
-                    [name]: { id: value.value, name: value.label, description: value.description }
+                    [name]: { id: value.value, title: value.label, description: value.description }
                 }));
             }
         }
         else {
-            const { name, value } = e.target as unknown as { name: string, value: string | SelectOption }
+            const { name, value } = e.target as unknown as { name: string, value: string | SelectOption | boolean }
             setUser((prevState: any) => ({
                 ...prevState,
                 [name]: value
@@ -242,7 +247,7 @@ export const UserEdit = () => {
     }
 
     useEffect(() => {
-        if (user.username && (user.id ? user.password : true) && user.forename && user.lastname) {
+        if (user.username !== "" && (user.id ? user.password !== "" : true) && user.forename !== "" && user.lastname !== "") {
             setDisableSave(false)
         } else {
             setDisableSave(true)
@@ -282,7 +287,7 @@ export const UserEdit = () => {
                 <FormHeader className="font-normal flex justify-center">
                     <>{header}</>
                 </FormHeader>
-                <FormBody className=" flex flex-col gap-5 pt-5">
+                <FormBody className="flex flex-col gap-5 pt-5">
                     <FormSelect id="salutation" name="salutation" className="w-full" label="Salutation" onChange={setUserChanges} value={{ value: user?.salutation?.id!, label: user?.salutation?.title!, description: user?.salutation?.description }} placeholder="Salutation..."
                         options={salutationsToOptions()} clearable={true} searchable={true} disabled={false} autoFocus={false} key={`salutation`} returnEvent={true} />
                     <FormInput id="forename" name="forename" className="w-full" type="text" label="Forename" onChange={setUserChanges} value={user.forename} autoFocus={true} placeholder="Forname..." returnEvent={true} key={`forename`} />
@@ -290,7 +295,7 @@ export const UserEdit = () => {
                     <FormInput id="lastname" name="lastname" className="w-full" type="text" label="Lastname" onChange={setUserChanges} value={user.lastname} placeholder="Lastname..." returnEvent={true} key={`lastname`} />
                     <FormInput id="username" name="username" className="w-full" type="text" label="Username" onChange={setUserChanges} value={user.username} placeholder="Username..." returnEvent={true} key={`username`} />
                     {!id && <FormInput id="password" name="password" className="w-full" type="text" label="Password" onChange={setUserChanges} value={user.password!} placeholder="Password..." returnEvent={true} key={`password`} />}
-                    {!id && "Change password at login checkbox"}
+                    {!id && <FormInput id="changePassword" name="changePassword" className="w-full" type="checkbox" label="Change Password?" onChange={changePasswordTick} value={user.changePassword ? "true" : ""} placeholder="Change Password?..." returnEvent={true} key={`changePassword`} />}
                     <FormMultiSelect id="roles" name="roles" className="w-full" label="Roles" onChange={setUserChanges} values={user?.roles?.map((tag) => { return { value: tag.id, label: tag.name, description: tag.description } })!} placeholder="Roles..."
                         options={rolesToOptions()} clearable={true} searchable={true} disabled={false} autoFocus={false} key={`roles`} returnEvent={true} withChips />
                     <div className="w-full flex flex-col border rounded-md p-1 relative">
@@ -305,7 +310,7 @@ export const UserEdit = () => {
                             </div>) : <div>No contacts</div>}
                         </div>
                         <div className="flex justify-end">
-                            <div onClick={() => { setCurrentContact({} as Contact); setShowContactModal(true); }} className="icon h-5 hover:h-6 aspect-square cursor-pointer"><IconPlus /></div>
+                            <div onClick={() => { setCurrentContact({} as Contact); setShowContactModal(true); }} className="icon h-5 hover:scale-x-125 aspect-square cursor-pointer"><IconPlus /></div>
                         </div>
                     </div>
                     <div className="w-full flex flex-col border rounded-md p-1 relative">
@@ -321,7 +326,7 @@ export const UserEdit = () => {
                             </div>) : <div>No addresses</div>}
                         </div>
                         <div className="flex justify-end">
-                            <div onClick={() => { setCurrentAddress({} as Address); setShowAddressModal(true); }} className="icon h-5 hover:h-6 aspect-square cursor-pointer"><IconPlus /></div>
+                            <div onClick={() => { setCurrentAddress({} as Address); setShowAddressModal(true); }} className="icon h-5 hover:scale-x-125 aspect-square cursor-pointer"><IconPlus /></div>
                         </div>
                     </div>
                     <div className="w-full flex flex-col border rounded-md p-1 relative">
@@ -337,7 +342,7 @@ export const UserEdit = () => {
                             </div>) : <div>No bank accounts</div>}
                         </div>
                         <div className="flex justify-end">
-                            <div onClick={() => { setCurrentBankAccount({} as BankAccount); setShowBankAccountModal(true); }} className="icon h-5 hover:h-6 aspect-square cursor-pointer"><IconPlus /></div>
+                            <div onClick={() => { setCurrentBankAccount({} as BankAccount); setShowBankAccountModal(true); }} className="icon h-5 hover:scale-x-125 aspect-square cursor-pointer"><IconPlus /></div>
                         </div>
                     </div>
                     {showContactModal &&

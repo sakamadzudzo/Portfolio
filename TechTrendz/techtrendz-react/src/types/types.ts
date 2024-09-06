@@ -106,6 +106,7 @@ export type User = {
   lastname: string
   username: string
   password?: string
+  changePassword?: boolean
   roles?: Role[]
   addresses: Address[]
   bankAccounts: BankAccount[]
