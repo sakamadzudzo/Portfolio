@@ -21,7 +21,6 @@ export const Header = ({
         <div className="w-full flex justify-center items-center h-7">
             {isLogin ? <>
                 <Menu className="h-7" />
-                {/* <div className="font-medium">TechBrandz</div> */}
                 <NavLink to={`/`} className="font-medium" >TechBrandz</NavLink>
             </> : <></>}
             <button className="absolute top-0.5 right-0.5 focus:outline-none z-50" onClick={() => setDark(!dark)}>

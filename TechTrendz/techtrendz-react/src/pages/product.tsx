@@ -3,13 +3,14 @@ import { useOutletContext, useParams } from "react-router-dom";
 import { countProductItemsAvialableByProductId, getProductById } from "../components/service/productService";
 import { useSelector } from "react-redux";
 import { AuthState } from "../components/utils/authSlice";
-import cat from './../assets/img/cat1.webp'
 import { IconCartPlus } from "../components/icons/IconCartPlus";
 import { addToCart, getCartByUserId } from "../components/service/cartService";
 import { numformat } from "../components/utils/misc";
 import FormInput from "../components/FormInput";
 import { toast } from "react-toastify";
 import { OverlayContextType } from "../components/Layout";
+import { MediaDisplay } from "../components/MediaViewer";
+import cat from './../assets/img/cat1.webp'
 
 export const Product = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -109,7 +110,13 @@ export const Product = () => {
         <div className="wrapper">
             {product ?
                 <div className="rounded-sm flex md:justify-center h-full portrait:flex-col portrait:justify-between landscape:items-center gap-1 portrait:md:w-96">
-                    <img src={cat} alt="Cat 1" className="aspect-square landscape:h-96" />
+                    <MediaDisplay className="landscape:h-96 portrait:h-1/2 aspect-square" />
+                    {/* <div className="landscape:h-96 border aspect-square"></div> */}
+                    {/* <img
+                        src={cat}
+                        alt={`media-cat`}
+                        className={`landscape:h-96 border portrait:h-[50%] aspect-square`}
+                    /> */}
                     <div className="flex flex-col h-[48%] landscape:h-96 portrait:justify-between">
                         <div className="flex flex-col h-[33%] flex-grow landscape:w-96">
                             <div className="flex justify-between portrait:h-7">
