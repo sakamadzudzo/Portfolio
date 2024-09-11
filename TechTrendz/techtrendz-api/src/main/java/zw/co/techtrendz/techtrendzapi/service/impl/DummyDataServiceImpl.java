@@ -6,7 +6,13 @@ package zw.co.techtrendz.techtrendzapi.service.impl;
 
 import zw.co.techtrendz.techtrendzapi.service.ProductItemService;
 import jakarta.annotation.PostConstruct;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,9 +20,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import zw.co.techtrendz.techtrendzapi.entity.Address;
 import zw.co.techtrendz.techtrendzapi.entity.BankAccount;
 import zw.co.techtrendz.techtrendzapi.entity.Brand;
@@ -31,7 +40,6 @@ import zw.co.techtrendz.techtrendzapi.entity.Role;
 import zw.co.techtrendz.techtrendzapi.entity.Salutation;
 import zw.co.techtrendz.techtrendzapi.entity.Tag;
 import zw.co.techtrendz.techtrendzapi.entity.UserDto;
-import zw.co.techtrendz.techtrendzapi.entity.Users;
 import zw.co.techtrendz.techtrendzapi.service.AddressService;
 import zw.co.techtrendz.techtrendzapi.service.BankAccountService;
 import zw.co.techtrendz.techtrendzapi.service.BrandService;
@@ -45,6 +53,8 @@ import zw.co.techtrendz.techtrendzapi.service.TagService;
 import zw.co.techtrendz.techtrendzapi.service.UserService;
 import zw.co.techtrendz.techtrendzapi.service.CheckoutStatusService;
 import zw.co.techtrendz.techtrendzapi.service.ContactService;
+import zw.co.techtrendz.techtrendzapi.service.MediaFileService;
+import zw.co.techtrendz.techtrendzapi.util.FileMultipartFile;
 
 /**
  *
@@ -52,7 +62,7 @@ import zw.co.techtrendz.techtrendzapi.service.ContactService;
  */
 @Service
 public class DummyDataServiceImpl {
-    
+
     @Autowired
     private UserService userService;
     @Autowired
@@ -82,23 +92,18 @@ public class DummyDataServiceImpl {
     @Autowired
     private ContactService contactService;
     @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    
-    private record UsersRole(int userId, int roleId) {
-        
-    }
-    
-    private record UsersAddress(int addressId, int userId) {
-        
-    }
-    
+    private MediaFileService mediaFileService;
+
+    @Value("${file.upload-dir}") // Define this in application.properties
+    private String uploadDir;
+
     @PostConstruct
     private void insertDummyData() {
         salutationService.saveSalutation(new Salutation(1L, "Mr", "Mr"));
         salutationService.saveSalutation(new Salutation(2L, "Miss", "Miss"));
         salutationService.saveSalutation(new Salutation(3L, "Mrs", "Mrs"));
         salutationService.saveSalutation(new Salutation(4L, "Dr", "Dr"));
-        
+
         List<Brand> brands = Arrays.asList(
                 new Brand(1L, "Sony", "Sony"),
                 new Brand(2L, "LG", "LG"),
@@ -136,7 +141,7 @@ public class DummyDataServiceImpl {
                 new Brand(34L, "Toshiba", "Toshiba")
         );
         brandService.saveBrands(brands);
-        
+
         List<Tag> tags = Arrays.asList(
                 new Tag(1L, "Television", "Television"),
                 new Tag(2L, "TV", "Television"),
@@ -158,12 +163,12 @@ public class DummyDataServiceImpl {
                 new Tag(18L, "Dell", "Brand name")
         );
         tagService.saveTags(tags);
-        
+
         productStatusService.saveProductStatus(new ProductStatus(1L, "FREE", "Product is available"));
         productStatusService.saveProductStatus(new ProductStatus(2L, "CARTED", "Product has been put in a cart"));
         productStatusService.saveProductStatus(new ProductStatus(3L, "ORDERED", "Product has been checkouted by someone"));
         productStatusService.saveProductStatus(new ProductStatus(4L, "PURCHASED", "Product has been purchased"));
-        
+
         productTypeService.saveProductType(new ProductType(1L, "REFRIDGERATOR", "Refridgerator"));
         productTypeService.saveProductType(new ProductType(2L, "TELEVISION", "Television"));
         productTypeService.saveProductType(new ProductType(3L, "LAPTOP", "Laptop"));
@@ -171,7 +176,7 @@ public class DummyDataServiceImpl {
         productTypeService.saveProductType(new ProductType(5L, "PRINTER", "Printer"));
         productTypeService.saveProductType(new ProductType(6L, "MICROWAVE", "Microwave"));
         productTypeService.saveProductType(new ProductType(7L, "MONITOR", "Monitor"));
-        
+
         List<Product> products = Arrays.asList(
                 new Product(1L, "LG 32inch", "32inch LCD flat screen TV", new Brand(2l), new ProductType(2l), null, makeTags(new long[]{1L, 2L, 3L, 4L, 5L}), new BigDecimal(95)),
                 new Product(2L, "Xiomi Redmi Note 12 pro 5G", "A very fast Xiomi smartphone", new Brand(16L), new ProductType(4L), null, makeTags(new long[]{6L, 7L, 8L, 9L, 10L}), new BigDecimal(250)),
@@ -206,9 +211,9 @@ public class DummyDataServiceImpl {
                 new Product(31L, "Lenovo Legion 5", "Lenovo's gaming laptop with powerful hardware and immersive display.", new Brand(14L), new ProductType(3L), null, makeTags(new long[]{15L, 17L}), new BigDecimal(1199.99)),
                 new Product(32L, "Dell G5 15", "Dell's affordable gaming laptop with good performance and design.", new Brand(15L), new ProductType(3L), null, makeTags(new long[]{17L, 18L}), new BigDecimal(899.99))
         );
-        
+
         productService.saveProducts(products);
-        
+
         List<ProductItem> productItems = Arrays.asList(
                 new ProductItem(1l, new ProductStatus(1L), new Product(1L), null, "9PQ67890MNA01"),
                 new ProductItem(2l, new ProductStatus(1L), new Product(1L), null, "9PQ67890MNA02"),
@@ -229,9 +234,9 @@ public class DummyDataServiceImpl {
                 new ProductItem(17l, new ProductStatus(1L), new Product(8L), null, "9PQ67890MNA017"),
                 new ProductItem(18l, new ProductStatus(1L), new Product(8L), null, "9PQ67890MNA018")
         );
-        
+
         productItemService.saveProductItems(productItems);
-        
+
         List<ContactType> contactTypes = Arrays.asList(
                 new ContactType(1L, "EMAIL", "Email address"),
                 new ContactType(2L, "MESSENGER", "Instant messenger"),
@@ -240,20 +245,20 @@ public class DummyDataServiceImpl {
                 new ContactType(5L, "WHATSAPP", "WhatsApp number")
         );
         contactTypeService.saveContactTypes(contactTypes);
-        
+
         List<Role> roles = Arrays.asList(
                 new Role(1L, "CUSTOMER", "Role for purchasing customer."),
                 new Role(2L, "ADMINISTRATOR", "Role for site administrator."),
                 new Role(3L, "MAINTAINER", "Role for maintaining site products, prices, and all other shop data.")
         );
         roleService.saveRoles(roles);
-        
+
         checkoutStatusService.saveCheckoutStatus(new CheckoutStatus(1L, "ORDERED", "Order placed"));
         checkoutStatusService.saveCheckoutStatus(new CheckoutStatus(2L, "PENDING", "Order pending"));
         checkoutStatusService.saveCheckoutStatus(new CheckoutStatus(3L, "PROCESSING", "Order being processed"));
         checkoutStatusService.saveCheckoutStatus(new CheckoutStatus(4L, "APPROVED", "Order approved"));
         checkoutStatusService.saveCheckoutStatus(new CheckoutStatus(5L, "PURCHASED", "Purchase successful"));
-        
+
         List<Address> addresses = Arrays.asList(
                 new Address(1L, 123L, "Main Street", "Main Street", "Newlands", "Harare", null, "Harare", "Zimbabwe", "12345"),
                 new Address(2L, 456L, "High Street", "High Street", "Hillside", "Bulawayo", null, "Bulawayo", "Zimbabwe", "67890"),
@@ -359,7 +364,7 @@ public class DummyDataServiceImpl {
                 new Address(102L, 900L, "Fifty-Fourth Avenue", "Fifty-Fourth Avenue", "Mashonaland West", "Kariba", "Mashonaland West", "Mashonaland West", "Zimbabwe", "64093")
         );
         addressService.saveAddresses(addresses);
-        
+
         List<BankAccount> bankAccounts = Arrays.asList(
                 new BankAccount(1L, 66527445610001L, "CBZ", "Jeanine", "", LocalDateTime.parse("2008-09-24 12:23:41.568000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
                 new BankAccount(2L, 66527445610002L, "CBZ", "Tabatha", "", LocalDateTime.parse("2008-04-17 07:01:08.992000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))),
@@ -378,14 +383,14 @@ public class DummyDataServiceImpl {
                 new BankAccount(15L, 66527445610015L, "CBZ", "Cecil", "", LocalDateTime.parse("2008-01-28 06:59:19.936000", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")))
         );
         bankAccountService.saveBankAccounts(bankAccounts);
-        
+
         List<Contact> contacts = Arrays.asList(
                 new Contact(1L, "263773702467", new ContactType(3L)),
                 new Contact(2L, "263773702467", new ContactType(5L)),
                 new Contact(3L, "sakamadzudzo@gmail.com", new ContactType(1L))
         );
         contactService.saveContacts(contacts);
-        
+
         List<UserDto> users = Arrays.asList(
                 new UserDto(null, new Salutation(1L), "Erick", "Leonard", "Abraham", "elabraham", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{34, 68, 75, 87}), makeAccounts(new long[]{1L}), null),
                 new UserDto(null, new Salutation(1L), "Gretchen", null, "Proctor", "gproctor", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{72}), makeAccounts(new long[]{2L, 11L}), null),
@@ -400,8 +405,10 @@ public class DummyDataServiceImpl {
                 new UserDto(null, new Salutation(1L), "Saka", "Shingirai", "Madzudzo", "ssmadzudzo", "test", false, makeRoles(new long[]{1, 2, 3}), makeAddresses(new long[]{72, 84}), makeAccounts(new long[]{15L}), makeContacts(new long[]{1L, 2L, 3L}))
         );
         userService.saveUsers(users);
+
+        this.tempMedia();
     }
-    
+
     private Set<Role> makeRoles(long[] ids) {
         Set<Role> roles = new HashSet<>();
         for (long id : ids) {
@@ -409,7 +416,7 @@ public class DummyDataServiceImpl {
         }
         return roles;
     }
-    
+
     private Set<Address> makeAddresses(long[] ids) {
         Set<Address> addresses = new HashSet<>();
         for (long id : ids) {
@@ -417,7 +424,7 @@ public class DummyDataServiceImpl {
         }
         return addresses;
     }
-    
+
     private List<Tag> makeTags(long[] ids) {
         List<Tag> tags = new ArrayList<>();
         for (long id : ids) {
@@ -425,7 +432,7 @@ public class DummyDataServiceImpl {
         }
         return tags;
     }
-    
+
     private Set<BankAccount> makeAccounts(long[] ids) {
         Set<BankAccount> bankAccounts = new HashSet<>();
         for (long id : ids) {
@@ -433,12 +440,32 @@ public class DummyDataServiceImpl {
         }
         return bankAccounts;
     }
-    
+
     private Set<Contact> makeContacts(long[] ids) {
         Set<Contact> contacts = new HashSet<>();
         for (long id : ids) {
             contacts.add(new Contact(id));
         }
         return contacts;
+    }
+
+    private void tempMedia() {
+        Path dir = Paths.get(System.getProperty("user.dir"), uploadDir);
+//        System.out.println("\n\nStarting to save media\n\n " + dir + "/cat1.png\n\n");
+        try {
+            File cat1png = new File(dir + "/cat1.webp");
+            File wave1png = new File(dir + "/3d-network-particle-flow-background.jpg");
+            MultipartFile cat1 = new FileMultipartFile(cat1png, Files.probeContentType(cat1png.toPath()));
+            MultipartFile wave = new FileMultipartFile(wave1png, Files.probeContentType(wave1png.toPath()));
+//            System.out.println("\n\nStarting to save media\n\n " + cat1.getSize() + "/cat1.png\n\n");
+            MultipartFile[] files = new MultipartFile[]{cat1, wave};
+//            mediaFileService.saveFiles(files);
+            mediaFileService.saveFile(cat1);
+            mediaFileService.saveFile(wave);
+        } catch (IOException ex) {
+            Logger.getLogger(DummyDataServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(DummyDataServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

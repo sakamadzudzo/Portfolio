@@ -48,7 +48,8 @@ public class UserServiceImpl implements UserService {
     private AddressService addressService;
 
     public Users saveUser(UserDto u) {
-        Users user = new Users(u.getId(), u.getSalutation(), u.getForename(), u.getOtherNames(), u.getLastname(), u.getUsername(), u.getPassword(), u.getChangePassword(), u.getRoles(), u.getAddresses(), u.getBankAccounts(), u.getContacts());
+        // Have to pass in MultipartFile or null here
+        Users user = new Users(u.getId(), u.getSalutation(), u.getForename(), u.getOtherNames(), u.getLastname(), u.getUsername(), u.getPassword(), u.getChangePassword(), u.getRoles(), u.getAddresses(), u.getBankAccounts(), u.getContacts(), null);
         if (user.getId() == null || user.getId() < 1) {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             user.setUsername(user.getUsername());

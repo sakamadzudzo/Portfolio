@@ -66,6 +66,9 @@ public class Product {
     @NotNull
     private BigDecimal price;
 
+//    @OneToMany
+//    private List<MediaFile> pictures;
+
     public Product(long id) {
         this.id = id;
     }

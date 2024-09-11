@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
@@ -71,6 +72,9 @@ public class Users implements UserDetails {
     
     @ManyToMany
     private Set<Contact> contacts;
+    
+    @OneToOne
+    private MediaFile profilePic;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
