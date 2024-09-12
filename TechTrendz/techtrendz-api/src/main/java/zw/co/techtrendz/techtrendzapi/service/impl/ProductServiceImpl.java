@@ -4,9 +4,10 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -15,9 +16,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import zw.co.techtrendz.techtrendzapi.entity.MediaFile;
 import zw.co.techtrendz.techtrendzapi.entity.PagedProductsRequestDto;
 import zw.co.techtrendz.techtrendzapi.entity.Product;
 import zw.co.techtrendz.techtrendzapi.repository.ProductDao;
+import zw.co.techtrendz.techtrendzapi.service.MediaFileService;
 import zw.co.techtrendz.techtrendzapi.service.ProductService;
 
 /**
@@ -29,9 +32,26 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductDao productDao;
+    @Autowired
+    private MediaFileService mediaFileService;
 
-    public Product saveProduct(Product address) {
-        Product newProduct = productDao.save(address);
+    public Product saveProduct(Product product) {
+        if (product.getFiles() != null) {
+            List<MediaFile> mediaFiles = product.getPictures();
+            product.getFiles().forEach(file -> {
+                try {
+                    MediaFile mediaFile = mediaFileService.saveFile(file);
+                    mediaFiles.add(mediaFile);
+                } catch (IOException ex) {
+                    // Wrap IOException in a RuntimeException to avoid the unreported exception error
+                    throw new RuntimeException("Failed to save media file", ex);
+                } catch (NoSuchAlgorithmException ex) {
+                    throw new RuntimeException("Hashing algorithm issue", ex); // Optionally rethrow as a runtime exception
+                }
+            });
+            product.setPictures(mediaFiles);
+        }
+        Product newProduct = productDao.save(product);
         newProduct.setProductItems(null);
         return newProduct;
     }

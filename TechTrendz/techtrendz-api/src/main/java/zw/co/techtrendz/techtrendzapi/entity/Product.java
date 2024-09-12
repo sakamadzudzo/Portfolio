@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.envers.Audited;
+import org.springframework.web.multipart.MultipartFile;
 import zw.co.techtrendz.techtrendzapi.views.View;
 
 /**
@@ -66,8 +68,11 @@ public class Product {
     @NotNull
     private BigDecimal price;
 
-//    @OneToMany
-//    private List<MediaFile> pictures;
+    @ManyToMany
+    private List<MediaFile> pictures;
+    
+    @Transient
+    private List<MultipartFile> files;
 
     public Product(long id) {
         this.id = id;

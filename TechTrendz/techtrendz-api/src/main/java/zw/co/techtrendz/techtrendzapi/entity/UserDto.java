@@ -16,6 +16,7 @@ import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -56,4 +57,6 @@ public class UserDto {
 
     @ManyToMany
     private Set<Contact> contacts;
+    
+    private MultipartFile files;
 }

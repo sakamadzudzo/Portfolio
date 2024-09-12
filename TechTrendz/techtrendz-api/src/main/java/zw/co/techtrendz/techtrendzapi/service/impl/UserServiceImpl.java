@@ -4,6 +4,8 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import zw.co.techtrendz.techtrendzapi.entity.Address;
 import zw.co.techtrendz.techtrendzapi.entity.BankAccount;
 import zw.co.techtrendz.techtrendzapi.entity.Contact;
+import zw.co.techtrendz.techtrendzapi.entity.MediaFile;
 import zw.co.techtrendz.techtrendzapi.entity.Role;
 import zw.co.techtrendz.techtrendzapi.entity.UserDto;
 import zw.co.techtrendz.techtrendzapi.entity.Users;
@@ -29,6 +32,7 @@ import zw.co.techtrendz.techtrendzapi.repository.UserDao;
 import zw.co.techtrendz.techtrendzapi.service.AddressService;
 import zw.co.techtrendz.techtrendzapi.service.BankAccountService;
 import zw.co.techtrendz.techtrendzapi.service.ContactService;
+import zw.co.techtrendz.techtrendzapi.service.MediaFileService;
 import zw.co.techtrendz.techtrendzapi.service.UserService;
 
 /**
@@ -46,10 +50,25 @@ public class UserServiceImpl implements UserService {
     private BankAccountService bankAccountService;
     @Autowired
     private AddressService addressService;
+    @Autowired
+    private MediaFileService mediaFileService;
 
     public Users saveUser(UserDto u) {
         // Have to pass in MultipartFile or null here
         Users user = new Users(u.getId(), u.getSalutation(), u.getForename(), u.getOtherNames(), u.getLastname(), u.getUsername(), u.getPassword(), u.getChangePassword(), u.getRoles(), u.getAddresses(), u.getBankAccounts(), u.getContacts(), null);
+
+        if (u.getFiles() != null) {
+            try {
+                MediaFile mediaFile = mediaFileService.saveFile(u.getFiles());
+                user.setProfilePic(mediaFile);
+            } catch (IOException ex) {
+                // Wrap IOException in a RuntimeException to avoid the unreported exception error
+                throw new RuntimeException("Failed to save media file", ex);
+            } catch (NoSuchAlgorithmException ex) {
+                throw new RuntimeException("Hashing algorithm issue", ex); // Optionally rethrow as a runtime exception
+            }
+        }
+
         if (user.getId() == null || user.getId() < 1) {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             user.setUsername(user.getUsername());

@@ -47,4 +47,8 @@ public class MediaFile {
 
     @Transient
     private String error;
+
+    public MediaFile(long id) {
+        this.id = id;
+    }
 }

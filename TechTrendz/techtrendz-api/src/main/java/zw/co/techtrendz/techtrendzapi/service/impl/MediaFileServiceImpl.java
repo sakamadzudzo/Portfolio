@@ -6,6 +6,7 @@ package zw.co.techtrendz.techtrendzapi.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,12 +14,22 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Example;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 import zw.co.techtrendz.techtrendzapi.entity.MediaFile;
 import zw.co.techtrendz.techtrendzapi.repository.MediaFileDao;
@@ -139,5 +150,56 @@ public class MediaFileServiceImpl implements MediaFileService {
             }
         });
         return savedFiles;
+    }
+
+    public Optional<MediaFile> getMediaFileById(long id) {
+        MediaFile mediaFile = new MediaFile(id);
+        Example mediaFileExample = Example.of(mediaFile);
+        return mediaFileDao.findOne(mediaFileExample);
+    }
+
+    public ResponseEntity<Object> getFileByMediaFileId(long id) {
+//        try {
+//            List<byte[]> files = new ArrayList<>();
+//            MediaFile newMediaFile = new MediaFile(id);
+//            Example mediaFileExample = Example.of(newMediaFile);
+//            MediaFile mediaFile = (MediaFile) mediaFileDao.findOne(mediaFileExample).get();
+//            File file = new File(mediaFile.getFilePath());
+//            byte[] fileContent = Files.readAllBytes(file.toPath());
+//            return fileContent;
+//        } catch (IOException ex) {
+////            return null;
+//            throw new RuntimeException("Failed to fetch media", ex);
+//        }
+
+        try {
+            // Step 1: Locate the file on the disk
+            MediaFile newMediaFile = new MediaFile(id);
+            Example mediaFileExample = Example.of(newMediaFile);
+            MediaFile mediaFile = (MediaFile) mediaFileDao.findOne(mediaFileExample).get();
+            Path filePath = Paths.get(mediaFile.getFilePath());
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (!resource.exists()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(null);
+            }
+
+            // Step 2: Set content type based on the file type
+            String contentType = Files.probeContentType(filePath);
+
+            // Step 3: Return the file with appropriate headers
+            return ResponseEntity.ok()
+                    .contentType(org.springframework.http.MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .body(resource);
+
+        } catch (MalformedURLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
     }
 }

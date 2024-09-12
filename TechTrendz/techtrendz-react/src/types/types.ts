@@ -25,6 +25,7 @@ export interface Product {
   productItems: []
   tags: Tag[]
   price: number
+  pictures: MediaFile[]
 }
 
 export type Tag = {
@@ -111,6 +112,22 @@ export type User = {
   addresses: Address[]
   bankAccounts: BankAccount[]
   contacts: Contact[]
+  profilePic?: MediaFile
+}
+
+export type MediaFile = {
+  id: number
+  originalName: string
+  hashName: string
+  filePath: string
+  fileType: string
+  saved: boolean
+  error: string
+}
+
+export type MyFile = {
+  file: any
+  type: 'image' | 'video';
 }
 
 export type SelectOption = { value: string | number, label: string, description?: string }

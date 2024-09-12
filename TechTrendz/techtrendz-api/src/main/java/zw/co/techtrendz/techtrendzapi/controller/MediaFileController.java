@@ -6,6 +6,7 @@ package zw.co.techtrendz.techtrendzapi.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +44,15 @@ public class MediaFileController {
             }
         }
         return ResponseEntity.ok(savedFiles);
+    }
+
+    @RequestMapping(name = "/getmediafilebyid", value = "/getmediafilebyid", method = RequestMethod.GET)
+    public Optional<MediaFile> getMediaFileById(@RequestParam long id) {
+        return mediaFileService.getMediaFileById(id);
+    }
+
+    @RequestMapping(name = "/getfilebymediafileid", value = "/getfilebymediafileid", method = RequestMethod.GET)
+    public ResponseEntity<Object> getFileByMediaFileId(@RequestParam long id) {
+        return mediaFileService.getFileByMediaFileId(id);
     }
 }

@@ -32,6 +32,7 @@ import zw.co.techtrendz.techtrendzapi.entity.Brand;
 import zw.co.techtrendz.techtrendzapi.entity.ContactType;
 import zw.co.techtrendz.techtrendzapi.entity.CheckoutStatus;
 import zw.co.techtrendz.techtrendzapi.entity.Contact;
+import zw.co.techtrendz.techtrendzapi.entity.MediaFile;
 import zw.co.techtrendz.techtrendzapi.entity.Product;
 import zw.co.techtrendz.techtrendzapi.entity.ProductItem;
 import zw.co.techtrendz.techtrendzapi.entity.ProductStatus;
@@ -177,39 +178,41 @@ public class DummyDataServiceImpl {
         productTypeService.saveProductType(new ProductType(6L, "MICROWAVE", "Microwave"));
         productTypeService.saveProductType(new ProductType(7L, "MONITOR", "Monitor"));
 
+        this.tempMedia();
+
         List<Product> products = Arrays.asList(
-                new Product(1L, "LG 32inch", "32inch LCD flat screen TV", new Brand(2l), new ProductType(2l), null, makeTags(new long[]{1L, 2L, 3L, 4L, 5L}), new BigDecimal(95)),
-                new Product(2L, "Xiomi Redmi Note 12 pro 5G", "A very fast Xiomi smartphone", new Brand(16L), new ProductType(4L), null, makeTags(new long[]{6L, 7L, 8L, 9L, 10L}), new BigDecimal(250)),
-                new Product(3L, "iPhone 14 Pro", "Apple's latest smartphone with advanced features and improved camera.", new Brand(8L), new ProductType(4L), null, makeTags(new long[]{9L, 11L, 12L, 13L}), new BigDecimal(800)),
-                new Product(4L, "Samsung Galaxy S22", "Samsung's flagship smartphone with stunning display and powerful performance.", new Brand(3L), new ProductType(4L), null, makeTags(new long[]{9L, 10L}), new BigDecimal(899.99)),
-                new Product(5L, "Xiomi Mi 11", "Xiomi's high-performance smartphone with excellent value for money.", new Brand(16L), new ProductType(4L), null, makeTags(new long[]{7L, 9L, 10L}), new BigDecimal(599.99)),
-                new Product(6L, "HP Spectre x360", "HP's premium 2-in-1 laptop with high-end specifications and sleek design.", new Brand(13L), new ProductType(3L), null, makeTags(new long[]{14L, 17L}), new BigDecimal(1299.99)),
-                new Product(7L, "Lenovo ThinkPad X1 Carbon", "Lenovo's lightweight and durable laptop, perfect for business professionals.", new Brand(14L), new ProductType(3L), null, makeTags(new long[]{15L, 17L}), new BigDecimal(1499.99)),
-                new Product(8L, "Dell XPS 13", "Dell's ultra-portable laptop with stunning display and powerful performance. \n Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum", new Brand(15L), new ProductType(3L), null, makeTags(new long[]{17L, 18L}), new BigDecimal(1199.99)),
-                new Product(9L, "LG OLED TV", "LG's premium OLED television with stunning picture quality and smart features.", new Brand(2L), new ProductType(2L), null, makeTags(new long[]{1L, 2L, 5L}), new BigDecimal(1999.99)),
-                new Product(10L, "Hisense 4K UHD TV", "Hisense's affordable 4K television with excellent value for money.", new Brand(30L), new ProductType(2L), null, makeTags(new long[]{1L, 2L}), new BigDecimal(499.99)),
-                new Product(11L, "LG NanoCell TV", "LG's advanced NanoCell technology for enhanced color and clarity.", new Brand(2L), new ProductType(2L), null, makeTags(new long[]{1L, 2L, 5L}), new BigDecimal(999.99)),
-                new Product(12L, "Russell Hobbs Microwave", "Russell Hobbs microwave oven with multiple cooking functions and stylish design.", new Brand(31L), new ProductType(6L), null, makeTags(new long[]{16L}), new BigDecimal(79.99)),
-                new Product(13L, "Samsung Microwave Oven", "Samsung's high-quality microwave oven with advanced features and easy controls.", new Brand(3L), new ProductType(6L), null, makeTags(new long[]{16L}), new BigDecimal(99.99)),
-                new Product(14L, "LG NeoChef Microwave", "LG's innovative microwave oven with smart inverter technology.", new Brand(2L), new ProductType(6L), null, makeTags(new long[]{16L}), new BigDecimal(129.99)),
-                new Product(15L, "iPhone 13 Mini", "Compact version of Apple's iPhone 13 with high-end features.", new Brand(8L), new ProductType(4L), null, makeTags(new long[]{9L, 11L, 12L, 13L}), new BigDecimal(699.99)),
-                new Product(16L, "Samsung Galaxy Note 20", "Samsung's high-end smartphone with stylus support and large display.", new Brand(3L), new ProductType(4L), null, makeTags(new long[]{9L, 10L}), new BigDecimal(1099.99)),
-                new Product(17L, "Xiomi Redmi Note 10", "Affordable smartphone from Xiomi with good performance and battery life.", new Brand(16L), new ProductType(4L), null, makeTags(new long[]{6L, 7L, 8L, 9L, 10L}), new BigDecimal(299.99)),
-                new Product(18L, "HP Pavilion Gaming Laptop", "HP's gaming laptop with powerful graphics and high-speed performance.", new Brand(13L), new ProductType(3L), null, makeTags(new long[]{14L, 17L}), new BigDecimal(899.99)),
-                new Product(19L, "Lenovo Yoga 7i", "Lenovo's versatile 2-in-1 laptop with long battery life and sleek design.", new Brand(14L), new ProductType(3L), null, makeTags(new long[]{15L, 17L}), new BigDecimal(1049)),
-                new Product(20L, "Dell Inspiron 15", "Dell's affordable laptop with good performance and large storage.", new Brand(15L), new ProductType(3L), null, makeTags(new long[]{17L, 18L}), new BigDecimal(749.99)),
-                new Product(21L, "LG QNED MiniLED TV", "LG's latest MiniLED TV with improved brightness and contrast.", new Brand(2L), new ProductType(2L), null, makeTags(new long[]{1L, 2L, 5L}), new BigDecimal(1799.99)),
-                new Product(22L, "Hisense ULED 8K TV", "Hisense's high-end 8K television with stunning resolution and smart features.", new Brand(30L), new ProductType(2L), null, makeTags(new long[]{1L, 2L}), new BigDecimal(2499.99)),
-                new Product(23L, "LG UltraGear Gaming Monitor", "LG's top-tier gaming monitor with high refresh rate and low response time.", new Brand(2L), new ProductType(7L), null, makeTags(new long[]{5L}), new BigDecimal(499.99)),
-                new Product(24L, "Panasonic Inverter Microwave", "Panasonic's microwave oven with inverter technology for even cooking.", new Brand(32L), new ProductType(6L), null, makeTags(new long[]{16L}), new BigDecimal(119.99)),
-                new Product(25L, "Sharp Carousel Microwave", "Sharp's spacious microwave oven with easy-to-use controls.", new Brand(33L), new ProductType(6L), null, makeTags(new long[]{16L}), new BigDecimal(89.99)),
-                new Product(26L, "Toshiba Countertop Microwave", "Toshiba's reliable microwave oven with convenient one-touch buttons.", new Brand(34L), new ProductType(6L), null, makeTags(new long[]{16L}), new BigDecimal(99.99)),
-                new Product(27L, "iPhone 12", "Apple's previous generation smartphone with excellent performance and features.", new Brand(8L), new ProductType(4L), null, makeTags(new long[]{9L, 11L, 12L, 13}), new BigDecimal(799.99)),
-                new Product(28L, "Samsung Galaxy A52", "Samsung's mid-range smartphone with good performance and value.", new Brand(3L), new ProductType(4L), null, makeTags(new long[]{9L, 10L}), new BigDecimal(349.99)),
-                new Product(29L, "Xiomi Poco X3", "Xiomi's budget-friendly smartphone with impressive specifications.", new Brand(16L), new ProductType(4L), null, makeTags(new long[]{7L, 9L, 10L}), new BigDecimal(229.99)),
-                new Product(30L, "HP Envy 13", "HP's premium laptop with sleek design and high-end performance.", new Brand(13L), new ProductType(3L), null, makeTags(new long[]{14L, 17L}), new BigDecimal(999.99)),
-                new Product(31L, "Lenovo Legion 5", "Lenovo's gaming laptop with powerful hardware and immersive display.", new Brand(14L), new ProductType(3L), null, makeTags(new long[]{15L, 17L}), new BigDecimal(1199.99)),
-                new Product(32L, "Dell G5 15", "Dell's affordable gaming laptop with good performance and design.", new Brand(15L), new ProductType(3L), null, makeTags(new long[]{17L, 18L}), new BigDecimal(899.99))
+                new Product(1L, "LG 32inch", "32inch LCD flat screen TV", new Brand(2l), new ProductType(2l), null, makeTags(new long[]{1L, 2L, 3L, 4L, 5L}), new BigDecimal(95), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(2L, "Xiomi Redmi Note 12 pro 5G", "A very fast Xiomi smartphone", new Brand(16L), new ProductType(4L), null, makeTags(new long[]{6L, 7L, 8L, 9L, 10L}), new BigDecimal(250), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(3L, "iPhone 14 Pro", "Apple's latest smartphone with advanced features and improved camera.", new Brand(8L), new ProductType(4L), null, makeTags(new long[]{9L, 11L, 12L, 13L}), new BigDecimal(800), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(4L, "Samsung Galaxy S22", "Samsung's flagship smartphone with stunning display and powerful performance.", new Brand(3L), new ProductType(4L), null, makeTags(new long[]{9L, 10L}), new BigDecimal(899.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(5L, "Xiomi Mi 11", "Xiomi's high-performance smartphone with excellent value for money.", new Brand(16L), new ProductType(4L), null, makeTags(new long[]{7L, 9L, 10L}), new BigDecimal(599.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(6L, "HP Spectre x360", "HP's premium 2-in-1 laptop with high-end specifications and sleek design.", new Brand(13L), new ProductType(3L), null, makeTags(new long[]{14L, 17L}), new BigDecimal(1299.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(7L, "Lenovo ThinkPad X1 Carbon", "Lenovo's lightweight and durable laptop, perfect for business professionals.", new Brand(14L), new ProductType(3L), null, makeTags(new long[]{15L, 17L}), new BigDecimal(1499.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(8L, "Dell XPS 13", "Dell's ultra-portable laptop with stunning display and powerful performance. \n Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum", new Brand(15L), new ProductType(3L), null, makeTags(new long[]{17L, 18L}), new BigDecimal(1199.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(9L, "LG OLED TV", "LG's premium OLED television with stunning picture quality and smart features.", new Brand(2L), new ProductType(2L), null, makeTags(new long[]{1L, 2L, 5L}), new BigDecimal(1999.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(10L, "Hisense 4K UHD TV", "Hisense's affordable 4K television with excellent value for money.", new Brand(30L), new ProductType(2L), null, makeTags(new long[]{1L, 2L}), new BigDecimal(499.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(11L, "LG NanoCell TV", "LG's advanced NanoCell technology for enhanced color and clarity.", new Brand(2L), new ProductType(2L), null, makeTags(new long[]{1L, 2L, 5L}), new BigDecimal(999.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(12L, "Russell Hobbs Microwave", "Russell Hobbs microwave oven with multiple cooking functions and stylish design.", new Brand(31L), new ProductType(6L), null, makeTags(new long[]{16L}), new BigDecimal(79.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(13L, "Samsung Microwave Oven", "Samsung's high-quality microwave oven with advanced features and easy controls.", new Brand(3L), new ProductType(6L), null, makeTags(new long[]{16L}), new BigDecimal(99.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(14L, "LG NeoChef Microwave", "LG's innovative microwave oven with smart inverter technology.", new Brand(2L), new ProductType(6L), null, makeTags(new long[]{16L}), new BigDecimal(129.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(15L, "iPhone 13 Mini", "Compact version of Apple's iPhone 13 with high-end features.", new Brand(8L), new ProductType(4L), null, makeTags(new long[]{9L, 11L, 12L, 13L}), new BigDecimal(699.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(16L, "Samsung Galaxy Note 20", "Samsung's high-end smartphone with stylus support and large display.", new Brand(3L), new ProductType(4L), null, makeTags(new long[]{9L, 10L}), new BigDecimal(1099.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(17L, "Xiomi Redmi Note 10", "Affordable smartphone from Xiomi with good performance and battery life.", new Brand(16L), new ProductType(4L), null, makeTags(new long[]{6L, 7L, 8L, 9L, 10L}), new BigDecimal(299.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(18L, "HP Pavilion Gaming Laptop", "HP's gaming laptop with powerful graphics and high-speed performance.", new Brand(13L), new ProductType(3L), null, makeTags(new long[]{14L, 17L}), new BigDecimal(899.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(19L, "Lenovo Yoga 7i", "Lenovo's versatile 2-in-1 laptop with long battery life and sleek design.", new Brand(14L), new ProductType(3L), null, makeTags(new long[]{15L, 17L}), new BigDecimal(1049), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(20L, "Dell Inspiron 15", "Dell's affordable laptop with good performance and large storage.", new Brand(15L), new ProductType(3L), null, makeTags(new long[]{17L, 18L}), new BigDecimal(749.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(21L, "LG QNED MiniLED TV", "LG's latest MiniLED TV with improved brightness and contrast.", new Brand(2L), new ProductType(2L), null, makeTags(new long[]{1L, 2L, 5L}), new BigDecimal(1799.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(22L, "Hisense ULED 8K TV", "Hisense's high-end 8K television with stunning resolution and smart features.", new Brand(30L), new ProductType(2L), null, makeTags(new long[]{1L, 2L}), new BigDecimal(2499.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(23L, "LG UltraGear Gaming Monitor", "LG's top-tier gaming monitor with high refresh rate and low response time.", new Brand(2L), new ProductType(7L), null, makeTags(new long[]{5L}), new BigDecimal(499.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(24L, "Panasonic Inverter Microwave", "Panasonic's microwave oven with inverter technology for even cooking.", new Brand(32L), new ProductType(6L), null, makeTags(new long[]{16L}), new BigDecimal(119.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(25L, "Sharp Carousel Microwave", "Sharp's spacious microwave oven with easy-to-use controls.", new Brand(33L), new ProductType(6L), null, makeTags(new long[]{16L}), new BigDecimal(89.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(26L, "Toshiba Countertop Microwave", "Toshiba's reliable microwave oven with convenient one-touch buttons.", new Brand(34L), new ProductType(6L), null, makeTags(new long[]{16L}), new BigDecimal(99.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(27L, "iPhone 12", "Apple's previous generation smartphone with excellent performance and features.", new Brand(8L), new ProductType(4L), null, makeTags(new long[]{9L, 11L, 12L, 13}), new BigDecimal(799.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(28L, "Samsung Galaxy A52", "Samsung's mid-range smartphone with good performance and value.", new Brand(3L), new ProductType(4L), null, makeTags(new long[]{9L, 10L}), new BigDecimal(349.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(29L, "Xiomi Poco X3", "Xiomi's budget-friendly smartphone with impressive specifications.", new Brand(16L), new ProductType(4L), null, makeTags(new long[]{7L, 9L, 10L}), new BigDecimal(229.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(30L, "HP Envy 13", "HP's premium laptop with sleek design and high-end performance.", new Brand(13L), new ProductType(3L), null, makeTags(new long[]{14L, 17L}), new BigDecimal(999.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(31L, "Lenovo Legion 5", "Lenovo's gaming laptop with powerful hardware and immersive display.", new Brand(14L), new ProductType(3L), null, makeTags(new long[]{15L, 17L}), new BigDecimal(1199.99), makeMediaFiles(new long[]{1L, 2L}), null),
+                new Product(32L, "Dell G5 15", "Dell's affordable gaming laptop with good performance and design.", new Brand(15L), new ProductType(3L), null, makeTags(new long[]{17L, 18L}), new BigDecimal(899.99), makeMediaFiles(new long[]{1L, 2L}), null)
         );
 
         productService.saveProducts(products);
@@ -392,21 +395,19 @@ public class DummyDataServiceImpl {
         contactService.saveContacts(contacts);
 
         List<UserDto> users = Arrays.asList(
-                new UserDto(null, new Salutation(1L), "Erick", "Leonard", "Abraham", "elabraham", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{34, 68, 75, 87}), makeAccounts(new long[]{1L}), null),
-                new UserDto(null, new Salutation(1L), "Gretchen", null, "Proctor", "gproctor", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{72}), makeAccounts(new long[]{2L, 11L}), null),
-                new UserDto(null, new Salutation(1L), "Robbie", "Wilkins", "Erich", "rwerich", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{58}), makeAccounts(new long[]{3L, 12L, 15L}), null),
-                new UserDto(null, new Salutation(1L), "Heath", "Dickson", "Cherie", "hdcherie", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{18, 31}), makeAccounts(new long[]{4L}), null),
-                new UserDto(null, new Salutation(1L), "Brandie", "Finley", "Arthur", "bfarthur", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{26}), makeAccounts(new long[]{5L}), null),
-                new UserDto(null, new Salutation(1L), "Robinson", null, "Lara", "rlara", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{62}), makeAccounts(new long[]{6L}), null),
-                new UserDto(null, new Salutation(1L), "Randal", null, "Dickerson", "rdickerson", "test", false, makeRoles(new long[]{1}), null, makeAccounts(new long[]{7L, 14L}), null),
-                new UserDto(null, new Salutation(2L), "Keri", null, "Lesley", "klesley", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{73}), makeAccounts(new long[]{8L, 13L}), null),
-                new UserDto(null, new Salutation(1L), "Roberta", null, "Morse", "rmorse", "test", false, makeRoles(new long[]{1}), null, makeAccounts(new long[]{9L}), null),
-                new UserDto(null, new Salutation(1L), "Cornelius", "Herring", "Emily", "chemily", "test", false, makeRoles(new long[]{1}), null, makeAccounts(new long[]{10L}), null),
-                new UserDto(null, new Salutation(1L), "Saka", "Shingirai", "Madzudzo", "ssmadzudzo", "test", false, makeRoles(new long[]{1, 2, 3}), makeAddresses(new long[]{72, 84}), makeAccounts(new long[]{15L}), makeContacts(new long[]{1L, 2L, 3L}))
+                new UserDto(null, new Salutation(1L), "Erick", "Leonard", "Abraham", "elabraham", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{34, 68, 75, 87}), makeAccounts(new long[]{1L}), null, null),
+                new UserDto(null, new Salutation(1L), "Gretchen", null, "Proctor", "gproctor", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{72}), makeAccounts(new long[]{2L, 11L}), null, null),
+                new UserDto(null, new Salutation(1L), "Robbie", "Wilkins", "Erich", "rwerich", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{58}), makeAccounts(new long[]{3L, 12L, 15L}), null, null),
+                new UserDto(null, new Salutation(1L), "Heath", "Dickson", "Cherie", "hdcherie", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{18, 31}), makeAccounts(new long[]{4L}), null, null),
+                new UserDto(null, new Salutation(1L), "Brandie", "Finley", "Arthur", "bfarthur", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{26}), makeAccounts(new long[]{5L}), null, null),
+                new UserDto(null, new Salutation(1L), "Robinson", null, "Lara", "rlara", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{62}), makeAccounts(new long[]{6L}), null, null),
+                new UserDto(null, new Salutation(1L), "Randal", null, "Dickerson", "rdickerson", "test", false, makeRoles(new long[]{1}), null, makeAccounts(new long[]{7L, 14L}), null, null),
+                new UserDto(null, new Salutation(2L), "Keri", null, "Lesley", "klesley", "test", false, makeRoles(new long[]{1}), makeAddresses(new long[]{73}), makeAccounts(new long[]{8L, 13L}), null, null),
+                new UserDto(null, new Salutation(1L), "Roberta", null, "Morse", "rmorse", "test", false, makeRoles(new long[]{1}), null, makeAccounts(new long[]{9L}), null, null),
+                new UserDto(null, new Salutation(1L), "Cornelius", "Herring", "Emily", "chemily", "test", false, makeRoles(new long[]{1}), null, makeAccounts(new long[]{10L}), null, null),
+                new UserDto(null, new Salutation(1L), "Saka", "Shingirai", "Madzudzo", "ssmadzudzo", "test", false, makeRoles(new long[]{1, 2, 3}), makeAddresses(new long[]{72, 84}), makeAccounts(new long[]{15L}), makeContacts(new long[]{1L, 2L, 3L}), null)
         );
         userService.saveUsers(users);
-
-        this.tempMedia();
     }
 
     private Set<Role> makeRoles(long[] ids) {
@@ -447,6 +448,14 @@ public class DummyDataServiceImpl {
             contacts.add(new Contact(id));
         }
         return contacts;
+    }
+
+    private List<MediaFile> makeMediaFiles(long[] ids) {
+        List<MediaFile> mediaFiles = new ArrayList<>();
+        for (long id : ids) {
+            mediaFiles.add(new MediaFile(id));
+        }
+        return mediaFiles;
     }
 
     private void tempMedia() {
