@@ -126,8 +126,10 @@ export type MediaFile = {
 }
 
 export type MyFile = {
-  file: any
-  type: 'image' | 'video';
+  id?: number
+  token?: string
+  url?: string
+  type: string
 }
 
 export type SelectOption = { value: string | number, label: string, description?: string }

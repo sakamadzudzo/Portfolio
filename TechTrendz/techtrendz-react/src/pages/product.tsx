@@ -12,7 +12,7 @@ import { OverlayContextType } from "../components/Layout";
 import { MediaDisplay } from "../components/MediaViewer";
 import cat from './../assets/img/cat1.webp'
 import { MyFile, Product as ProductObj } from "../types/types";
-import { getFileByMediaId } from "../components/service/fileService";
+import { getFileByMediaId, getFileLinkFromMediaId } from "../components/service/fileService";
 
 export const Product = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -24,7 +24,7 @@ export const Product = () => {
     const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
     const [totalItems, setTotalItems] = useState(0)
     const [disableSave, setDisableSave] = useState(false)
-    const [pictures, setSepictures] = useState<MyFile[]>([] as MyFile[])
+    const [mediaFiles, setMediaFiles] = useState<MyFile[]>([] as MyFile[])
 
     const getProduct = useCallback(async () => {
         setLoading(true)
@@ -47,18 +47,13 @@ export const Product = () => {
         setLoading(false)
     }, [setLoading, token, user])
 
-    const getPictures = useCallback(async () => {
+    const getPictureLinks = useCallback(async () => {
         if (product && product.pictures) {
-            let pics: MyFile[] = [] as MyFile[]
+            let picLinks: MyFile[] = [] as MyFile[]
             product.pictures.forEach(async (pic) => {
-                let result = await getFileByMediaId(token!, pic.id)
-                if (result) {
-                    // let res = result
-                    // res.type = res.type.includes("video") ? "video" : "image"
-                    pics.push(result)
-                }
+                picLinks.push({ id: pic.id, token: token!, type: pic.fileType, url: getFileLinkFromMediaId(pic.id) })
             })
-            setSepictures(pics);
+            setMediaFiles(picLinks)
         }
     }, [product, token])
 
@@ -121,8 +116,8 @@ export const Product = () => {
     }, [getCart])
 
     useEffect(() => {
-        getPictures()
-    }, [getPictures])
+        getPictureLinks()
+    }, [getPictureLinks])
 
     useEffect(() => {
         document.title = 'TechBrandz - Product';
@@ -132,7 +127,7 @@ export const Product = () => {
         <div className="wrapper">
             {product ?
                 <div className="rounded-sm flex md:justify-center h-full portrait:flex-col portrait:justify-between landscape:items-center gap-1 portrait:md:w-96">
-                    <MediaDisplay className="landscape:h-96 portrait:h-1/2 aspect-square" files={pictures!} />
+                    <MediaDisplay className="landscape:h-96 portrait:h-1/2 aspect-square" files={mediaFiles} fetchFunction={getFileByMediaId} />
                     {/* <div className="landscape:h-96 border aspect-square"></div> */}
                     {/* <img
                         src={cat}

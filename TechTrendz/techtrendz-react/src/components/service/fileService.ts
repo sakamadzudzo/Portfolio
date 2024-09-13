@@ -2,11 +2,10 @@ import axios from "axios"
 import { toast } from "react-toastify"
 import { authOrReload } from "./authService"
 import API from "./../utils/constants"
-import { MyFile } from "../../types/types"
 
 export const getFileByMediaId = async (token: string, id: number) => {
     await authOrReload(token)
-    let res: MyFile = {} as MyFile
+    let data: any = null
     await axios.get(API + "getfilebymediafileid", {
         params: {
             id: id
@@ -16,16 +15,19 @@ export const getFileByMediaId = async (token: string, id: number) => {
         }
     })
         .then((response) => {
-            res.file = response.data
-            res.type = response.headers['content-type']
+            data = response.data
         })
         .catch((error) => {
             console.log(error);
             toast(error.response.data)
-            res = {} as MyFile
+            data = null
         })
         .finally(() => {
-            return res;
+            return data;
         })
-    return res
+    return data
+}
+
+export const getFileLinkFromMediaId = (id: number) => {
+    return API + "getfilebymediafileid?id=" + id
 }
