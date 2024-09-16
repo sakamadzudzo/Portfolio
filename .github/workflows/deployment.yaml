@@ -25,6 +25,10 @@ jobs:
     steps:
       - name: Checkout React
         uses: actions/checkout@v2
+      - name: Set up Git identity
+        run: |
+          git config --global user.email "sakamadzudzo@gmail.com"
+          git config --global user.name "Saka Shingirai Madzudzo"
       - name: Build frontend
         run: |
           cd TechTrendz/techtrendz-react
