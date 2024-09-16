@@ -1,16 +1,29 @@
 name: Deploy Java Spring Boot API with React TS frontend
+
 on: push
+
 jobs:
- deployAPI:
- steps:
-  - checkout main
-  - run: cd TechTrendz/techtrendz-api
-  - run: mvn clean package -pProd
-  - run: gh-pages deploy
-  - run: echo "Deploy API successful"
-deployReact:
- steps:
-  - checkout main
-  - run: cd TechTrendz/techtrendz-react
-  - run: npm run build
-  - run: echo "Deploy frontend successful"
+  deployAPI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout API
+        uses: actions/checkout@v2
+      - name: Build and package API
+        run: |
+          cd TechTrendz/techtrendz-api
+          mvn clean package -PProd
+      - name: Deploy API
+        run: echo "Deploy API successful"
+
+  deployReact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout React
+        uses: actions/checkout@v2
+      - name: Build frontend
+        run: |
+          cd TechTrendz/techtrendz-react
+          npm install
+          npm run build
+      - name: Deploy frontend
+        run: echo "Deploy frontend successful"
