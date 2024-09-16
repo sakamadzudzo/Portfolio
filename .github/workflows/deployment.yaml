@@ -3,12 +3,14 @@ on: push
 jobs:
  deployAPI:
  steps:
- - run: cd TechTrendz/techtrendz-api
- - run: mvn clean package -pProd
- - run: gh-pages deploy
- - run: echo "Deploy API successful"
+  - checkout main
+  - run: cd TechTrendz/techtrendz-api
+  - run: mvn clean package -pProd
+  - run: gh-pages deploy
+  - run: echo "Deploy API successful"
 deployReact:
  steps:
- - run: cd TechTrendz/techtrendz-react
- - run: mvn test
- - run: echo "Deploy frontend successful"
+  - checkout main
+  - run: cd TechTrendz/techtrendz-react
+  - run: mvn test
+  - run: echo "Deploy frontend successful"
