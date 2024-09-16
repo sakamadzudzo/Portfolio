@@ -1,0 +1,15 @@
+name: Deploy Java Spring Boot API with React TS frontend
+on: push
+jobs:
+ deployAPI:
+ steps:
+ - checkout main
+ - run: cd TechTrendz/techtrendz-api
+ - run: mvn clean package -pProd
+ - run: gh-pages deploy
+ deployReact:
+ steps:
+ - checkout main
+ - run: cd TechTrendz/techtrendz-react
+ - run: mvn test
+ - run: echo "TEST SUCCESS"
