@@ -12,5 +12,5 @@ deployReact:
  steps:
   - checkout main
   - run: cd TechTrendz/techtrendz-react
-  - run: mvn test
+  - run: npm run build
   - run: echo "Deploy frontend successful"
