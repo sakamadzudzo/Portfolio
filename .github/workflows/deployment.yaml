@@ -6,24 +6,33 @@ jobs:
   deployAPI:
     runs-on: ubuntu-latest
     steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin' # This sets the OpenJDK distribution
       - name: Checkout API
         uses: actions/checkout@v2
       - name: Build and package API
         run: |
           cd TechTrendz/techtrendz-api
-          mvn clean package
+          mvn clean package -PProd
       - name: Deploy API
         run: echo "Deploy API successful"
 
-  deployReact:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout React
-        uses: actions/checkout@v2
-      - name: Build frontend
-        run: |
-          cd TechTrendz/techtrendz-react
-          npm install
-          npm run build
-      - name: Deploy frontend
-        run: echo "Deploy frontend successful"
+deployReact:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout React
+      uses: actions/checkout@v2
+    - name: Build frontend
+      run: |
+        cd TechTrendz/techtrendz-react
+        npm install
+        npm run build
+    - name: Deploy to GitHub Pages
+      run: |
+        cd TechTrendz/techtrendz-react
+        npm run deploy
+    - name: Deploy frontend
+      run: echo "Deploy frontend successful"
