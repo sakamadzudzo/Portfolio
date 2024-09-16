@@ -25,18 +25,24 @@ jobs:
     steps:
       - name: Checkout React
         uses: actions/checkout@v2
+
       - name: Set up Git identity
         run: |
           git config --global user.email "sakamadzudzo@gmail.com"
           git config --global user.name "Saka Shingirai Madzudzo"
+
       - name: Build frontend
         run: |
           cd TechTrendz/techtrendz-react
           npm install
           npm run build
+
       - name: Deploy to GitHub Pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token for authentication
         run: |
           cd TechTrendz/techtrendz-react
-          npm run deploy
+          npm run deploy -- -t $GITHUB_TOKEN
+
       - name: Deploy frontend
         run: echo "Deploy frontend successful"
