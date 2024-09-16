@@ -7,9 +7,10 @@ jobs:
  - run: cd TechTrendz/techtrendz-api
  - run: mvn clean package -pProd
  - run: gh-pages deploy
- deployReact:
+ - run: echo "Deploy API successful"
+deployReact:
  steps:
  - checkout main
  - run: cd TechTrendz/techtrendz-react
  - run: mvn test
- - run: echo "TEST SUCCESS"
+ - run: echo "Deploy frontend successful"
