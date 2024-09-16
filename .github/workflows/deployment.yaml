@@ -11,7 +11,7 @@ jobs:
       - name: Build and package API
         run: |
           cd TechTrendz/techtrendz-api
-          mvn clean package -PProd
+          mvn clean package
       - name: Deploy API
         run: echo "Deploy API successful"
 

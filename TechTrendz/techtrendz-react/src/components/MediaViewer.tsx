@@ -17,10 +17,6 @@ export const MediaDisplay = ({
     const [mediaFiles, setMediaFiles] = useState<MyFile[]>([]);
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
 
-    const fetchFile = async (file: MyFile) => {
-        return fetchFunction ? await fetchFunction(file.token, file.id) : null
-    }
-
     const scrollPrev = useCallback(() => {
         if (emblaApi) emblaApi.scrollPrev()
     }, [emblaApi])

@@ -10,7 +10,6 @@ import FormInput from "../components/FormInput";
 import { toast } from "react-toastify";
 import { OverlayContextType } from "../components/Layout";
 import { MediaDisplay } from "../components/MediaViewer";
-import cat from './../assets/img/cat1.webp'
 import { MyFile, Product as ProductObj } from "../types/types";
 import { getFileByMediaId, getFileLinkFromMediaId } from "../components/service/fileService";
 
