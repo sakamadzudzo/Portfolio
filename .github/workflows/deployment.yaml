@@ -37,6 +37,10 @@ jobs:
           npm install
           npm run build
 
+      - name: Set GitHub Pages remote URL
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+
       - name: Deploy to GitHub Pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token for authentication
