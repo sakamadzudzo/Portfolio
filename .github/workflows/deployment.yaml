@@ -2,6 +2,9 @@ name: Deploy Java Spring Boot API with React TS frontend
 
 on: push
 
+permissions:
+  contents: write  # Ensure GITHUB_TOKEN has write access
+
 jobs:
   deployAPI:
     runs-on: ubuntu-latest
@@ -46,7 +49,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token for authentication
         run: |
           cd TechTrendz/techtrendz-react
-          npm run deploy -- -t $GITHUB_TOKEN
+          npm run deploy
 
       - name: Deploy frontend
         run: echo "Deploy frontend successful"
