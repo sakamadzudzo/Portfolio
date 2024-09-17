@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { ChangeEvent, useCallback, useEffect, useState } from "react"
 import Form from "../components/Form"
 import FormBody from "../components/FormBody"
 import FormFooter from "../components/FormFooter"
@@ -15,6 +15,7 @@ import FormSelect from "../components/FormSelect"
 import { getProductTypeAll } from "../components/service/productTypeService"
 import { getTagAll } from "../components/service/tagService"
 import FormMultiSelect from "../components/FormMultiSelect"
+import FilePicker from "../components/FilePicker"
 
 export const ProductEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -27,6 +28,7 @@ export const ProductEdit = () => {
     const navigate = useNavigate()
     const [header, setHeader] = useState("New Product")
     const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
+    const [files, setFiles] = useState<FileList>()
 
     const setProductChanges = (e: any) => {
         if (e.value) {
@@ -51,6 +53,11 @@ export const ProductEdit = () => {
                 [name]: value
             }));
         }
+    }
+
+    const chooseFiles = (files: FileList | null | ChangeEvent<HTMLInputElement>) => {
+        setFiles(files instanceof FileList ? files : undefined)
+        // console.log(files)
     }
 
     const brandsToOptions = (): SelectOption[] => {
@@ -162,6 +169,14 @@ export const ProductEdit = () => {
                     <FormMultiSelect id="tags" name="tags" className="w-full" label="Tags" onChange={setProductChanges} values={product?.tags?.map((tag) => { return { value: tag.id, label: tag.name, description: tag.description } })} placeholder="Tags..."
                         options={tagsToOptions()} clearable={true} searchable={true} disabled={false} autoFocus={false} key={`tags`} returnEvent={true} withChips />
                     <FormInput id="price" name="price" className="w-full" type="number" label="Price" onChange={setProductChanges} value={product?.price!} placeholder="Price..." returnEvent={true} key={`price`} />
+                    {/* <FilePicker id="files" name="files" className="w-full" label="Pictures" onChange={setProductChanges} value={product?.files!} placeholder="Pictures..." returnEvent={true} key={`files`} /> */}
+                    <FilePicker
+                        label="Upload File"
+                        values={files}
+                        onChange={(files: FileList | null | ChangeEvent<HTMLInputElement>) => { chooseFiles(files) }}
+                        multiple
+                    />
+
                 </FormBody>
                 <FormFooter className="justify-end">
                     <button className={`btn-hollow`} onClick={() => { navigate(-1); }}>Cancel</button>

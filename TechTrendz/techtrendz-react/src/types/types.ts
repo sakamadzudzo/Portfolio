@@ -26,6 +26,7 @@ export interface Product {
   tags: Tag[]
   price: number
   pictures: MediaFile[]
+  files?: any[]
 }
 
 export type Tag = {
