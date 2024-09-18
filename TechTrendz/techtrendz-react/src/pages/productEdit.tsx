@@ -171,6 +171,7 @@ export const ProductEdit = () => {
                     <FormInput id="price" name="price" className="w-full" type="number" label="Price" onChange={setProductChanges} value={product?.price!} placeholder="Price..." returnEvent={true} key={`price`} />
                     {/* <FilePicker id="files" name="files" className="w-full" label="Pictures" onChange={setProductChanges} value={product?.files!} placeholder="Pictures..." returnEvent={true} key={`files`} /> */}
                     <FilePicker
+                        className="w-full"
                         label="Upload File"
                         values={files}
                         onChange={(files: FileList | null | ChangeEvent<HTMLInputElement>) => { chooseFiles(files) }}

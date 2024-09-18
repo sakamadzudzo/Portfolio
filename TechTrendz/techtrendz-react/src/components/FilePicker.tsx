@@ -36,23 +36,28 @@ const FilePicker = ({
                 multiple={multiple}
             />
             <div className="absolute -top-3 left-0.5 text-xs focus:italic text-inherit">{label}</div>
-            {(values && values instanceof FileList) && <div>
-                {Array.from(values).map((val) =>
+            {(values && values instanceof FileList) && <div className="w-full grid grid-cols-4">
+                {Array.from(values).map((val, index) =>
                     <>
-                        {val.type.includes("image") ?
-                            <img
-                                src={val.arrayBuffer}
-                                alt={`media-${val.name}`}
-                                className="w-full h-full object-fill"
-                            />
-                            :
-                            <video controls className="w-full h-full object-contain">
-                                <source src={val} type={val.type} />
-                                Your browser does not support the video tag.
-                            </video>
-                    }
+                        {index < 7 &&
+                            (val.type.includes("image") ?
+                                <img
+                                    src={URL.createObjectURL(val)}
+                                    alt={`media-${val.name}`}
+                                    className="w-full h-full object-fill"
+                                />
+                                :
+                                <video controls className="w-full h-full object-contain">
+                                    <source src={URL.createObjectURL(val)} type={val.type} />
+                                    Your browser does not support the video tag.
+                                </video>
+                            )
+                        }
                     </>
                 )}
+                {values.length > 7 && <div className="flex justify-center items-center">
+                    +{values.length - 7}
+                </div>}
             </div>}
         </div>
     );
