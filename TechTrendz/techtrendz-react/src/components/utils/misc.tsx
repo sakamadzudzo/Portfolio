@@ -32,3 +32,35 @@ export const numformat = (num: number) => {
     }
     return result;
 }
+
+export const combineFileLists = (fileList1: FileList | null, fileList2: FileList | null): FileList => {
+    const dataTransfer = new DataTransfer();
+
+    // Convert FileList to arrays of File objects and merge them
+    const files1 = fileList1 ? Array.from(fileList1) : [];
+    const files2 = fileList2 ? Array.from(fileList2) : [];
+    const mergedFiles = [...files1, ...files2];
+
+    // Add the merged files to the DataTransfer object
+    mergedFiles.forEach(file => dataTransfer.items.add(file));
+
+    // Return the FileList from DataTransfer
+    return dataTransfer.files;
+};
+
+export const removeFileFromFilelist = (index: number, fileList: FileList | null | undefined) => {
+    const dataTransfer = new DataTransfer();
+
+    // Convert FileList to arrays of File objects and merge them
+    const files = fileList ? Array.from(fileList) : [];
+    const newFiles = [
+        ...files.slice(0, index),
+        ...files.slice(index + 1),
+    ]
+
+    // Add the merged files to the DataTransfer object
+    newFiles.forEach(file => dataTransfer.items.add(file));
+
+    // Return the FileList from DataTransfer
+    return dataTransfer.files;
+}

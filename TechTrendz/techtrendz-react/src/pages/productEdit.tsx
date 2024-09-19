@@ -16,6 +16,7 @@ import { getProductTypeAll } from "../components/service/productTypeService"
 import { getTagAll } from "../components/service/tagService"
 import FormMultiSelect from "../components/FormMultiSelect"
 import FilePicker from "../components/FilePicker"
+import { combineFileLists, removeFileFromFilelist } from "../components/utils/misc"
 
 export const ProductEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -55,9 +56,12 @@ export const ProductEdit = () => {
         }
     }
 
-    const chooseFiles = (files: FileList | null | ChangeEvent<HTMLInputElement>) => {
-        setFiles(files instanceof FileList ? files : undefined)
-        // console.log(files)
+    const chooseFiles = (newFiles: FileList | null | ChangeEvent<HTMLInputElement>) => {
+        setFiles(newFiles instanceof FileList ? files ? combineFileLists(files, newFiles) : newFiles : files)
+    }
+
+    const removeFile = (index: number) => {
+        setFiles(removeFileFromFilelist(index, files))
     }
 
     const brandsToOptions = (): SelectOption[] => {
@@ -172,9 +176,11 @@ export const ProductEdit = () => {
                     {/* <FilePicker id="files" name="files" className="w-full" label="Pictures" onChange={setProductChanges} value={product?.files!} placeholder="Pictures..." returnEvent={true} key={`files`} /> */}
                     <FilePicker
                         className="w-full"
-                        label="Upload File"
+                        label="Product media"
+                        id="files"
                         values={files}
                         onChange={(files: FileList | null | ChangeEvent<HTMLInputElement>) => { chooseFiles(files) }}
+                        removeFile={removeFile}
                         multiple
                     />
 
