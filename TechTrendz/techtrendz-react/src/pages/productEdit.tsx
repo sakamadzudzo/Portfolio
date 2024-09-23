@@ -121,7 +121,9 @@ export const ProductEdit = () => {
 
     const save = async () => {
         setLoading(true)
-        const dto = product.productItems ? product : { ...product, productItems: null }
+        // setProductChanges({ name: "files", value: files })
+        let dto = product.productItems ? product : { ...product, productItems: null }
+        if (files) dto.files = files
         let result = await saveProduct(token!, dto)
         if (result) {
             navigate("/productedit/" + result.id)
@@ -130,7 +132,7 @@ export const ProductEdit = () => {
     }
 
     useEffect(() => {
-        if (product.name && product.description && product.brand.name && product.productType.name) {
+        if (product.name && product.description && product?.brand?.name && product?.productType?.name) {
             setDisableSave(false)
         } else {
             setDisableSave(true)

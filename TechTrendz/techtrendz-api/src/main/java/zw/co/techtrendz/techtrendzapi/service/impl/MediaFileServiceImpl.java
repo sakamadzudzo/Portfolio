@@ -51,10 +51,10 @@ public class MediaFileServiceImpl implements MediaFileService {
     public MediaFile saveFile(MultipartFile file) throws IOException, NoSuchAlgorithmException {
         String type = "misc";
         // Resolve path relative to the current working directory and ensure directory exists
-        if (file.getContentType().contains("image")) {
+        if (file != null && file.getContentType() != null && file.getContentType().contains("image")) {
             type = "img";
         }
-        if (file.getContentType().contains("video")) {
+        if (file != null && file.getContentType() != null && file.getContentType().contains("video")) {
             type = "vid";
         }
         Path dir = Paths.get(System.getProperty("user.dir"), uploadDir, type);

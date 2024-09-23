@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useId, useState } from "react";
 import { IconClose } from "./icons/IconClose";
 
 const FilePicker = ({
@@ -19,7 +19,7 @@ const FilePicker = ({
     autoFocus?: boolean
     onChange: (files: FileList | null | ChangeEvent<HTMLInputElement>) => void
     removeFile?: Function
-    id: string,
+    id?: string,
     name?: string,
     disabled?: boolean,
     multiple?: boolean,
@@ -27,6 +27,7 @@ const FilePicker = ({
     values?: FileList
 }) => {
     const [caption, setCaption] = useState("Choose files...")
+    const randomId = useId()
 
     useEffect(() => {
         setCaption(values ? `${values.length} files selected` : "Choose files...")
@@ -38,14 +39,14 @@ const FilePicker = ({
                 className={`hidden`}
                 autoFocus={autoFocus}
                 onChange={(e) => returnEvent ? onChange(e) : onChange((e.target as HTMLInputElement).files)}
-                id={id}
+                id={id ? id : randomId}
                 name={name}
                 type="file"
                 disabled={disabled}
                 multiple={multiple}
                 accept="video/*,image/*"
             />
-            <div className={`mb-1 border-b cursor-pointer hover:font-normal`} onClick={() => { document.getElementById(id!)?.click() }}>
+            <div className={`mb-1 border-b cursor-pointer hover:font-normal`} onClick={() => { document.getElementById(id ? id : randomId)?.click() }}>
                 {caption}
             </div>
             <div className="absolute -top-3 left-0.5 text-xs focus:italic text-inherit">{label}</div>
@@ -56,12 +57,14 @@ const FilePicker = ({
                             <div className="w-full relative">
                                 {val.type.includes("image") ?
                                     <img
+                                        key={(id ? id : randomId) + '-image-' + index}
                                         src={URL.createObjectURL(val)}
                                         alt={`media-${val.name}`}
                                         className="w-full h-full object-fill"
                                     />
                                     :
                                     <video controls className="w-full h-full object-contain">
+                                        key={(id ? id : randomId) + '-video-' + index}
                                         <source src={URL.createObjectURL(val)} type={val.type} />
                                         Your browser does not support the video tag.
                                     </video>

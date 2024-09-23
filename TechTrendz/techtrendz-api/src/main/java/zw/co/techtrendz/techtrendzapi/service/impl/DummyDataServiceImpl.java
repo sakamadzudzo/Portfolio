@@ -451,6 +451,13 @@ public class DummyDataServiceImpl {
     }
 
     private List<MediaFile> makeMediaFiles(long[] ids) {
+        Path dir = Paths.get(System.getProperty("user.dir"), uploadDir);
+//        System.out.println("\n\nStarting to save media\n\n " + dir + "/cat1.png\n\n");
+        String cat1path = dir + "/cat1.webp";
+        String wave1path = dir + "/3d-network-particle-flow-background.jpg";
+        if (!Files.exists(Paths.get(cat1path)) && !Files.exists(Paths.get(wave1path))) {
+            return null;
+        }
         List<MediaFile> mediaFiles = new ArrayList<>();
         for (long id : ids) {
             mediaFiles.add(new MediaFile(id));
@@ -462,6 +469,11 @@ public class DummyDataServiceImpl {
         Path dir = Paths.get(System.getProperty("user.dir"), uploadDir);
 //        System.out.println("\n\nStarting to save media\n\n " + dir + "/cat1.png\n\n");
         try {
+            String cat1path = dir + "/cat1.webp";
+            String wave1path = dir + "/3d-network-particle-flow-background.jpg";
+            if (!Files.exists(Paths.get(cat1path)) && !Files.exists(Paths.get(wave1path))) {
+                return;
+            }
             File cat1png = new File(dir + "/cat1.webp");
             File wave1png = new File(dir + "/3d-network-particle-flow-background.jpg");
             MultipartFile cat1 = new FileMultipartFile(cat1png, Files.probeContentType(cat1png.toPath()));
