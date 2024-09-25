@@ -25,6 +25,8 @@ import java.util.logging.Logger;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import zw.co.techtrendz.techtrendzapi.entity.Address;
@@ -99,8 +101,15 @@ public class DummyDataServiceImpl {
     @Value("${file.upload-dir}") // Define this in application.properties
     private String uploadDir;
 
-    @PostConstruct
-    private void insertDummyData() {
+    @Bean
+    public ApplicationRunner insertDummyData() {
+        return args -> {
+            System.out.println("Inserting dummy data...");
+            this.dummyDataInsertion();
+        };
+    }
+
+    private void dummyDataInsertion() {
         salutationService.saveSalutation(new Salutation(1L, "Mr", "Mr"));
         salutationService.saveSalutation(new Salutation(2L, "Miss", "Miss"));
         salutationService.saveSalutation(new Salutation(3L, "Mrs", "Mrs"));
