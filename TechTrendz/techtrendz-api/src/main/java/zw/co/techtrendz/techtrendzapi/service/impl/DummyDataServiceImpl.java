@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -474,11 +475,13 @@ public class DummyDataServiceImpl {
             if (!Files.exists(Paths.get(cat1path)) && !Files.exists(Paths.get(wave1path))) {
                 return;
             }
+            Tika tika = new Tika();
             File cat1png = new File(dir + "/cat1.webp");
             File wave1png = new File(dir + "/3d-network-particle-flow-background.jpg");
-            MultipartFile cat1 = new FileMultipartFile(cat1png, Files.probeContentType(cat1png.toPath()));
-            MultipartFile wave = new FileMultipartFile(wave1png, Files.probeContentType(wave1png.toPath()));
-//            System.out.println("\n\nStarting to save media\n\n " + cat1.getSize() + "/cat1.png\n\n");
+            MultipartFile cat1 = new FileMultipartFile(cat1png, tika.detect(cat1png.toPath()));
+            MultipartFile wave = new FileMultipartFile(wave1png, tika.detect(wave1png.toPath()));
+//            System.out.println("\n\nStarting to save media\n\n " + tika.detect(cat1png.toPath()) + "\n\n");
+//            System.out.println("\n\nStarting to save media\n\n " + tika.detect(wave1png.toPath()) + "\n\n");
             MultipartFile[] files = new MultipartFile[]{cat1, wave};
 //            mediaFileService.saveFiles(files);
             mediaFileService.saveFile(cat1);
