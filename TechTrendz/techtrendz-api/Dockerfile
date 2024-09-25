@@ -42,4 +42,4 @@ ENV SPRING_PROFILES_ACTIVE=prod
 VOLUME ["/app/data", "/app/media"]
 
 # Run the Spring Boot application with the active profile
-ENTRYPOINT ["java","-jar","/app/techtrendz-api-0.0.1-SNAPSHOT.jar","--spring.profiles.active=${SPRING_PROFILES_ACTIVE}"]
+ENTRYPOINT ["java","-jar","/app/techtrendz-api-0.0.1-SNAPSHOT.jar","--spring.profiles.active=${SPRING_PROFILES_ACTIVE}","--server.port=3006"]
