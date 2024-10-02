@@ -1,0 +1,7 @@
+React+TS
+Tailwind
+Spring Boot
+Docker
+Back4app
+Netlify
+cron-job.org
