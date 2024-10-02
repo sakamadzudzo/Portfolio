@@ -7,6 +7,7 @@ package zw.co.techtrendz.techtrendzapi.service.impl;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
     public Product saveProduct(Product product) {
         if (product.getFiles() != null) {
             List<MediaFile> mediaFiles = product.getPictures();
-            product.getFiles().forEach(file -> {
+            Arrays.asList(product.getFiles()).forEach(file -> {
                 try {
                     MediaFile mediaFile = mediaFileService.saveFile(file);
                     mediaFiles.add(mediaFile);

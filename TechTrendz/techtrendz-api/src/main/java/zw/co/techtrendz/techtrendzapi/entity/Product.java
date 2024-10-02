@@ -72,7 +72,7 @@ public class Product {
     private List<MediaFile> pictures;
     
     @Transient
-    private List<MultipartFile> files;
+    private MultipartFile[] files;
 
     public Product(long id) {
         this.id = id;

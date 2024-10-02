@@ -80,7 +80,8 @@ export const saveProduct = async (token: string, product: Object) => {
     let data: any = null
     await axios.post(API + "saveproduct", product, {
         headers: {
-            Authorization: token
+            Authorization: token,
+            "Content-type": "multipart/form-data",
         }
     })
         .then((response) => {

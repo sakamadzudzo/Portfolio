@@ -31,3 +31,29 @@ export const getFileByMediaId = async (token: string, id: number) => {
 export const getFileLinkFromMediaId = (id: number) => {
     return API + "getfilebymediafileid?id=" + id
 }
+
+export const uploadFiles = async (token: string, files: FileList) => {
+    await authOrReload(token)
+    let formData = new FormData()
+    for (var i = 0; i < files.length; i++) {
+        formData.append("files", files[i])
+    }
+    let data: any = null
+    await axios.post(API + "upload", formData, {
+        headers: {
+            Authorization: token
+        }
+    })
+        .then((response) => {
+            data = response.data
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+            data = null
+        })
+        .finally(() => {
+            return data;
+        })
+    return data
+}
