@@ -75,13 +75,13 @@ export const countProductItemsAvialableByProductId = async (token: string, produ
     return data
 }
 
-export const saveProduct = async (token: string, product: Object) => {
+export const saveProduct = async (token: string, product: FormData) => {
     await authOrReload(token)
     let data: any = null
     await axios.post(API + "saveproduct", product, {
         headers: {
             Authorization: token,
-            "Content-type": "multipart/form-data",
+            'Content-Type': 'multipart/form-data',
         }
     })
         .then((response) => {

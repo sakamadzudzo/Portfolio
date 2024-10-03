@@ -38,10 +38,10 @@ public class ProductServiceImpl implements ProductService {
 
     public Product saveProduct(Product product) {
         if (product.getFiles() != null) {
-            List<MediaFile> mediaFiles = product.getPictures();
+            List<MediaFile> mediaFiles = product.getPictures() != null ? product.getPictures() : new ArrayList<>();
             Arrays.asList(product.getFiles()).forEach(file -> {
                 try {
-                    MediaFile mediaFile = mediaFileService.saveFile(file);
+                    MediaFile mediaFile = new MediaFile(mediaFileService.saveFile(file).getId());
                     mediaFiles.add(mediaFile);
                 } catch (IOException ex) {
                     // Wrap IOException in a RuntimeException to avoid the unreported exception error
@@ -52,8 +52,10 @@ public class ProductServiceImpl implements ProductService {
             });
             product.setPictures(mediaFiles);
         }
+        System.out.println("\n\n\n\n==========>\n\n" + product.getTags() + "\n\n<==========\n\n\n\n");
         Product newProduct = productDao.save(product);
         newProduct.setProductItems(null);
+        newProduct.setFiles(null);
         return newProduct;
     }
 

@@ -46,6 +46,7 @@ const Home = () => {
                         <ul className="flex-col items-center list-item list-disc">
                             <li>Proper navigation</li>
                             <li>Product with pictures and videos</li>
+                            <li>Save product not sending tags to backend</li>
                         </ul>
                     </div>
                 </div>

@@ -65,7 +65,52 @@ export const removeFileFromFilelist = (index: number, fileList: FileList | null 
     return dataTransfer.files;
 }
 
-export const getFormData = (object: any) => Object.keys(object).reduce((formData, key) => {
+export const getFormData = (object: any) => {
+    const formData = new FormData();
+    // Loop through the keys of the object and append their respective values to formData one by one
+    Object.keys(object).forEach(key => {
+        if (!(object[key] instanceof Object)) {
+            // If the value at the current key is not an object, apppend to formData
+            formData.append(key, object[key])
+        } else {
+            // Else, loop through its keys and append the value to formData one by one on key of parent key
+            let innerObj = object[key]
+            Object.keys(innerObj).forEach(innerKey => {
+                formData.append(`${key}.${innerKey}`, object[key][innerKey])
+            })
+            // formData.append(key, JSON.stringify(innerObj))
+        }
+    });
+    return formData;
+}
+
+export const getFormData_2 = (object: any) => Object.keys(object).reduce((formData, key) => {
     formData.append(key, object[key]);
     return formData;
 }, new FormData())
+
+const buildFormData = (formData: FormData, data: any, parentKey: any) => {
+    if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File) && !(data instanceof Blob)) {
+        // Handle object
+        Object.keys(data).forEach(key => {
+            buildFormData(formData, data[key], parentKey ? `${parentKey}.${key}` : key);
+        });
+    } else if (Array.isArray(data)) {
+        // Handle array
+        data.forEach((item, index) => {
+            buildFormData(formData, item, `${parentKey ? parentKey + '.' : ''}${index}`);
+        });
+    } else {
+        const value = data == null ? '' : data;
+
+        formData.append(parentKey, value);
+    }
+}
+
+export const jsonToFormData = (data: any) => {
+    const formData = new FormData();
+
+    buildFormData(formData, data, null);
+
+    return formData;
+}

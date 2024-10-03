@@ -16,7 +16,7 @@ import { getProductTypeAll } from "../components/service/productTypeService"
 import { getTagAll } from "../components/service/tagService"
 import FormMultiSelect from "../components/FormMultiSelect"
 import FilePicker from "../components/FilePicker"
-import { combineFileLists, getFormData, removeFileFromFilelist } from "../components/utils/misc"
+import { combineFileLists, getFormData, jsonToFormData, removeFileFromFilelist } from "../components/utils/misc"
 import { uploadFiles } from "../components/service/fileService"
 import { toast } from "react-toastify"
 
@@ -130,17 +130,20 @@ export const ProductEdit = () => {
         setLoading(true)
         // setProductChanges({ name: "files", value: files })
         // let dto = product.productItems ? product : { ...product, productItems: null }
-        let dto
-        if (files) {
-            dto = new FormData()
-            dto = getFormData(product)
-            for (var i = 0; i < files.length; i++) {
-                dto.append("files", files[i])
-            }
-        } else {
-            dto = product
-        }
+        let dto = new FormData()
+        dto = jsonToFormData(product)
+        // dto.append("product", JSON.stringify(product))
+        // if (files) {
+        //     for (var i = 0; i < files.length; i++) {
+        //         dto.append("files", files[i])
+        //     }
+        // }
+        let finalFiles = files ? Array.from(files) : [];
+        finalFiles.forEach(file => {
+            dto.append("files", file)
+        })
 
+        console.log(dto)
         let result = await saveProduct(token!, dto!)
         if (result) {
             navigate("/productedit/" + result.id)
@@ -207,7 +210,6 @@ export const ProductEdit = () => {
                 <FormFooter className="justify-end">
                     <button className={`btn-hollow`} onClick={() => { navigate(-1); }}>Cancel</button>
                     <button className={`btn-hollow`} disabled={disableSave} onClick={async () => { await save(); }}> Save</button>
-                    <button className={`btn-hollow`} disabled={false} onClick={async () => { await subSave(); }}> Upload</button>
                     {/* <button className={`btn-hollow`} onClick={() => getPrincipal()}> Auth</button> */}
                 </FormFooter>
             </Form>

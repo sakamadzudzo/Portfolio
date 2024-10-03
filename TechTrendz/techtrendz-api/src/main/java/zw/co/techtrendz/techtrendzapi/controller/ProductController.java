@@ -10,11 +10,15 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import zw.co.techtrendz.techtrendzapi.entity.PagedProductsRequestDto;
 import zw.co.techtrendz.techtrendzapi.entity.Product;
 import zw.co.techtrendz.techtrendzapi.service.ProductService;
@@ -30,8 +34,10 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(name = "/saveproduct", value = "/saveproduct", method = RequestMethod.POST)
-    public Product saveProduct(@Valid @RequestBody Product product) {
+    @RequestMapping(name = "/saveproduct", value = "/saveproduct", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public Product saveProduct(
+            @Valid @ModelAttribute Product product
+    ) {
         return productService.saveProduct(product);
     }
 
