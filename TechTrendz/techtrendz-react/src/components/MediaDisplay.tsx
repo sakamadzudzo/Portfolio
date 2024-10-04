@@ -7,12 +7,10 @@ import { MyFile } from '../types/types';
 
 export const MediaDisplay = ({
     className,
-    files,
-    fetchFunction
+    files
 }: {
     className?: string,
-    files: MyFile[],
-    fetchFunction?: Function
+    files: MyFile[]
 }) => {
     const [mediaFiles, setMediaFiles] = useState<MyFile[]>([]);
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);

@@ -9,9 +9,9 @@ import { numformat } from "../components/utils/misc";
 import FormInput from "../components/FormInput";
 import { toast } from "react-toastify";
 import { OverlayContextType } from "../components/Layout";
-import { MediaDisplay } from "../components/MediaViewer";
+import { MediaDisplay } from "../components/MediaDisplay";
 import { MyFile, Product as ProductObj } from "../types/types";
-import { getFileByMediaId, getFileLinkFromMediaId } from "../components/service/fileService";
+import { getFileLinkFromMediaId } from "../components/service/fileService";
 
 export const Product = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -126,7 +126,7 @@ export const Product = () => {
         <div className="wrapper">
             {product ?
                 <div className="rounded-sm flex md:justify-center h-full portrait:flex-col portrait:justify-between landscape:items-center gap-1 portrait:md:w-96">
-                    <MediaDisplay className="landscape:h-96 portrait:h-1/2 aspect-square" files={mediaFiles} fetchFunction={getFileByMediaId} />
+                    <MediaDisplay className="landscape:h-96 portrait:h-1/2 aspect-square" files={mediaFiles} />
                     {/* <div className="landscape:h-96 border aspect-square"></div> */}
                     {/* <img
                         src={cat}

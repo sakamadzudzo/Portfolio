@@ -34,9 +34,9 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(name = "/saveproduct", value = "/saveproduct", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @RequestMapping(name = "/saveproduct", value = "/saveproduct", method = RequestMethod.POST)
     public Product saveProduct(
-            @Valid @ModelAttribute Product product
+            @Valid @RequestBody Product product
     ) {
         return productService.saveProduct(product);
     }

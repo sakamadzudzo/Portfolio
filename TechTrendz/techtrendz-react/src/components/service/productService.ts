@@ -2,6 +2,8 @@ import axios from "axios"
 import API from "./../utils/constants"
 import { toast } from "react-toastify"
 import { authOrReload } from "./authService"
+import { Product } from "../../types/types"
+import { uploadFiles } from "./fileService"
 
 export const getProductAllPaged = async (token: string, pagedProductsRequestDto: any) => {
     await await authOrReload(token)
@@ -75,13 +77,21 @@ export const countProductItemsAvialableByProductId = async (token: string, produ
     return data
 }
 
-export const saveProduct = async (token: string, product: FormData) => {
-    await authOrReload(token)
+export const saveProduct = async (token: string, product: Product, files: FileList) => {
+    if (files) {
+        let mediaFiles = await uploadFiles(token, files)
+        if (!mediaFiles) {
+            toast.error("Could not save media files")
+            return null
+        }
+        product.pictures = mediaFiles
+    } else {
+        await authOrReload(token)
+    }
     let data: any = null
     await axios.post(API + "saveproduct", product, {
         headers: {
-            Authorization: token,
-            'Content-Type': 'multipart/form-data',
+            Authorization: token
         }
     })
         .then((response) => {
