@@ -6,7 +6,7 @@ import FormHeader from "../components/FormHeader"
 import FormInput from "../components/FormInput"
 import { useSelector } from "react-redux"
 import { AuthState } from "../components/utils/authSlice"
-import { getProductById, saveProduct } from "../components/service/productService"
+import { getProductById, removeMediaFiles, saveProduct } from "../components/service/productService"
 import { useNavigate, useOutletContext, useParams } from "react-router-dom"
 import { OverlayContextType } from "../components/Layout"
 import { Brand, MyFile, Product, ProductType, SelectOption, Tag } from "../types/types"
@@ -148,7 +148,13 @@ export const ProductEdit = () => {
         // Dialog here
         // Find the file from the mediaFile array using index
         // toast("Clicked remove saved file")
+        setLoading(true)
+        let mediaFile = product.pictures[index]
         toast("This cannot be undone. (Cancel/Remove)")
+        if (await removeMediaFiles(token!, product.id, mediaFile.id)) {
+            await getProduct()
+        }
+        setLoading(false)
     }
 
     useEffect(() => {

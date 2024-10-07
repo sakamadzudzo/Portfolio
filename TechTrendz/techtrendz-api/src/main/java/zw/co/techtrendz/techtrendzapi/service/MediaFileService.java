@@ -29,4 +29,6 @@ public interface MediaFileService {
     public Optional<MediaFile> getMediaFileById(long id);
 
     public ResponseEntity<Object> getFileByMediaFileId(long id);
+
+    public void removeMediafile(long mediaFileId, long productId);
 }

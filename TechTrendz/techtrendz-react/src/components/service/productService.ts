@@ -107,3 +107,29 @@ export const saveProduct = async (token: string, product: Product, files: FileLi
         })
     return data
 }
+
+export const removeMediaFiles = async (token: string, productId: number, mediaFileId: number) => {
+    await authOrReload(token)
+    let data: any = null
+    await axios.post(API + "removemediafile", null, {
+        params: {
+            productId: productId,
+            mediaFileId: mediaFileId
+        },
+        headers: {
+            Authorization: token
+        }
+    })
+        .then(() => {
+            data = true
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+            data = false
+        })
+        .finally(() => {
+            return data;
+        })
+    return data
+}

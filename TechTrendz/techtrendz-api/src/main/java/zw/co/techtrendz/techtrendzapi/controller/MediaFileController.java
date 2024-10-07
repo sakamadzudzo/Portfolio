@@ -55,4 +55,9 @@ public class MediaFileController {
     public ResponseEntity<Object> getFileByMediaFileId(@RequestParam long id) {
         return mediaFileService.getFileByMediaFileId(id);
     }
+
+    @RequestMapping(name = "/removemediafile", value = "/removemediafile", method = RequestMethod.POST)
+    public void removeMediafile(@RequestParam long mediaFileId, @RequestParam long productId) {
+        mediaFileService.removeMediafile(mediaFileId, productId);
+    }
 }
