@@ -70,9 +70,6 @@ public class Product {
 
     @ManyToMany
     private List<MediaFile> pictures;
-    
-    @Transient
-    private List<MultipartFile> files;
 
     public Product(long id) {
         this.id = id;

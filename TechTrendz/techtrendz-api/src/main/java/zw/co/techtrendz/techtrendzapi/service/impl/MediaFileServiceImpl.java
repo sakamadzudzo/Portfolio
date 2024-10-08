@@ -14,13 +14,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,8 +32,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 import zw.co.techtrendz.techtrendzapi.entity.MediaFile;
+import zw.co.techtrendz.techtrendzapi.entity.Product;
 import zw.co.techtrendz.techtrendzapi.repository.MediaFileDao;
 import zw.co.techtrendz.techtrendzapi.service.MediaFileService;
+import zw.co.techtrendz.techtrendzapi.service.ProductService;
 
 /**
  *
@@ -48,6 +49,8 @@ public class MediaFileServiceImpl implements MediaFileService {
 
     @Autowired
     private MediaFileDao mediaFileDao;
+    @Autowired
+    private ProductService productService;
 
     public MediaFile saveFile(MultipartFile file) throws IOException, NoSuchAlgorithmException {
         String type = "misc";
@@ -202,6 +205,22 @@ public class MediaFileServiceImpl implements MediaFileService {
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(null);
+        }
+    }
+
+    public void removeMediafile(long mediaFileId, long productId) {
+        try {
+            MediaFile mediaFile = this.getMediaFileById(mediaFileId).orElseThrow();
+            Product product = this.productService.getProductById(productId).orElseThrow();
+            List<MediaFile> mediaFiles = product.getPictures();
+            Predicate<MediaFile> removeById = (MediaFile y) -> y.getId() != mediaFileId;
+            mediaFiles = mediaFiles.stream().filter(removeById).collect(Collectors.toList());
+            product.setPictures(mediaFiles);
+            this.productService.saveProduct(product);
+            File file = new File(mediaFile.getFilePath());
+            file.delete();
+        } catch (Exception e) {
+            throw e;
         }
     }
 }

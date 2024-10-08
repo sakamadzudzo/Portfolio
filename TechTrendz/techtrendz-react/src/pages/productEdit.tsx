@@ -6,10 +6,10 @@ import FormHeader from "../components/FormHeader"
 import FormInput from "../components/FormInput"
 import { useSelector } from "react-redux"
 import { AuthState } from "../components/utils/authSlice"
-import { getProductById, saveProduct } from "../components/service/productService"
+import { getProductById, removeMediaFiles, saveProduct } from "../components/service/productService"
 import { useNavigate, useOutletContext, useParams } from "react-router-dom"
 import { OverlayContextType } from "../components/Layout"
-import { Brand, Product, ProductType, SelectOption, Tag } from "../types/types"
+import { Brand, MyFile, Product, ProductType, SelectOption, Tag } from "../types/types"
 import { getBrandAll } from "../components/service/brandService"
 import FormSelect from "../components/FormSelect"
 import { getProductTypeAll } from "../components/service/productTypeService"
@@ -17,6 +17,10 @@ import { getTagAll } from "../components/service/tagService"
 import FormMultiSelect from "../components/FormMultiSelect"
 import FilePicker from "../components/FilePicker"
 import { combineFileLists, removeFileFromFilelist } from "../components/utils/misc"
+import { getFileLinkFromMediaId } from "../components/service/fileService"
+import { MediaPreview } from "../components/MediaPreview"
+import { useDialog } from "../components/DialogContext"
+import { toast } from "react-toastify"
 
 export const ProductEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -30,6 +34,9 @@ export const ProductEdit = () => {
     const [header, setHeader] = useState("New Product")
     const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
     const [files, setFiles] = useState<FileList>()
+    const [mediaFiles, setMediaFiles] = useState<MyFile[]>([] as MyFile[])
+    const { openDialog } = useDialog();
+
 
     const setProductChanges = (e: any) => {
         if (e.value) {
@@ -55,6 +62,16 @@ export const ProductEdit = () => {
             }));
         }
     }
+
+    const getPictureLinks = useCallback(async () => {
+        if (product && product.pictures) {
+            let picLinks: MyFile[] = [] as MyFile[]
+            product.pictures.forEach(async (pic) => {
+                picLinks.push({ id: pic.id, token: token!, type: pic.fileType, url: getFileLinkFromMediaId(pic.id) })
+            })
+            setMediaFiles(picLinks)
+        }
+    }, [product, token])
 
     const chooseFiles = (newFiles: FileList | null | ChangeEvent<HTMLInputElement>) => {
         setFiles(newFiles instanceof FileList ? files ? combineFileLists(files, newFiles) : newFiles : files)
@@ -121,14 +138,37 @@ export const ProductEdit = () => {
 
     const save = async () => {
         setLoading(true)
-        // setProductChanges({ name: "files", value: files })
-        let dto = product.productItems ? product : { ...product, productItems: null }
-        if (files) dto.files = files
-        let result = await saveProduct(token!, dto)
+        let dto: Product = product.productItems ? product : { ...product, productItems: [] }
+        let result = await saveProduct(token!, dto!, files!)
         if (result) {
+            setFiles(new DataTransfer().files)
+            if (id) getProduct()
             navigate("/productedit/" + result.id)
         }
         setLoading(false)
+    }
+
+    const removeSavedFile = async (index: number) => {
+        const result = await openDialog({
+            title: "Remove media from product?",
+            detail: "This action cannot be undone",
+            yesText: "Remove",
+            noText: "Cancel",
+        });
+
+        if (result) {
+            setLoading(true)
+            let mediaFile = product.pictures[index]
+            if (await removeMediaFiles(token!, product.id, mediaFile.id)) {
+                toast.success("File removed")
+                await getProduct()
+            } else {
+                toast.error("Encountered an error. Check logs")
+            }
+            setLoading(false)
+        } else {
+            // toast.warning("User canceled action");
+        }
     }
 
     useEffect(() => {
@@ -138,6 +178,10 @@ export const ProductEdit = () => {
             setDisableSave(true)
         }
     }, [product])
+
+    useEffect(() => {
+        getPictureLinks()
+    }, [getPictureLinks])
 
     useEffect(() => {
         if (!id || id === "0") {
@@ -175,17 +219,19 @@ export const ProductEdit = () => {
                     <FormMultiSelect id="tags" name="tags" className="w-full" label="Tags" onChange={setProductChanges} values={product?.tags?.map((tag) => { return { value: tag.id, label: tag.name, description: tag.description } })} placeholder="Tags..."
                         options={tagsToOptions()} clearable={true} searchable={true} disabled={false} autoFocus={false} key={`tags`} returnEvent={true} withChips />
                     <FormInput id="price" name="price" className="w-full" type="number" label="Price" onChange={setProductChanges} value={product?.price!} placeholder="Price..." returnEvent={true} key={`price`} />
-                    {/* <FilePicker id="files" name="files" className="w-full" label="Pictures" onChange={setProductChanges} value={product?.files!} placeholder="Pictures..." returnEvent={true} key={`files`} /> */}
-                    <FilePicker
-                        className="w-full"
-                        label="Product media"
-                        id="files"
-                        values={files}
-                        onChange={(files: FileList | null | ChangeEvent<HTMLInputElement>) => { chooseFiles(files) }}
-                        removeFile={removeFile}
-                        multiple
-                    />
-
+                    <div className="w-full relative space-y-5 pb-4 px-4 border border-t-0 rounded-tl-none borders bg-transparent rounded-md focus:border-light-600 dark:focus:border-dark-600">
+                        <div className="absolute -top-3 left-0.5 text-xs focus:italic text-inherit">Product Media</div>
+                        <MediaPreview id={`saved-priview`} onClose={(index: number) => { removeSavedFile(index) }} key={`saved-priview`} label={``} name={`saved-priview`} values={mediaFiles} />
+                        <FilePicker
+                            className="w-full"
+                            label="New media"
+                            id="files"
+                            values={files}
+                            onChange={(files: FileList | null | ChangeEvent<HTMLInputElement>) => { chooseFiles(files) }}
+                            removeFile={removeFile}
+                            multiple
+                        />
+                    </div>
                 </FormBody>
                 <FormFooter className="justify-end">
                     <button className={`btn-hollow`} onClick={() => { navigate(-1); }}>Cancel</button>

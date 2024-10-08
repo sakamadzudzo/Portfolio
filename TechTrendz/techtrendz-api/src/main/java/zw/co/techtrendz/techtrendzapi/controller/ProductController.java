@@ -31,7 +31,9 @@ public class ProductController {
     private ProductService productService;
 
     @RequestMapping(name = "/saveproduct", value = "/saveproduct", method = RequestMethod.POST)
-    public Product saveProduct(@Valid @RequestBody Product product) {
+    public Product saveProduct(
+            @Valid @RequestBody Product product
+    ) {
         return productService.saveProduct(product);
     }
 
