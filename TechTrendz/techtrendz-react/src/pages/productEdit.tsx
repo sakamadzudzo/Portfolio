@@ -141,6 +141,8 @@ export const ProductEdit = () => {
         let dto: Product = product.productItems ? product : { ...product, productItems: [] }
         let result = await saveProduct(token!, dto!, files!)
         if (result) {
+            setFiles(new DataTransfer().files)
+            if (id) getProduct()
             navigate("/productedit/" + result.id)
         }
         setLoading(false)

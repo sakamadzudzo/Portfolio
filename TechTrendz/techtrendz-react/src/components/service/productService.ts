@@ -84,7 +84,7 @@ export const saveProduct = async (token: string, product: Product, files: FileLi
             toast.error("Could not save media files")
             return null
         }
-        product.pictures = mediaFiles
+        product.pictures = product.pictures ? [...product.pictures, ...mediaFiles] : mediaFiles
     } else {
         await authOrReload(token)
     }
