@@ -20,6 +20,7 @@ import { combineFileLists, removeFileFromFilelist } from "../components/utils/mi
 import { getFileLinkFromMediaId } from "../components/service/fileService"
 import { MediaPreview } from "../components/MediaPreview"
 import { toast } from "react-toastify"
+import { useDialog } from "../components/Dialog"
 
 export const ProductEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -34,6 +35,8 @@ export const ProductEdit = () => {
     const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
     const [files, setFiles] = useState<FileList>()
     const [mediaFiles, setMediaFiles] = useState<MyFile[]>([] as MyFile[])
+    const { openDialog, Dialog } = useDialog();
+
 
     const setProductChanges = (e: any) => {
         if (e.value) {
@@ -144,13 +147,27 @@ export const ProductEdit = () => {
     }
 
     const removeSavedFile = async (index: number) => {
-        setLoading(true)
-        let mediaFile = product.pictures[index]
-        toast("This cannot be undone. (Cancel/Remove)")
-        if (await removeMediaFiles(token!, product.id, mediaFile.id)) {
-            await getProduct()
+
+        const result = await openDialog({
+            title: "Remove file from product?",
+            detail: "This action cannot be undone",
+            yesText: "Remove",
+            noText: "Cancel",
+        });
+
+        if (result) {
+            toast.success("User confirmed action");
+        } else {
+            toast.warning("User canceled action");
         }
-        setLoading(false)
+
+        // setLoading(true)
+        // let mediaFile = product.pictures[index]
+        // toast("This cannot be undone. (Cancel/Remove)")
+        // if (await removeMediaFiles(token!, product.id, mediaFile.id)) {
+        //     await getProduct()
+        // }
+        // setLoading(false)
     }
 
     useEffect(() => {
@@ -214,6 +231,7 @@ export const ProductEdit = () => {
                             multiple
                         />
                     </div>
+                    <button onClick={() => removeSavedFile(1)} className="border">Dialog</button>
                 </FormBody>
                 <FormFooter className="justify-end">
                     <button className={`btn-hollow`} onClick={() => { navigate(-1); }}>Cancel</button>
@@ -221,6 +239,7 @@ export const ProductEdit = () => {
                     {/* <button className={`btn-hollow`} onClick={() => getPrincipal()}> Auth</button> */}
                 </FormFooter>
             </Form>
+            <Dialog />
         </div>
     )
 }
