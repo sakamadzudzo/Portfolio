@@ -51,8 +51,6 @@ const Home = () => {
                         <div className="font-medium underline">ToDo</div>
                         <ul className="flex-col items-center list-item list-disc">
                             <li>Proper navigation</li>
-                            <li>Product with pictures and videos</li>
-                            <li>Actions dialogs</li>
                         </ul>
                     </div>
                 </div>
