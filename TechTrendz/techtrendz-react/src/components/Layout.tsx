@@ -4,6 +4,7 @@ import { Slide, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { Header } from './Header';
 import { LoadingOverlay } from './LoadingOverlay';
+import { DialogProvider } from './DialogContext';
 
 type OverlayContextType = { setLoading: Function, setEmpty: Function }
 
@@ -38,23 +39,25 @@ const Layout = () => {
     return (
         <>
             <div className={`relative h-dvh w-full overflow-hidden ${dark ? 'dark' : ''} bg-light-50 dark:bg-dark-50`}>
-                <Header dark={dark} setDark={setDark} key={`header`} />
-                <LoadingOverlay className="" loading={loading} empty={empty}>
-                    <Outlet context={{ setLoading, setEmpty } satisfies OverlayContextType} />
-                </LoadingOverlay>
-                <ToastContainer
-                    position="top-right"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop
-                    closeOnClick={true}
-                    rtl={false}
-                    pauseOnFocusLoss={false}
-                    draggable
-                    pauseOnHover={false}
-                    theme={dark ? "dark" : "light"}
-                    transition={Slide}
-                />
+                <DialogProvider>
+                    <Header dark={dark} setDark={setDark} key={`header`} />
+                    <LoadingOverlay className="" loading={loading} empty={empty}>
+                        <Outlet context={{ setLoading, setEmpty } satisfies OverlayContextType} />
+                    </LoadingOverlay>
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop
+                        closeOnClick={true}
+                        rtl={false}
+                        pauseOnFocusLoss={false}
+                        draggable
+                        pauseOnHover={false}
+                        theme={dark ? "dark" : "light"}
+                        transition={Slide}
+                    />
+                </DialogProvider>
             </div>
         </>
     )

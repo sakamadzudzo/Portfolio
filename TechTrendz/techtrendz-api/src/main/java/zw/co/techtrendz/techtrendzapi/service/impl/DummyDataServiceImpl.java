@@ -16,11 +16,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -109,6 +111,13 @@ public class DummyDataServiceImpl {
     }
 
     private void dummyDataInsertion() {
+        Path img = Paths.get(System.getProperty("user.dir"), uploadDir, "/img");
+        Path vid = Paths.get(System.getProperty("user.dir"), uploadDir, "/vid");
+        Path misc = Paths.get(System.getProperty("user.dir"), uploadDir, "/misc");
+        this.cleanOldMedia(img);
+        this.cleanOldMedia(vid);
+        this.cleanOldMedia(misc);
+
         salutationService.saveSalutation(new Salutation(1L, "Mr", "Mr"));
         salutationService.saveSalutation(new Salutation(2L, "Miss", "Miss"));
         salutationService.saveSalutation(new Salutation(3L, "Mrs", "Mrs"));
@@ -498,6 +507,16 @@ public class DummyDataServiceImpl {
             Logger.getLogger(DummyDataServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(DummyDataServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void cleanOldMedia(Path path) {
+        try (Stream<Path> pathStream = Files.walk(path)) {
+            pathStream.sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+        } catch (IOException e) {
+
         }
     }
 }

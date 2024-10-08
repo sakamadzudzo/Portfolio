@@ -19,8 +19,8 @@ import FilePicker from "../components/FilePicker"
 import { combineFileLists, removeFileFromFilelist } from "../components/utils/misc"
 import { getFileLinkFromMediaId } from "../components/service/fileService"
 import { MediaPreview } from "../components/MediaPreview"
+import { useDialog } from "../components/DialogContext"
 import { toast } from "react-toastify"
-import { useDialog } from "../components/Dialog"
 
 export const ProductEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -35,7 +35,7 @@ export const ProductEdit = () => {
     const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
     const [files, setFiles] = useState<FileList>()
     const [mediaFiles, setMediaFiles] = useState<MyFile[]>([] as MyFile[])
-    const { openDialog, Dialog } = useDialog();
+    const { openDialog } = useDialog();
 
 
     const setProductChanges = (e: any) => {
@@ -147,27 +147,26 @@ export const ProductEdit = () => {
     }
 
     const removeSavedFile = async (index: number) => {
-
         const result = await openDialog({
-            title: "Remove file from product?",
+            title: "Remove media from product?",
             detail: "This action cannot be undone",
             yesText: "Remove",
             noText: "Cancel",
         });
 
         if (result) {
-            toast.success("User confirmed action");
+            setLoading(true)
+            let mediaFile = product.pictures[index]
+            if (await removeMediaFiles(token!, product.id, mediaFile.id)) {
+                toast.success("File removed")
+                await getProduct()
+            } else {
+                toast.error("Encountered an error. Check logs")
+            }
+            setLoading(false)
         } else {
-            toast.warning("User canceled action");
+            // toast.warning("User canceled action");
         }
-
-        // setLoading(true)
-        // let mediaFile = product.pictures[index]
-        // toast("This cannot be undone. (Cancel/Remove)")
-        // if (await removeMediaFiles(token!, product.id, mediaFile.id)) {
-        //     await getProduct()
-        // }
-        // setLoading(false)
     }
 
     useEffect(() => {
@@ -231,7 +230,6 @@ export const ProductEdit = () => {
                             multiple
                         />
                     </div>
-                    <button onClick={() => removeSavedFile(1)} className="border">Dialog</button>
                 </FormBody>
                 <FormFooter className="justify-end">
                     <button className={`btn-hollow`} onClick={() => { navigate(-1); }}>Cancel</button>
@@ -239,7 +237,6 @@ export const ProductEdit = () => {
                     {/* <button className={`btn-hollow`} onClick={() => getPrincipal()}> Auth</button> */}
                 </FormFooter>
             </Form>
-            <Dialog />
         </div>
     )
 }
