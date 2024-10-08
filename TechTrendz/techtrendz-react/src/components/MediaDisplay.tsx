@@ -13,7 +13,10 @@ export const MediaDisplay = ({
     files: MyFile[]
 }) => {
     const [mediaFiles, setMediaFiles] = useState<MyFile[]>([]);
-    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
+    const emblaConfigs = {
+        loop: true
+    }
+    const [emblaRef, emblaApi] = useEmblaCarousel(emblaConfigs, [Autoplay()]);
 
     const scrollPrev = useCallback(() => {
         if (emblaApi) emblaApi.scrollPrev()

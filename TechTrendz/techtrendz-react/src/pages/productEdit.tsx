@@ -17,7 +17,6 @@ import { getTagAll } from "../components/service/tagService"
 import FormMultiSelect from "../components/FormMultiSelect"
 import FilePicker from "../components/FilePicker"
 import { combineFileLists, removeFileFromFilelist } from "../components/utils/misc"
-import { MediaDisplay } from "../components/MediaDisplay"
 import { getFileLinkFromMediaId } from "../components/service/fileService"
 import { MediaPreview } from "../components/MediaPreview"
 import { toast } from "react-toastify"
@@ -145,9 +144,6 @@ export const ProductEdit = () => {
     }
 
     const removeSavedFile = async (index: number) => {
-        // Dialog here
-        // Find the file from the mediaFile array using index
-        // toast("Clicked remove saved file")
         setLoading(true)
         let mediaFile = product.pictures[index]
         toast("This cannot be undone. (Cancel/Remove)")

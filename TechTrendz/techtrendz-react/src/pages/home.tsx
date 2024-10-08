@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
+import { NavLink, useOutletContext } from "react-router-dom";
 import { OverlayContextType } from "../components/Layout";
 
 const Home = () => {
@@ -14,8 +14,8 @@ const Home = () => {
 
     return (
         <>
-            <div className="wrapper">
-                <div className="grid grid-cols-2 gap-1 h-full w-full">
+            <div className="wrapper flex-col gap-1">
+                <div className="grid grid-cols-2 gap-1 h-2/3 w-full">
                     <div className="border rounded-md h-full flex flex-col items-center">
                         <div className="font-medium underline">Tech Stack</div>
                         <div className="flex gap-2 w-1/2">
@@ -52,9 +52,12 @@ const Home = () => {
                         <ul className="flex-col items-center list-item list-disc">
                             <li>Proper navigation</li>
                             <li>Product with pictures and videos</li>
-                            <li>Save product not sending tags to backend</li>
+                            <li>Actions dialogs</li>
                         </ul>
                     </div>
+                </div>
+                <div className="h-1/3 w-full border rounded-md list-item list-disc list-inside px-5 pt-2">
+                    <NavLink to={`about`} about="About page">About</NavLink>
                 </div>
             </div>
         </>
