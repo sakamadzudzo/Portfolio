@@ -3,6 +3,7 @@ import { toast } from "react-toastify"
 import { authOrReload } from "./authService"
 import API from "./../utils/constants"
 import { User } from "../../types/types"
+import { uploadFiles } from "./fileService"
 
 export const getUserById = async (token: string, id: number) => {
     await authOrReload(token)
@@ -29,8 +30,17 @@ export const getUserById = async (token: string, id: number) => {
     return data
 }
 
-export const saveUser = async (token: string, user: User) => {
-    await authOrReload(token)
+export const saveUser = async (token: string, user: User, file: FileList) => {
+    if (file) {
+        let mediaFiles = await uploadFiles(token, file)
+        if (!mediaFiles) {
+            toast.error("Could not save media files")
+            return null
+        }
+        user.profilePic = mediaFiles[0]
+    } else {
+        await authOrReload(token)
+    }
     let data: any = null
     await axios.post(API + "saveuser", user, {
         headers: {
