@@ -51,6 +51,11 @@ const Home = () => {
                         <div className="font-medium underline">ToDo</div>
                         <ul className="flex-col items-center list-item list-disc">
                             <li>Proper navigation</li>
+                            <li>Exempt about page from auth, add link to login page</li>
+                            <li>products page should use real images</li>
+                            <li>Home/Landing page</li>
+                            <li>Settings page</li>
+                            <li>Profile page</li>
                         </ul>
                     </div>
                 </div>

@@ -58,5 +58,5 @@ public class UserDto {
     @ManyToMany
     private Set<Contact> contacts;
     
-    private MultipartFile files;
+    private MediaFile profilePic;
 }

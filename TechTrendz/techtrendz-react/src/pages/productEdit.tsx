@@ -15,7 +15,7 @@ import FormSelect from "../components/FormSelect"
 import { getProductTypeAll } from "../components/service/productTypeService"
 import { getTagAll } from "../components/service/tagService"
 import FormMultiSelect from "../components/FormMultiSelect"
-import FilePicker from "../components/FilePicker"
+import FilePicker, { AcceptTypes } from "../components/FilePicker"
 import { combineFileLists, removeFileFromFilelist } from "../components/utils/misc"
 import { getFileLinkFromMediaId } from "../components/service/fileService"
 import { MediaPreview } from "../components/MediaPreview"
@@ -230,6 +230,7 @@ export const ProductEdit = () => {
                             onChange={(files: FileList | null | ChangeEvent<HTMLInputElement>) => { chooseFiles(files) }}
                             removeFile={removeFile}
                             multiple
+                            accepts={[AcceptTypes.Video, AcceptTypes.Image]}
                         />
                     </div>
                 </FormBody>

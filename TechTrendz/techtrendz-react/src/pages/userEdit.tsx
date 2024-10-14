@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { ChangeEvent, useCallback, useEffect, useState } from "react"
 import Form from "../components/Form"
 import FormBody from "../components/FormBody"
 import FormFooter from "../components/FormFooter"
@@ -9,7 +9,7 @@ import { AuthState } from "../components/utils/authSlice"
 import { getUserById, saveUser } from "../components/service/userService"
 import { useNavigate, useOutletContext, useParams } from "react-router-dom"
 import { OverlayContextType } from "../components/Layout"
-import { Address, BankAccount, Contact, ContactType, Role, Salutation, SelectOption, User } from "../types/types"
+import { Address, BankAccount, Contact, ContactType, MyFile, Role, Salutation, SelectOption, User } from "../types/types"
 import { getSalutationAll } from "../components/service/salutationService"
 import FormSelect from "../components/FormSelect"
 import { getRoleAll } from "../components/service/roleService"
@@ -23,6 +23,9 @@ import { getAddressAll } from "../components/service/addressService"
 import { getBankAccountAll } from "../components/service/bankAccountService"
 import { AddAddressModal } from "../components/AddAddressModal"
 import { AddBankAccountModal } from "../components/AddBankAccountModal"
+import FilePicker, { AcceptTypes } from "../components/FilePicker"
+import { MediaPreview } from "../components/MediaPreview"
+import { getFileLinkFromMediaId } from "../components/service/fileService"
 
 export const UserEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -44,6 +47,8 @@ export const UserEdit = () => {
     const [currentContact, setCurrentContact] = useState<Contact>({} as Contact)
     const [currentAddress, setCurrentAddress] = useState<Address>({} as Address)
     const [currentBankAccount, setCurrentBankAccount] = useState<BankAccount>({} as BankAccount)
+    const [file, setFile] = useState<FileList>()
+    const [mediaFile, setMediaFile] = useState<MyFile[]>([] as MyFile[])
 
     const getUser = useCallback(async () => {
         setLoading(true)
@@ -98,6 +103,14 @@ export const UserEdit = () => {
             }));
         }
     }
+
+    const getPictureLinks = useCallback(async () => {
+        if (user && user.profilePic) {
+            let picLinks: MyFile[] = [] as MyFile[]
+            picLinks.push({ id: user.profilePic.id, token: token!, type: user.profilePic.fileType, url: getFileLinkFromMediaId(user.profilePic.id) })
+            setMediaFile(picLinks)
+        }
+    }, [user, token])
 
     const addContact = (contact: Contact) => {
         const newList: Contact[] = user?.contacts ? [...user?.contacts, contact] : [...[] as Contact[], contact]
@@ -193,6 +206,23 @@ export const UserEdit = () => {
         return label
     }
 
+    const chooseFiles = (newFile: FileList | null | ChangeEvent<HTMLInputElement>) => {
+        // setFile(undefined)
+        if (newFile instanceof FileList) {
+            setFile(newFile)
+        } else if (newFile?.target) {
+            const dataTransfer = new DataTransfer();
+            const files1 = newFile && newFile?.target?.files ? Array.from(newFile?.target?.files) : [];
+            files1.forEach(file => dataTransfer.items.add(file));
+            setFile(dataTransfer.files)
+        }
+    }
+
+    const removeFile = (index: number) => {
+        // setFile(removeFileFromFilelist(index, file))
+        setFile(undefined)
+    }
+
     const getSalutations = useCallback(async () => {
         let result = await getSalutationAll(token!)
         if (result) {
@@ -239,7 +269,7 @@ export const UserEdit = () => {
         setLoading(true)
         let dto = user
         dto.id = Number(id)
-        let result = await saveUser(token!, dto)
+        let result = await saveUser(token!, dto, file!)
         if (result) {
             navigate("/useredit/" + result.id)
         }
@@ -253,6 +283,10 @@ export const UserEdit = () => {
             setDisableSave(true)
         }
     }, [user])
+
+    useEffect(() => {
+        getPictureLinks()
+    }, [getPictureLinks])
 
     useEffect(() => {
         if (!id || id === "0") {
@@ -367,6 +401,19 @@ export const UserEdit = () => {
                             bankAccounts={bankAccounts}
                             currentBankAccount={currentBankAccount && currentBankAccount}
                             key={`addbankaccountmodal`} />}
+                    <div className="w-full relative space-y-5 pb-4 px-4 border border-t-0 rounded-tl-none borders bg-transparent rounded-md focus:border-light-600 dark:focus:border-dark-600">
+                        <div className="absolute -top-3 left-0.5 text-xs focus:italic text-inherit">Profile Picture</div>
+                        <MediaPreview id={`saved-priview`} onClose={removeFile} key={`saved-priview`} label={`Current Profile Picture`} name={`saved-priview`} values={mediaFile} />
+                        <FilePicker
+                            className="w-full"
+                            label="Pick New Profile Picture"
+                            id="prof-pic"
+                            values={file}
+                            onChange={(files: FileList | null | ChangeEvent<HTMLInputElement>) => { chooseFiles(files) }}
+                            removeFile={removeFile}
+                            accepts={[AcceptTypes.Image]}
+                        />
+                    </div>
                 </FormBody>
                 <FormFooter className="justify-end">
                     <button className={`btn-hollow`} onClick={() => { navigate(-1); }}>Cancel</button>
