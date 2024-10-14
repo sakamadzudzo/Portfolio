@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { ChangeEvent, useCallback, useEffect, useState } from "react"
 import Form from "../components/Form"
 import FormBody from "../components/FormBody"
 import FormFooter from "../components/FormFooter"
@@ -9,7 +9,7 @@ import { AuthState } from "../components/utils/authSlice"
 import { getUserById, saveUser } from "../components/service/userService"
 import { useNavigate, useOutletContext, useParams } from "react-router-dom"
 import { OverlayContextType } from "../components/Layout"
-import { Address, BankAccount, Contact, ContactType, Role, Salutation, SelectOption, User } from "../types/types"
+import { Address, BankAccount, Contact, ContactType, MyFile, Role, Salutation, SelectOption, User } from "../types/types"
 import { getSalutationAll } from "../components/service/salutationService"
 import FormSelect from "../components/FormSelect"
 import { getRoleAll } from "../components/service/roleService"
@@ -23,6 +23,8 @@ import { getAddressAll } from "../components/service/addressService"
 import { getBankAccountAll } from "../components/service/bankAccountService"
 import { AddAddressModal } from "../components/AddAddressModal"
 import { AddBankAccountModal } from "../components/AddBankAccountModal"
+import FilePicker from "../components/FilePicker"
+import { removeFileFromFilelist } from "../components/utils/misc"
 
 export const UserEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -44,6 +46,8 @@ export const UserEdit = () => {
     const [currentContact, setCurrentContact] = useState<Contact>({} as Contact)
     const [currentAddress, setCurrentAddress] = useState<Address>({} as Address)
     const [currentBankAccount, setCurrentBankAccount] = useState<BankAccount>({} as BankAccount)
+    const [file, setFile] = useState<FileList>()
+    const [mediaFile, setMediaFile] = useState<MyFile>({} as MyFile)
 
     const getUser = useCallback(async () => {
         setLoading(true)
@@ -191,6 +195,21 @@ export const UserEdit = () => {
             label += (label ? " - " + item.branchName : item.branchName) + " branch"
         }
         return label
+    }
+
+    const chooseFiles = (newFile: FileList | null | ChangeEvent<HTMLInputElement>) => {
+        if (newFile instanceof FileList) {
+            setFile(newFile)
+        } else if (newFile?.target) {
+            const dataTransfer = new DataTransfer();
+            const files1 = newFile && newFile?.target?.files ? Array.from(newFile?.target?.files) : [];
+            files1.forEach(file => dataTransfer.items.add(file));
+            setFile(dataTransfer.files)
+        }
+    }
+
+    const removeFile = (index: number) => {
+        setFile(removeFileFromFilelist(index, file))
     }
 
     const getSalutations = useCallback(async () => {
@@ -367,6 +386,14 @@ export const UserEdit = () => {
                             bankAccounts={bankAccounts}
                             currentBankAccount={currentBankAccount && currentBankAccount}
                             key={`addbankaccountmodal`} />}
+                    <FilePicker
+                        className="w-full"
+                        label="Profile Picture"
+                        id="prof-pic"
+                        values={file}
+                        onChange={(files: FileList | null | ChangeEvent<HTMLInputElement>) => { chooseFiles(files) }}
+                        removeFile={removeFile}
+                    />
                 </FormBody>
                 <FormFooter className="justify-end">
                     <button className={`btn-hollow`} onClick={() => { navigate(-1); }}>Cancel</button>

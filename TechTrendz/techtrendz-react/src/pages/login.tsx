@@ -4,7 +4,7 @@ import FormBody from "../components/FormBody";
 import FormFooter from "../components/FormFooter";
 import FormHeader from "../components/FormHeader";
 import FormInput from "../components/FormInput";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { NavLink, useNavigate, useOutletContext } from "react-router-dom";
 import { getPrincipal, login } from "../components/service/authService";
 import { AuthState, setToken, setUser } from "../components/utils/authSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +23,7 @@ const Login = () => {
     const { isAuthenticated, setIsAuthenticated } = useAuth();
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
     const { setLoading } = useOutletContext<OverlayContextType>();
+    const [showTestAccount, setShowTestAccount] = useState(false)
 
     const doLogin = async () => {
         setLoading(true)
@@ -102,6 +103,22 @@ const Login = () => {
                         {/* <button className={`btn-hollow`} onClick={() => getPrincipal()}> Auth</button> */}
                     </FormFooter>
                 </Form>
+            </div>
+            <div className="flex justify-between absolute bottom-5 w-full p-2">
+                <div className="group link">
+                    <button className="" onClick={() => setShowTestAccount(showTestAccount!)}>Test account details</button>
+                    <div className={`absolute -top-10 left-5 hidden group-hover:block ${showTestAccount && 'block'}`}>
+                        <div className="flex gap-4">
+                            <div className="font-medium w-24">Username:  </div><div>ssmadzudzo</div>
+                        </div>
+                        <div className="flex gap-4">
+                            <div className="font-medium w-24">Password:  </div><div>test</div>
+                        </div>
+                    </div>
+                </div>
+                <div className="link">
+                    <NavLink to={`/about`} className="menu-link" >About</NavLink>
+                </div>
             </div>
         </div >
     )
