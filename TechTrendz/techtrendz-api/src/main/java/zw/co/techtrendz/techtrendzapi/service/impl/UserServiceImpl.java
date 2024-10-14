@@ -46,11 +46,8 @@ public class UserServiceImpl implements UserService {
     private BankAccountService bankAccountService;
     @Autowired
     private AddressService addressService;
-    @Autowired
-    private MediaFileService mediaFileService;
 
     public Users saveUser(UserDto u) {
-        // Have to pass in MultipartFile or null here
         Users user = new Users(u.getId(), u.getSalutation(), u.getForename(), u.getOtherNames(), u.getLastname(), u.getUsername(), u.getPassword(), u.getChangePassword(), u.getRoles(), u.getAddresses(), u.getBankAccounts(), u.getContacts(), null);
 
         if (u.getProfilePic() != null) {

@@ -33,9 +33,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 import zw.co.techtrendz.techtrendzapi.entity.MediaFile;
 import zw.co.techtrendz.techtrendzapi.entity.Product;
+import zw.co.techtrendz.techtrendzapi.entity.UserDto;
+import zw.co.techtrendz.techtrendzapi.entity.Users;
 import zw.co.techtrendz.techtrendzapi.repository.MediaFileDao;
 import zw.co.techtrendz.techtrendzapi.service.MediaFileService;
 import zw.co.techtrendz.techtrendzapi.service.ProductService;
+import zw.co.techtrendz.techtrendzapi.service.UserService;
 
 /**
  *
@@ -51,6 +54,8 @@ public class MediaFileServiceImpl implements MediaFileService {
     private MediaFileDao mediaFileDao;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private UserService userService;
 
     public MediaFile saveFile(MultipartFile file) throws IOException, NoSuchAlgorithmException {
         String type = "misc";
@@ -217,6 +222,20 @@ public class MediaFileServiceImpl implements MediaFileService {
             mediaFiles = mediaFiles.stream().filter(removeById).collect(Collectors.toList());
             product.setPictures(mediaFiles);
             this.productService.saveProduct(product);
+            File file = new File(mediaFile.getFilePath());
+            file.delete();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public void removeProfilePicture(long mediaFileId, long userId) {
+        try {
+            MediaFile mediaFile = this.getMediaFileById(mediaFileId).orElseThrow();
+            Users user = this.userService.getUserById(userId).orElseThrow();
+            UserDto userDto = new UserDto(user);
+            userDto.setProfilePic(null);
+            this.userService.saveUser(userDto);
             File file = new File(mediaFile.getFilePath());
             file.delete();
         } catch (Exception e) {

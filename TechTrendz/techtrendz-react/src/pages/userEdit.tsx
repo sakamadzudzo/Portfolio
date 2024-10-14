@@ -6,7 +6,7 @@ import FormHeader from "../components/FormHeader"
 import FormInput from "../components/FormInput"
 import { useSelector } from "react-redux"
 import { AuthState } from "../components/utils/authSlice"
-import { getUserById, saveUser } from "../components/service/userService"
+import { getUserById, removeProfilePicture, saveUser } from "../components/service/userService"
 import { useNavigate, useOutletContext, useParams } from "react-router-dom"
 import { OverlayContextType } from "../components/Layout"
 import { Address, BankAccount, Contact, ContactType, MyFile, Role, Salutation, SelectOption, User } from "../types/types"
@@ -26,6 +26,8 @@ import { AddBankAccountModal } from "../components/AddBankAccountModal"
 import FilePicker, { AcceptTypes } from "../components/FilePicker"
 import { MediaPreview } from "../components/MediaPreview"
 import { getFileLinkFromMediaId } from "../components/service/fileService"
+import { toast } from "react-toastify"
+import { useDialog } from "../components/DialogContext"
 
 export const UserEdit = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -49,6 +51,7 @@ export const UserEdit = () => {
     const [currentBankAccount, setCurrentBankAccount] = useState<BankAccount>({} as BankAccount)
     const [file, setFile] = useState<FileList>()
     const [mediaFile, setMediaFile] = useState<MyFile[]>([] as MyFile[])
+    const { openDialog } = useDialog();
 
     const getUser = useCallback(async () => {
         setLoading(true)
@@ -109,6 +112,8 @@ export const UserEdit = () => {
             let picLinks: MyFile[] = [] as MyFile[]
             picLinks.push({ id: user.profilePic.id, token: token!, type: user.profilePic.fileType, url: getFileLinkFromMediaId(user.profilePic.id) })
             setMediaFile(picLinks)
+        } else {
+            setMediaFile([] as MyFile[])
         }
     }, [user, token])
 
@@ -223,6 +228,29 @@ export const UserEdit = () => {
         setFile(undefined)
     }
 
+    const removeSavedProfilePic = async () => {
+        const result = await openDialog({
+            title: "Remove profile picture?",
+            detail: "This action cannot be undone",
+            yesText: "Remove",
+            noText: "Cancel",
+        });
+
+        if (result) {
+            setLoading(true)
+            let mediaFile = user.profilePic
+            if (await removeProfilePicture(token!, user.id, mediaFile?.id!)) {
+                toast.success("File removed")
+                await getUser()
+            } else {
+                toast.error("Encountered an error. Check logs")
+            }
+            setLoading(false)
+        } else {
+            // toast.warning("User canceled action");
+        }
+    }
+
     const getSalutations = useCallback(async () => {
         let result = await getSalutationAll(token!)
         if (result) {
@@ -271,6 +299,8 @@ export const UserEdit = () => {
         dto.id = Number(id)
         let result = await saveUser(token!, dto, file!)
         if (result) {
+            setFile(new DataTransfer().files)
+            if (id) getUser()
             navigate("/useredit/" + result.id)
         }
         setLoading(false)
@@ -403,7 +433,7 @@ export const UserEdit = () => {
                             key={`addbankaccountmodal`} />}
                     <div className="w-full relative space-y-5 pb-4 px-4 border border-t-0 rounded-tl-none borders bg-transparent rounded-md focus:border-light-600 dark:focus:border-dark-600">
                         <div className="absolute -top-3 left-0.5 text-xs focus:italic text-inherit">Profile Picture</div>
-                        <MediaPreview id={`saved-priview`} onClose={removeFile} key={`saved-priview`} label={`Current Profile Picture`} name={`saved-priview`} values={mediaFile} />
+                        <MediaPreview id={`saved-priview`} onClose={removeSavedProfilePic} key={`saved-priview`} label={`Current Profile Picture`} name={`saved-priview`} values={mediaFile} />
                         <FilePicker
                             className="w-full"
                             label="Pick New Profile Picture"
