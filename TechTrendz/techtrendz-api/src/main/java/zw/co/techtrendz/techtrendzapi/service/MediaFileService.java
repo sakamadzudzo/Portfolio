@@ -31,4 +31,6 @@ public interface MediaFileService {
     public ResponseEntity<Object> getFileByMediaFileId(long id);
 
     public void removeMediafile(long mediaFileId, long productId);
+    
+    public void removeProfilePicture(long mediaFileId, long userId);
 }

@@ -82,3 +82,29 @@ export const getUserAll = async (token: string) => {
         })
     return data
 }
+
+export const removeProfilePicture = async (token: string, userId: number, mediaFileId: number) => {
+    await authOrReload(token)
+    let data: any = null
+    await axios.post(API + "removeprofilepicture", null, {
+        params: {
+            userId: userId,
+            mediaFileId: mediaFileId
+        },
+        headers: {
+            Authorization: token
+        }
+    })
+        .then(() => {
+            data = true
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+            data = false
+        })
+        .finally(() => {
+            return data;
+        })
+    return data
+}

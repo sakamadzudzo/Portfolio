@@ -57,6 +57,22 @@ public class UserDto {
 
     @ManyToMany
     private Set<Contact> contacts;
-    
+
     private MediaFile profilePic;
+
+    public UserDto(Users user) {
+        this.id = user.getId();
+        this.salutation = user.getSalutation();
+        this.forename = user.getForename();
+        this.otherNames = user.getOtherNames();
+        this.lastname = user.getLastname();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.changePassword = user.getChangePassword();
+        this.roles = user.getRoles();
+        this.addresses = user.getAddresses();
+        this.bankAccounts = user.getBankAccounts();
+        this.contacts = user.getContacts();
+        this.profilePic = user.getProfilePic();
+    }
 }
