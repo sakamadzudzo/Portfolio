@@ -23,7 +23,7 @@ import { getAddressAll } from "../components/service/addressService"
 import { getBankAccountAll } from "../components/service/bankAccountService"
 import { AddAddressModal } from "../components/AddAddressModal"
 import { AddBankAccountModal } from "../components/AddBankAccountModal"
-import FilePicker, { AcceptTypes } from "../components/FilePicker"
+import FilePicker, { FilePickerAcceptTypes } from "../components/FilePicker"
 import { MediaPreview } from "../components/MediaPreview"
 import { getFileLinkFromMediaId } from "../components/service/fileService"
 import { toast } from "react-toastify"
@@ -433,7 +433,7 @@ export const UserEdit = () => {
                             key={`addbankaccountmodal`} />}
                     <div className="w-full relative space-y-5 pb-4 px-4 border border-t-0 rounded-tl-none borders bg-transparent rounded-md focus:border-light-600 dark:focus:border-dark-600">
                         <div className="absolute -top-3 left-0.5 text-xs focus:italic text-inherit">Profile Picture</div>
-                        <MediaPreview id={`saved-priview`} onClose={removeSavedProfilePic} key={`saved-priview`} label={`Current Profile Picture`} name={`saved-priview`} values={mediaFile} />
+                        <MediaPreview id={`saved-priview`} onClose={removeSavedProfilePic} key={`saved-priview`} label={`Current Profile Picture`} name={`saved-priview`} values={mediaFile} closeAction />
                         <FilePicker
                             className="w-full"
                             label="Pick New Profile Picture"
@@ -441,7 +441,7 @@ export const UserEdit = () => {
                             values={file}
                             onChange={(files: FileList | null | ChangeEvent<HTMLInputElement>) => { chooseFiles(files) }}
                             removeFile={removeFile}
-                            accepts={[AcceptTypes.Image]}
+                            accepts={[FilePickerAcceptTypes.Image]}
                         />
                     </div>
                 </FormBody>

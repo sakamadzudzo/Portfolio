@@ -1,9 +1,10 @@
 import { ChangeEvent, useEffect, useId, useState } from "react";
 import { MediaPreview } from "./MediaPreview";
 
-export enum AcceptTypes {
+export enum FilePickerAcceptTypes {
     Video = 'video/*',
-    Image = 'image/*'
+    Image = 'image/*',
+    Audio = 'audio/*'
 }
 
 const FilePicker = ({
@@ -31,7 +32,7 @@ const FilePicker = ({
     multiple?: boolean,
     returnEvent?: boolean,
     values?: FileList,
-    accepts: AcceptTypes[]
+    accepts: FilePickerAcceptTypes[]
 }) => {
     const [caption, setCaption] = useState("Choose files...")
     const randomId = useId()
@@ -72,7 +73,7 @@ const FilePicker = ({
                 {caption}
             </div>
             <div className="absolute -top-3 left-0.5 text-xs focus:italic text-inherit" key="filePickerLabel">{label}</div>
-            <MediaPreview id={`${id}-priview-id`} onClose={(index: number) => { handleRemoveFile(index) }} key={`${id}-priview-id`} label={``} name={`${id}-priview-id`} values={values} />
+            <MediaPreview id={`${id}-priview-id`} onClose={(index: number) => { handleRemoveFile(index) }} key={`${id}-priview-id`} label={``} name={`${id}-priview-id`} values={values} closeAction />
         </div>
     );
 };
