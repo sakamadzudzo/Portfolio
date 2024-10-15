@@ -240,7 +240,7 @@ export const UserEdit = () => {
             setLoading(true)
             let mediaFile = user.profilePic
             if (await removeProfilePicture(token!, user.id, mediaFile?.id!)) {
-                toast.success("File removed")
+                toast.success("Profile picture removed")
                 await getUser()
             } else {
                 toast.error("Encountered an error. Check logs")

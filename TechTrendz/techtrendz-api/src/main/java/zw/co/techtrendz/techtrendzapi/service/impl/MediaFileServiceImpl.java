@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.service.impl;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -41,6 +42,7 @@ import zw.co.techtrendz.techtrendzapi.repository.MediaFileDao;
 import zw.co.techtrendz.techtrendzapi.service.MediaFileService;
 import zw.co.techtrendz.techtrendzapi.service.ProductService;
 import zw.co.techtrendz.techtrendzapi.service.UserService;
+import zw.co.techtrendz.techtrendzapi.views.View;
 
 /**
  *
@@ -245,16 +247,40 @@ public class MediaFileServiceImpl implements MediaFileService {
         }
     }
 
+    @JsonView({View.MediaFileCheckForeignKeys.class})
     public void removeOrphanedFiles() {
         try {
+            // Exclude the following default files. Need to remove for prod/live deployment
             List<String> excluded = Arrays.asList("ProfPic.jpg", "cat1.webp", "3d-network-particle-flow-background.jpg");
+            // Get all saved MediaFile objects
             List<MediaFile> savedMediaFiles = mediaFileDao.findAll();
+
+            // Seperate MediaFile objects that are not related to any other object
+            List<MediaFile> notForeignKeyed = savedMediaFiles
+                    .stream()
+                    .filter(item -> (item.getProducts() == null || item.getProducts().size() == 0) && item.getUser() == null)
+                    .collect(Collectors.toList());
+
+
+            // Delete the dangling MediaFile from the database and the file corresponding to it from disk
+            notForeignKeyed.forEach(item -> {
+                mediaFileDao.delete(item);
+                File file = new File(item.getFilePath());
+                file.delete();
+            });
+
+            // Get list of all files on disk except the defaults excluded above
+            // Put in Set to avoid duplicate entries
             Path dir = Paths.get(System.getProperty("user.dir"), uploadDir);
             Set<String> filesOnDisk = Files.walk(dir, 2).filter(file -> !Files.isDirectory(file) && !excluded.contains(file.getFileName().toString()))
                     .map(Path::toString)
                     .collect(Collectors.toSet());
+
+            // Put the file paths from the MediaFile objects into a list
             Set<String> savedFileNames = savedMediaFiles.stream().map(mediaFile -> mediaFile.getFilePath()).collect(Collectors.toSet());
+            // From the list of files on disk, remove all that are appearing in the list of saved MediaFile object
             filesOnDisk.removeAll(savedFileNames);
+            // Remove all files not saved in database from disk
             filesOnDisk.forEach(filepath -> {
                 File file = new File(filepath);
                 file.delete();
