@@ -30,6 +30,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductDao productDao;
 
     public Product saveProduct(Product product) {
+        System.out.println("\n\n\nProduct media file:\t" + product.getPictures() + "\n\n\n");
         Product newProduct = productDao.save(product);
         newProduct.setProductItems(null);
         return newProduct;

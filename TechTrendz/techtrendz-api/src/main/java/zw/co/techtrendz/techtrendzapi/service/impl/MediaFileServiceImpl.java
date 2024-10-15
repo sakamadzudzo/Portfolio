@@ -16,10 +16,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -222,8 +224,8 @@ public class MediaFileServiceImpl implements MediaFileService {
             mediaFiles = mediaFiles.stream().filter(removeById).collect(Collectors.toList());
             product.setPictures(mediaFiles);
             this.productService.saveProduct(product);
-            File file = new File(mediaFile.getFilePath());
-            file.delete();
+//            File file = new File(mediaFile.getFilePath());
+//            file.delete();
         } catch (Exception e) {
             throw e;
         }
@@ -236,10 +238,29 @@ public class MediaFileServiceImpl implements MediaFileService {
             UserDto userDto = new UserDto(user);
             userDto.setProfilePic(null);
             this.userService.saveUser(userDto);
-            File file = new File(mediaFile.getFilePath());
-            file.delete();
+//            File file = new File(mediaFile.getFilePath());
+//            file.delete();
         } catch (Exception e) {
             throw e;
+        }
+    }
+
+    public void removeOrphanedFiles() {
+        try {
+            List<String> excluded = Arrays.asList("ProfPic.jpg", "cat1.webp", "3d-network-particle-flow-background.jpg");
+            List<MediaFile> savedMediaFiles = mediaFileDao.findAll();
+            Path dir = Paths.get(System.getProperty("user.dir"), uploadDir);
+            Set<String> filesOnDisk = Files.walk(dir, 2).filter(file -> !Files.isDirectory(file) && !excluded.contains(file.getFileName().toString()))
+                    .map(Path::toString)
+                    .collect(Collectors.toSet());
+            Set<String> savedFileNames = savedMediaFiles.stream().map(mediaFile -> mediaFile.getFilePath()).collect(Collectors.toSet());
+            filesOnDisk.removeAll(savedFileNames);
+            filesOnDisk.forEach(filepath -> {
+                File file = new File(filepath);
+                file.delete();
+            });
+        } catch (Exception e) {
+            Logger.getLogger(MediaFileServiceImpl.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 }

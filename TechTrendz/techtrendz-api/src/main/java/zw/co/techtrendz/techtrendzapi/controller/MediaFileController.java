@@ -65,4 +65,9 @@ public class MediaFileController {
     public void removeProfilePicture(@RequestParam long mediaFileId, @RequestParam long userId) {
         mediaFileService.removeProfilePicture(mediaFileId, userId);
     }
+
+    @RequestMapping(name = "/removeorphanedfiles", value = "/removeorphanedfiles", method = RequestMethod.POST)
+    public void removeOrphanedFiles() {
+        mediaFileService.removeOrphanedFiles();
+    }
 }

@@ -15,7 +15,7 @@ import FormSelect from "../components/FormSelect"
 import { getProductTypeAll } from "../components/service/productTypeService"
 import { getTagAll } from "../components/service/tagService"
 import FormMultiSelect from "../components/FormMultiSelect"
-import FilePicker, { AcceptTypes } from "../components/FilePicker"
+import FilePicker, { FilePickerAcceptTypes } from "../components/FilePicker"
 import { combineFileLists, removeFileFromFilelist } from "../components/utils/misc"
 import { getFileLinkFromMediaId } from "../components/service/fileService"
 import { MediaPreview } from "../components/MediaPreview"
@@ -221,7 +221,7 @@ export const ProductEdit = () => {
                     <FormInput id="price" name="price" className="w-full" type="number" label="Price" onChange={setProductChanges} value={product?.price!} placeholder="Price..." returnEvent={true} key={`price`} />
                     <div className="w-full relative space-y-5 pb-4 px-4 border border-t-0 rounded-tl-none borders bg-transparent rounded-md focus:border-light-600 dark:focus:border-dark-600">
                         <div className="absolute -top-3 left-0.5 text-xs focus:italic text-inherit">Product Media</div>
-                        <MediaPreview id={`saved-priview`} onClose={(index: number) => { removeSavedFile(index) }} key={`saved-priview`} label={``} name={`saved-priview`} values={mediaFiles} />
+                        <MediaPreview id={`saved-priview`} onClose={(index: number) => { removeSavedFile(index) }} key={`saved-priview`} label={``} name={`saved-priview`} values={mediaFiles} closeAction />
                         <FilePicker
                             className="w-full"
                             label="New media"
@@ -230,7 +230,7 @@ export const ProductEdit = () => {
                             onChange={(files: FileList | null | ChangeEvent<HTMLInputElement>) => { chooseFiles(files) }}
                             removeFile={removeFile}
                             multiple
-                            accepts={[AcceptTypes.Video, AcceptTypes.Image]}
+                            accepts={[FilePickerAcceptTypes.Video, FilePickerAcceptTypes.Image]}
                         />
                     </div>
                 </FormBody>

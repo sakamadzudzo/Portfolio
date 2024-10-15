@@ -2,11 +2,13 @@ import { useSelector } from "react-redux";
 import { getProductAllPaged } from "../components/service/productService";
 import { AuthState } from "../components/utils/authSlice";
 import { useCallback, useEffect, useState } from "react";
-import cat from './../assets/img/cat1.webp'
 import { Pagination } from "../components/Pagination";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { ProductStatus } from "../components/utils/misc";
 import { OverlayContextType } from "../components/Layout";
+import { MyFile, Product } from "../types/types";
+import { getFileLinkFromMediaId } from "../components/service/fileService";
+import { MediaViewer } from "../components/MediaViewer";
 
 const Products = () => {
     const navigate = useNavigate()
@@ -23,6 +25,7 @@ const Products = () => {
     const [first, setFirst] = useState(true)
     const [last, setLast] = useState(true)
     const { setLoading } = useOutletContext<OverlayContextType>();
+    const [mediaFiles, setMediaFiles] = useState<MyFile[]>([] as MyFile[])
 
     const getProducts = useCallback(async () => {
         setLoading(true)
@@ -45,6 +48,20 @@ const Products = () => {
         }
         setLoading(false)
     }, [pageNumber, pageSize, setLoading, sortFields, token])
+
+    const getPictureLinks = useCallback(async () => {
+        if (products) {
+            let picLinks: MyFile[] = [] as MyFile[]
+            products.forEach(async (product: Product, index) => {
+                if (product.pictures && product.pictures.length) {
+                    picLinks.push({ id: product.pictures[0].id, token: token!, type: product.pictures[0].fileType, url: getFileLinkFromMediaId(product.pictures[0].id) })
+                } else {
+                    picLinks.push({ id: index, token: token!, type: "image", url: "" })
+                }
+            })
+            setMediaFiles(picLinks)
+        }
+    }, [products, token])
 
     const nextPage = () => {
         setPageNumber(pageNumber + 1)
@@ -71,6 +88,10 @@ const Products = () => {
     }, [getProducts, token])
 
     useEffect(() => {
+        getPictureLinks()
+    }, [getPictureLinks])
+
+    useEffect(() => {
         document.title = 'TechBrandz - Products';
     }, []);
 
@@ -85,10 +106,17 @@ const Products = () => {
                 </div>
                 <div className="w-full h-[95%] md:h-[93.5%] overflow-y-auto">
                     <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 lg:gap-7 h-full">
-                        {products && !empty && products.map((product: any) =>
+                        {products && !empty && products.map((product: Product, index) =>
                             <div key={product.id} className={"min:w-30 rounded-sm p-1 hover:dark:bg-white/10 focus:dark:bg-white/10 hover:bg-black/10 focus:bg-black/10 h-fit border relative cursor-pointer"}
                                 onClick={() => { openProduct(product.id) }}>
-                                <img src={cat} alt="Cat 1" className="aspect-square px-1 py-1" />
+                                {/* <img src={cat} alt="Cat 1" className="aspect-square px-1 py-1" /> */}
+                                <MediaViewer
+                                    id={`product-${index}`}
+                                    onClose={() => { }}
+                                    key={`product-${index}`}
+                                    label={``}
+                                    value={mediaFiles[index]}
+                                    className="aspect-square px-1 py-1" />
                                 <div>{product.name}</div>
                                 <div className="flex gap-1">
                                     <div className="font-normal">Brand:</div>

@@ -473,7 +473,7 @@ public class DummyDataServiceImpl {
         Path dir = Paths.get(System.getProperty("user.dir"), uploadDir);
         String cat1path = dir + "/cat1.webp";
         String wave1path = dir + "/3d-network-particle-flow-background.jpg";
-        String profPicPath = dir + "/ProfPic.png";
+        String profPicPath = dir + "/ProfPic.jpg";
         if (!Files.exists(Paths.get(cat1path)) || !Files.exists(Paths.get(wave1path)) || !Files.exists(Paths.get(profPicPath))) {
             return null;
         }
