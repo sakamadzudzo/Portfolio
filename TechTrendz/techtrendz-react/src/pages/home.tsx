@@ -1,15 +1,16 @@
 import { useEffect } from "react";
 import { NavLink, useOutletContext } from "react-router-dom";
 import { OverlayContextType } from "../components/Layout";
+import { useAuth } from "../components/utils/authContext";
 
 const Home = () => {
     const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
-
-    setLoading(false)
-    setEmpty(false)
+    const { isAuthenticated, setIsAuthenticated, roles, setRoles } = useAuth();
 
     useEffect(() => {
         document.title = 'TechBrandz - Home';
+        setLoading(false)
+        setEmpty(false)
     }, []);
 
     return (
@@ -52,10 +53,10 @@ const Home = () => {
                         <ul className="flex-col items-center list-item list-disc">
                             <li>Proper navigation</li>
                             <li>products page should use real images</li>
-                            <li>Home/Landing page (with multiple components)<br/>
+                            <li>Home/Landing page (with multiple components)<br />
                                 1. new, hot (frequented), pick of the day
                             </li>
-                            <li>Settings page<br/>
+                            <li>Settings page<br />
                                 1. Remove orphaned files button
                             </li>
                             <li>Profile page</li>
@@ -66,6 +67,7 @@ const Home = () => {
                 </div>
                 <div className="h-1/3 w-full border rounded-md list-item list-disc list-inside px-5 pt-2">
                     <NavLink to={`about`} about="About page">About</NavLink>
+                    <h2 className="text-2xl font-bold">Must read state on page reload!!!</h2>
                 </div>
             </div>
         </>

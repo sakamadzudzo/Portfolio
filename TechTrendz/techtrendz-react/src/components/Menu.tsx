@@ -49,7 +49,7 @@ export const Menu = ({
                             <NavLink to={`about`} className="menu-link" >About</NavLink> */}
                         </div>
                         <div className="mx-1 mb-1 flex justify-end gap-3 h-6">
-                            <IconCog />
+                            <IconCog className="cursor-pointer" />
                         </div>
                     </div>
                 </>

@@ -57,11 +57,11 @@
     }
 
     .icon {
-        @apply fill-dark-50 dark:fill-light-50 stroke-light-50 dark:stroke-dark-50
+        @apply fill-dark-50 dark:fill-light-50 hover:fill-dark-100 dark:hover:fill-light-100 stroke-light-50 dark:stroke-dark-50
     }
 
     .neg-icon {
-        @apply fill-light-50 dark:fill-dark-50 stroke-dark-50 dark:stroke-light-50
+        @apply fill-light-50 dark:fill-dark-50 hover:fill-light-100 dark:hover:fill-dark-100 stroke-dark-50 dark:stroke-light-50
     }
 
     .menu-link {

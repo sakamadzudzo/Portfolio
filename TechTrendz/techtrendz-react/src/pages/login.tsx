@@ -6,11 +6,12 @@ import FormHeader from "../components/FormHeader";
 import FormInput from "../components/FormInput";
 import { NavLink, useNavigate, useOutletContext } from "react-router-dom";
 import { getPrincipal, login } from "../components/service/authService";
-import { AuthState, setToken, setUser } from "../components/utils/authSlice";
+import { AuthState, setRoles, setToken, setUser } from "../components/utils/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../components/utils/authContext";
 import { OverlayContextType } from "../components/Layout";
 import { toast } from "react-toastify";
+import { User } from "../types/types";
 
 const Login = () => {
     const [username, setUsername] = useState("")
@@ -32,8 +33,9 @@ const Login = () => {
         if (data !== "" && data !== null) {
             if (data.includes("Bearer ")) {
                 dispatch(setToken(data))
-                const principal = await getPrincipal(data!);
+                const principal:User = await getPrincipal(data!);
                 dispatch(setUser(principal))
+                dispatch(setRoles(principal.roles!))
                 navigate(referer!)
             } else {
                 setLoading(false)

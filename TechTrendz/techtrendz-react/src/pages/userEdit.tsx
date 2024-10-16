@@ -376,7 +376,7 @@ export const UserEdit = () => {
                         <div className="flex justify-end">
                             <IconPlus
                                 onClick={() => { setCurrentContact({} as Contact); setShowContactModal(true); }}
-                                className="h-5 hover:scale-x-125 aspect-square cursor-pointer"
+                                className="h-5 hover:stroke-2 aspect-square cursor-pointer"
                             />
                         </div>
                     </div>
@@ -395,7 +395,7 @@ export const UserEdit = () => {
                         <div className="flex justify-end">
                             <IconPlus
                                 onClick={() => { setCurrentAddress({} as Address); setShowAddressModal(true); }}
-                                className="h-5 hover:scale-x-125 aspect-square cursor-pointer"
+                                className="h-5 hover:stroke-2 aspect-square cursor-pointer"
                             />
                         </div>
                     </div>
@@ -414,7 +414,7 @@ export const UserEdit = () => {
                         <div className="flex justify-end">
                             <IconPlus
                                 onClick={() => { setCurrentBankAccount({} as BankAccount); setShowBankAccountModal(true); }}
-                                className="h-5 hover:scale-x-125 aspect-square cursor-pointer"
+                                className="h-5 hover:stroke-2 aspect-square cursor-pointer"
                             />
                         </div>
                     </div>
