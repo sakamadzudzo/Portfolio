@@ -21,15 +21,15 @@ export const Menu = ({
             <button className={`absolute top-0.5 left-0.5 focus:outline-none z-40 cursor-pointer ${className}`} onClick={() => { setOpen(!open); }}>
                 <div className="flex h-7 aspect-square border rounded-lg rounded-tl-none overflow-hidden p-1">
                     {open ?
-                        < IconMenuClose /> : <IconMenuOpen />}
+                        <IconMenuClose /> : <IconMenuOpen />}
                 </div>
             </button>
             {open ?
                 <>
                     <div className="absolute top-0 left-0 h-full w-full bg-light-50 dark:bg-dark-50 z-40 opacity-85 dark:opacity-70" onClick={() => { setOpen(!open); }}></div>
-                    <div className="absolute top-0 left-0 h-full w-[50%] md:w-[40%] lg:w-[30%] xl:w-[20%] 2xl:w-[10%] bg-light-50 dark:bg-dark-50 overflow-hidden z-40 shadow-inherit shadow-md rounded-r-md">
-                        <NavLink to={``} className="w-full pl-9 h-7 font-medium">TechBrandz</NavLink>
-                        <div className="mt-8 ml-0.5 flex flex-col">
+                    <div className="absolute top-0 left-0 h-full w-[50%] md:w-[40%] lg:w-[30%] xl:w-[20%] 2xl:w-[10%] bg-light-50 dark:bg-dark-50 overflow-hidden z-40 shadow-inherit shadow-md rounded-r-md flex flex-col">
+                        <NavLink to={``} className="w-full h-7 font-medium flex justify-center items-center">TechBrandz</NavLink>
+                        <div className="ml-0.5 flex flex-col flex-grow">
                             <NavLink to={`products`} className="menu-link" >See All Products</NavLink>
                             <NavLink to={`cart`} className="menu-link" >My Cart</NavLink>
                             {/* <NavLink to={`brandedit`} className="menu-link" >Add Brand</NavLink>
@@ -48,7 +48,7 @@ export const Menu = ({
                             <NavLink to={`useredit`} className="menu-link" >Add User</NavLink>
                             <NavLink to={`about`} className="menu-link" >About</NavLink> */}
                         </div>
-                        <div className="flex justify-end gap-3">
+                        <div className="mx-1 mb-1 flex justify-end gap-3 h-6">
                             <IconCog />
                         </div>
                     </div>

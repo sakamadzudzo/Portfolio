@@ -1,10 +1,14 @@
+import { MouseEventHandler } from "react"
+
 export const IconCart = ({
-    className
+    className,
+    onClick
 }: {
-    className?: string
+    className?: string,
+    onClick?: MouseEventHandler<HTMLDivElement>
 }) => {
     return (
-        <div className={`icon ${className}`}>
+        <div className={`icon ${className}`} onClick={onClick}>
             <svg className={`fill-inherit`} width="100%" height="100%" viewBox="0 0 80 75" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M64 64C66.1217 64 68.1566 64.8429 69.6569 66.3431C71.1571 67.8434 72 69.8783 72 72C72 74.1217 71.1571 76.1566 69.6569 77.6569C68.1566 79.1571 66.1217 80 64 80C59.56 80 56 76.4 56 72C56 67.56 59.56 64 64 64ZM0 0H13.08L16.84 8H76C77.0609 8 78.0783 8.42143 78.8284 9.17157C79.5786 9.92172 80 10.9391 80 12C80 12.68 79.8 13.36 79.52 14L65.2 39.88C63.84 42.32 61.2 44 58.2 44H28.4L24.8 50.52L24.68 51C24.68 51.2652 24.7854 51.5196 24.9729 51.7071C25.1604 51.8946 25.4148 52 25.68 52H72V60H24C19.56 60 16 56.4 16 52C16 50.6 16.36 49.28 16.96 48.16L22.4 38.36L8 8H0V0ZM24 64C26.1217 64 28.1566 64.8429 29.6569 66.3431C31.1571 67.8434 32 69.8783 32 72C32 74.1217 31.1571 76.1566 29.6569 77.6569C28.1566 79.1571 26.1217 80 24 80C19.56 80 16 76.4 16 72C16 67.56 19.56 64 24 64ZM60 36L71.12 16H20.56L30 36H60Z" />
             </svg>
