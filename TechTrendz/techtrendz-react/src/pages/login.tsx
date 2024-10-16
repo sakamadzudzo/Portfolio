@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Form from "../components/Form";
 import FormBody from "../components/FormBody";
 import FormFooter from "../components/FormFooter";
@@ -8,7 +8,6 @@ import { NavLink, useNavigate, useOutletContext } from "react-router-dom";
 import { getPrincipal, login } from "../components/service/authService";
 import { AuthState, setRoles, setToken, setUser } from "../components/utils/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useAuth } from "../components/utils/authContext";
 import { OverlayContextType } from "../components/Layout";
 import { toast } from "react-toastify";
 import { User } from "../types/types";
@@ -21,7 +20,6 @@ const Login = () => {
     const navigate = useNavigate()
     const [error, setError] = useState("")
     const referer = useSelector((state: AuthState) => state.auth ? state.auth.referer : "/")
-    const { isAuthenticated, setIsAuthenticated } = useAuth();
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
     const { setLoading } = useOutletContext<OverlayContextType>();
     const [showTestAccount, setShowTestAccount] = useState(false)
@@ -33,10 +31,11 @@ const Login = () => {
         if (data !== "" && data !== null) {
             if (data.includes("Bearer ")) {
                 dispatch(setToken(data))
-                const principal:User = await getPrincipal(data!);
+                const principal: User = await getPrincipal(data!);
                 dispatch(setUser(principal))
                 dispatch(setRoles(principal.roles!))
-                navigate(referer!)
+                setLoading(false)
+                navigate(referer && referer !== '/login' ? referer : "")
             } else {
                 setLoading(false)
                 setError(data)
@@ -52,7 +51,14 @@ const Login = () => {
         window.opener = null;
         window.open("", "_self");
         window.close();
-    };
+    }
+
+    const checkToken = useCallback(async () => {
+        const isAuth = await getPrincipal(token!);
+        if (isAuth) {
+            navigate(referer!)
+        }
+    }, [navigate, referer, token])
 
     useEffect(() => {
         if (username === "") {
@@ -65,18 +71,8 @@ const Login = () => {
     }, [username, password])
 
     useEffect(() => {
-        const checkToken = async () => {
-            const isAuth = await getPrincipal(token!);
-            if (isAuth) {
-                setIsAuthenticated(true);
-                navigate(referer!)
-            }
-        };
-
-        if (!isAuthenticated) {
             checkToken();
-        }
-    }, [isAuthenticated, setIsAuthenticated, navigate, token, referer]);
+    }, [checkToken]);
 
     useEffect(() => {
         document.title = 'TechBrandz - Login';

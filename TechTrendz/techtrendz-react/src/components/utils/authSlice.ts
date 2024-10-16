@@ -7,10 +7,10 @@ interface AuthState {
     referer?: string;
     roles?: Role[];
     auth?: {
-        token: string | null
-        user: {} | null
-        referer: string | null
-        roles: Role[];
+        token: string | null;
+        user: {} | null;
+        referer?: string;
+        roles?: Role[];
     }
 }
 

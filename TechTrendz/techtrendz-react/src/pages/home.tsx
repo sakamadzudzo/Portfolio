@@ -1,16 +1,15 @@
 import { useEffect } from "react";
 import { NavLink, useOutletContext } from "react-router-dom";
 import { OverlayContextType } from "../components/Layout";
-import { useAuth } from "../components/utils/authContext";
 
 const Home = () => {
     const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
-    const { isAuthenticated, setIsAuthenticated, roles, setRoles } = useAuth();
+
+    setLoading(false)
+    setEmpty(false)
 
     useEffect(() => {
         document.title = 'TechBrandz - Home';
-        setLoading(false)
-        setEmpty(false)
     }, []);
 
     return (
@@ -67,7 +66,6 @@ const Home = () => {
                 </div>
                 <div className="h-1/3 w-full border rounded-md list-item list-disc list-inside px-5 pt-2">
                     <NavLink to={`about`} about="About page">About</NavLink>
-                    <h2 className="text-2xl font-bold">Must read state on page reload!!!</h2>
                 </div>
             </div>
         </>
