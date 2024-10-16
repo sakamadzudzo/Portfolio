@@ -95,11 +95,11 @@ export const ProductItemEdit = () => {
                     {productItems && productItems.map((item, index) =>
                         <div className="w-full flex justify-between items-center gap-3" key={'serialNumber-div-' + index}>
                             <FormInput id={'serialNumber-' + index} name={'serialNumber-' + index} className="" type="text" label="Serial Number" onChange={(value: string) => { editItem(index, value) }} value={item.serialNumber} placeholder="Serial Number..." key={'serialNumber-' + index} />
-                            <div onClick={() => { removeItem(index); }} className="icon h-5 hover:h-6 aspect-square cursor-pointer"><IconMinus /></div>
+                            <div onClick={() => { removeItem(index); }} className="h-5 hover:h-6 aspect-square cursor-pointer"><IconMinus /></div>
                         </div>
                     )}
                     <div className="flex justify-end">
-                        <div onClick={() => { addItem(""); }} className="icon h-5 hover:h-6 aspect-square cursor-pointer"><IconPlus /></div>
+                        <div onClick={() => { addItem(""); }} className="h-5 hover:h-6 aspect-square cursor-pointer"><IconPlus /></div>
                     </div>
                 </FormBody>
                 <FormFooter className="justify-end">

@@ -33,7 +33,7 @@ export const Chip = ({
                     <div className="invisible absolute top-5 left-1/2 transform -translate-x-1/2 h-2 w-2 bg-inherit text-inherit before:visible before:absolute before:h-2 before:w-2 before:rotate-45 before:bg-inherit before:content-['']"></div>
                 </div>
             }
-            {removeable && <div className={`ml-1 -mr-1.5 icon w-3 aspect-square ${iconClassName}`} onClick={() => onIconClick && onIconClick()}><IconClose /></div>}
+            {removeable && <div className={`ml-1 -mr-1.5 w-3 aspect-square flex ${iconClassName}`} onClick={() => onIconClick && onIconClick()}><IconClose /></div>}
         </div>
     )
 }

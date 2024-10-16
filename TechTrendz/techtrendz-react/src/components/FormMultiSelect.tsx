@@ -230,7 +230,7 @@ const FormMultiSelect = ({
                         {...getInputProps()} autoFocus={autoFocus} disabled={!searchable}
                     />
                     {!searchable && <div className={`w-full bg-inherit text-inherit relative pr-5 cursor-pointer ${!inputValue && 'italic font-extralight text-sm'}`}>{inputValue ? inputValue : placeholder}</div>}
-                    {showClearIcon() && <div className="h-4 w-4 mt-1 cursor-pointer icon"
+                    {showClearIcon() && <div className="h-4 w-4 mt-1 cursor-pointer"
                         onClick={() => { setInputValue(""); setInputValue(inputPlaceholder) }}>
                         <IconClose className="" />
                     </div>}

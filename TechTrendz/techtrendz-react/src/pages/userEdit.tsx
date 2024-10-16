@@ -374,7 +374,7 @@ export const UserEdit = () => {
                             </div>) : <div>No contacts</div>}
                         </div>
                         <div className="flex justify-end">
-                            <div onClick={() => { setCurrentContact({} as Contact); setShowContactModal(true); }} className="icon h-5 hover:scale-x-125 aspect-square cursor-pointer"><IconPlus /></div>
+                            <div onClick={() => { setCurrentContact({} as Contact); setShowContactModal(true); }} className="h-5 hover:scale-x-125 aspect-square cursor-pointer"><IconPlus /></div>
                         </div>
                     </div>
                     <div className="w-full flex flex-col border rounded-md p-1 relative">
@@ -390,7 +390,7 @@ export const UserEdit = () => {
                             </div>) : <div>No addresses</div>}
                         </div>
                         <div className="flex justify-end">
-                            <div onClick={() => { setCurrentAddress({} as Address); setShowAddressModal(true); }} className="icon h-5 hover:scale-x-125 aspect-square cursor-pointer"><IconPlus /></div>
+                            <div onClick={() => { setCurrentAddress({} as Address); setShowAddressModal(true); }} className="h-5 hover:scale-x-125 aspect-square cursor-pointer"><IconPlus /></div>
                         </div>
                     </div>
                     <div className="w-full flex flex-col border rounded-md p-1 relative">
@@ -406,7 +406,7 @@ export const UserEdit = () => {
                             </div>) : <div>No bank accounts</div>}
                         </div>
                         <div className="flex justify-end">
-                            <div onClick={() => { setCurrentBankAccount({} as BankAccount); setShowBankAccountModal(true); }} className="icon h-5 hover:scale-x-125 aspect-square cursor-pointer"><IconPlus /></div>
+                            <div onClick={() => { setCurrentBankAccount({} as BankAccount); setShowBankAccountModal(true); }} className="h-5 hover:scale-x-125 aspect-square cursor-pointer"><IconPlus /></div>
                         </div>
                     </div>
                     {showContactModal &&
