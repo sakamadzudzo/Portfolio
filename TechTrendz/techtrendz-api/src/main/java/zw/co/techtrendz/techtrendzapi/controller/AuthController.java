@@ -4,6 +4,7 @@
  */
 package zw.co.techtrendz.techtrendzapi.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import zw.co.techtrendz.techtrendzapi.entity.UsersDto;
 import zw.co.techtrendz.techtrendzapi.service.AuthenticationService;
+import zw.co.techtrendz.techtrendzapi.views.View;
 
 /**
  *
@@ -33,6 +35,7 @@ public class AuthController {
         return authenticationService.authenticate(user.getUsername(), user.getPassword());
     }
 
+    @JsonView({View.MediaFileNormal.class})
     @RequestMapping(name = "/getprincipal", value = "/getprincipal", method = RequestMethod.GET)
     public UserDetails getPrincipal(HttpServletRequest request) {
         return authenticationService.getPrincipal(request);

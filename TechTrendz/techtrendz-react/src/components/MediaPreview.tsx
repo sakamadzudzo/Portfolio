@@ -41,9 +41,8 @@ export const MediaPreview = ({
                             {index < 7 &&
                                 <div className="w-full relative" key={(id ? id : randomId) + '-preview-' + index}>
                                     {!val || (!(val instanceof File) && val.url === "") ?
-                                        <div className="icon h-full aspect-square">
-                                            <IconImage404 />
-                                        </div> :
+                                        <IconImage404 className="h-full aspect-square" />
+                                        :
                                         val.type.includes("image") ?
                                             <img
                                                 key={(id ? id : randomId) + '-image-' + index}
@@ -58,8 +57,8 @@ export const MediaPreview = ({
                                             </video>
                                     }
                                     {closeAction &&
-                                        <div className="absolute top-0 right-0 icon h-4 aspect-square hover:h-5" onClick={() => onClose(index)} key={(id ? id : randomId) + '-closeIcon-' + index}>
-                                            <IconClose key={(id ? id : randomId) + '-closeIconIcon-' + index} />
+                                        <div className="absolute top-0 right-0 h-4 aspect-square hover:h-5" onClick={() => onClose(index)} key={(id ? id : randomId) + '-closeIcon-' + index}>
+                                            <IconClose key={(id ? id : randomId) + '-closeIconIcon-' + index} className="background rounded-full" />
                                         </div>
                                     }
                                 </div>

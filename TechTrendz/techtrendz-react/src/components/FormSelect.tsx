@@ -142,10 +142,11 @@ const FormSelect = ({
                         {...getInputProps()} autoFocus={autoFocus} disabled={!searchable}
                     />
                     {!searchable && <div className={`w-full bg-inherit text-inherit relative pr-5 cursor-pointer ${!inputValue && 'italic font-extralight text-sm'}`}>{inputValue ? inputValue : placeholder}</div>}
-                    {showClearIcon() && <div className="h-4 w-4 mt-1 cursor-pointer icon"
-                        onClick={() => { setInputValue(""); setInputValue(value.label) }}>
-                        <IconClose className="" />
-                    </div>}
+                    {showClearIcon() &&
+                        <IconClose
+                            className="h-4 w-4 mt-1 cursor-pointer"
+                            onClick={() => { setInputValue(""); setInputValue(value.label) }}
+                        />}
                     <button
                         aria-label="toggle menu"
                         className="px-2"

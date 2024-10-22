@@ -57,3 +57,18 @@ export const uploadFiles = async (token: string, files: FileList) => {
         })
     return data
 }
+
+export const removeOrphanedFiles = async (token: string) => {
+    await axios.post(API + "removeorphanedfiles", null, {
+        headers: {
+            Authorization: token
+        }
+    })
+        .then(() => {
+
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+        })
+}

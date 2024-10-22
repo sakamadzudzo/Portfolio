@@ -153,7 +153,7 @@ export const Product = () => {
                                 <div>{itemsInCart()} in cart</div>
                             </div>
                             <button className="btn-hollow h-10 py-2 px-2 w-full flex justify-center gap-2" disabled={product?.productItems?.length <= 0 || disableSave || count <= 0} onClick={addItemToCart}>
-                                <IconCartPlus className="w-4 h-4 icon" /> <div className="text-inherit whitespace-nowrap">Add to cart</div>
+                                <IconCartPlus className="w-4 h-4" /> <div className="text-inherit whitespace-nowrap">Add to cart</div>
                             </button>
                         </div>
                     </div>

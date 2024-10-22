@@ -23,9 +23,8 @@ export const MediaViewer = ({
     return (
         <div className={`${className}`}>
             {!value || (!(value instanceof File) && value.url === "") ?
-                <div className="icon h-full aspect-square">
-                    <IconImage404 />
-                </div> :
+                <IconImage404 className="h-full aspect-square" />
+                :
                 value.type.includes("image") ?
                     <img
                         key={(id ? id : randomId) + '-image'}
@@ -40,8 +39,8 @@ export const MediaViewer = ({
                     </video>
             }
             {closeAction &&
-                <div className="absolute top-0 right-0 icon h-4 aspect-square hover:h-5" onClick={() => onClose} key={(id ? id : randomId) + '-closeIcon'}>
-                    <IconClose key={(id ? id : randomId) + '-closeIconIcon'} />
+                <div className="absolute top-0 right-0 h-4 aspect-square hover:h-5" onClick={() => onClose} key={(id ? id : randomId) + '-closeIcon'}>
+                    <IconClose key={(id ? id : randomId) + '-closeIconIcon'} className="background rounded-full" />
                 </div>
             }
         </div>

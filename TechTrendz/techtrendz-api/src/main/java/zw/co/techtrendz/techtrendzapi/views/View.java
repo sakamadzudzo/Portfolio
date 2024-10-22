@@ -19,4 +19,10 @@ public class View {
     public interface ProductItemView {
     }
 
+    public interface MediaFileNormal {
+    }
+
+    public interface MediaFileCheckForeignKeys {
+    }
+
 }
