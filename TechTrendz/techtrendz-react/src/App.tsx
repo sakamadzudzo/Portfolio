@@ -28,6 +28,7 @@ import { ProductItemEdit } from './pages/productItemEdit';
 import { UserEdit } from './pages/userEdit';
 import { About } from './pages/about';
 import { Settings } from './pages/settings';
+import { Profile } from './pages/profile';
 
 function App() {
   if (localStorage.token) {
@@ -63,6 +64,7 @@ function App() {
               <Route path='about' element={<About />} />
               <Route path='home' element={<Home />} />
               <Route path='settings' element={<Settings />} />
+              <Route path='profile' element={<Profile />} />
               <Route path='*' element={<NotFound />} />
             </Route>
           </Routes>

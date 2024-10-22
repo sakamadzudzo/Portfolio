@@ -14,7 +14,7 @@ export const MediaViewer = ({
     value?: MyFile | File,
     id?: string,
     label?: string,
-    onClose: Function,
+    onClose?: Function,
     className?: string,
     closeAction?: boolean
 }) => {

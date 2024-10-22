@@ -3,6 +3,7 @@ import { IconMenuOpen } from "./icons/IconMenuOpen"
 import { IconMenuClose } from "./icons/IconMenuClose"
 import { NavLink, useLocation } from "react-router-dom"
 import { IconCog } from "./icons/IconCog"
+import { ProfileIcon } from "./ProfileIcon"
 
 export const Menu = ({
     className
@@ -49,6 +50,9 @@ export const Menu = ({
                             <NavLink to={`about`} className="menu-link" >About</NavLink>
                         </div>
                         <div className="mx-1 mb-1 flex justify-end gap-3 h-6">
+                            <NavLink to={`profile`}>
+                                <ProfileIcon />
+                            </NavLink>
                             <NavLink to={`settings`} className={`h-full`}>
                                 <IconCog className="cursor-pointer h-full" />
                             </NavLink>
