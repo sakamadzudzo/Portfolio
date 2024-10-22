@@ -40,7 +40,7 @@ function App() {
         <RouteGuard>
           <Routes>
             <Route path='/' element={<Layout />}>
-              <Route index element={<Home />} />
+              <Route index element={<About />} />
               <Route path='login' element={<Login />} />
               <Route path='examples' element={<Examples />} />
               <Route path='products' element={<Products />} />
@@ -61,6 +61,7 @@ function App() {
               <Route path='productitemedit/:productId?' element={<ProductItemEdit />} />
               <Route path='useredit/:id?' element={<UserEdit />} />
               <Route path='about' element={<About />} />
+              <Route path='home' element={<Home />} />
               <Route path='settings' element={<Settings />} />
               <Route path='*' element={<NotFound />} />
             </Route>
