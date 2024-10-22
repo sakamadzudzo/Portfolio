@@ -19,9 +19,9 @@ export const Header = ({
         <div className="w-full flex justify-center items-center h-7">
             {isAuthenticated && location.pathname !== '/login' ? <>
                 <Menu className="h-7" />
-                <NavLink to={`/`} className="font-medium" >TechBrandz</NavLink>
+                <NavLink to={`/home`} className="font-medium" >TechBrandz</NavLink>
             </> : <>
-                {['/about', '/'].includes(location.pathname) && <NavLink to={`login`} className="menu-link link absolute top-0.5 left-0.5">Login</NavLink>}
+                {['/about', '/'].includes(location.pathname) && !isAuthenticated && <NavLink to={`login`} className="menu-link link absolute top-0.5 left-0.5">Login</NavLink>}
             </>}
             <button className="absolute top-0.5 right-0.5 focus:outline-none z-50" onClick={() => setDark(!dark)}>
                 <div className="flex h-7 aspect-square border rounded-lg rounded-tr-none overflow-hidden">

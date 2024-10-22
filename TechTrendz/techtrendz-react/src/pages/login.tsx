@@ -39,7 +39,7 @@ const Login = () => {
                 navigate(referer && referer !== '/login' ? referer : "")
             } else {
                 setLoading(false)
-                dispatch(setIsAuthenticated(true))
+                dispatch(setIsAuthenticated(false))
                 setError(data)
             }
         } else {

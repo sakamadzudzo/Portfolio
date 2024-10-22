@@ -5,12 +5,14 @@ import { OverlayContextType } from "../components/Layout";
 const Home = () => {
     const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
 
-    setLoading(false)
-    setEmpty(false)
-
     useEffect(() => {
         document.title = 'TechBrandz - Home';
     }, []);
+
+    useEffect(() => {
+        setLoading(false)
+        setEmpty(false)
+    }, [setEmpty, setLoading])
 
     return (
         <>
