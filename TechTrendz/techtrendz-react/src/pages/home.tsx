@@ -50,8 +50,6 @@ const Home = () => {
                     <div className="border rounded-md h-full flex flex-col items-center">
                         <div className="font-medium underline">ToDo</div>
                         <ul className="flex-col items-center list-item list-disc">
-                            <li>Proper navigation</li>
-                            <li>products page should use real images</li>
                             <li>Home/Landing page (with multiple components)<br />
                                 1. new, hot (frequented), pick of the day
                             </li>

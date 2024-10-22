@@ -6,7 +6,7 @@ import FormHeader from "../components/FormHeader";
 import FormInput from "../components/FormInput";
 import { NavLink, useNavigate, useOutletContext } from "react-router-dom";
 import { getPrincipal, login } from "../components/service/authService";
-import { AuthState, setRoles, setToken, setUser } from "../components/utils/authSlice";
+import { AuthState, setIsAuthenticated, setRoles, setToken, setUser } from "../components/utils/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { OverlayContextType } from "../components/Layout";
 import { toast } from "react-toastify";
@@ -34,10 +34,12 @@ const Login = () => {
                 const principal: User = await getPrincipal(data!);
                 dispatch(setUser(principal))
                 dispatch(setRoles(principal.roles!))
+                dispatch(setIsAuthenticated(true))
                 setLoading(false)
                 navigate(referer && referer !== '/login' ? referer : "")
             } else {
                 setLoading(false)
+                dispatch(setIsAuthenticated(true))
                 setError(data)
             }
         } else {

@@ -45,11 +45,13 @@ export const Menu = ({
                             <NavLink to={`contactedit`} className="menu-link" >Add Contact</NavLink>
                             <NavLink to={`productedit`} className="menu-link" >Add Product</NavLink>
                             <NavLink to={`productitemedit`} className="menu-link" >Add Product Item</NavLink>
-                            <NavLink to={`useredit`} className="menu-link" >Add User</NavLink>
-                            <NavLink to={`about`} className="menu-link" >About</NavLink> */}
+                            <NavLink to={`useredit`} className="menu-link" >Add User</NavLink> */}
+                            <NavLink to={`about`} className="menu-link" >About</NavLink>
                         </div>
                         <div className="mx-1 mb-1 flex justify-end gap-3 h-6">
-                            <NavLink to={`settings`} className={`menu-link background`}><IconCog className="cursor-pointer" /></NavLink>
+                            <NavLink to={`settings`} className={`h-full`}>
+                                <IconCog className="cursor-pointer h-full" />
+                            </NavLink>
                         </div>
                     </div>
                 </>

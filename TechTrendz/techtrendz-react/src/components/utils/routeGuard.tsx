@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { checkAuth } from './../service/authService';
 import { useDispatch, useSelector } from 'react-redux';
-import { AuthState, setReferer } from './authSlice';
+import { AuthState, setIsAuthenticated, setReferer } from './authSlice';
 import { Props } from '../../types/types';
 
 const RouteGuard: React.FC<Props> = ({ children }) => {
@@ -16,8 +16,10 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
       const isAuth = await checkAuth(token!);
       if (!isAuth && !['/login', '/about'].includes(location.pathname)) {
         dispatch(setReferer(location.pathname))
+        dispatch(setIsAuthenticated(false))
         navigate('/login');
       }
+      dispatch(setIsAuthenticated(true))
     };
 
     if (!['/login', '/about'].includes(location.pathname)) {

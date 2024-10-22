@@ -6,11 +6,13 @@ interface AuthState {
     user: {} | null;
     referer?: string;
     roles?: Role[];
+    isAuthenticated?: boolean;
     auth?: {
         token: string | null;
         user: {} | null;
         referer?: string;
         roles?: Role[];
+        isAuthenticated?: boolean;
     }
 }
 
@@ -18,7 +20,8 @@ const initialState: AuthState = {
     token: null,
     user: null,
     referer: "/",
-    roles: [] as Role[]
+    roles: [] as Role[],
+    isAuthenticated: false
 };
 
 const authSlice = createSlice({
@@ -47,11 +50,17 @@ const authSlice = createSlice({
         },
         clearRoles: (state) => {
             state.roles = [] as Role[]
+        },
+        setIsAuthenticated: (state, action: PayloadAction<boolean>) => {
+            state.isAuthenticated = action.payload
+        },
+        clearIsAuthenticated: (state) => {
+            state.isAuthenticated = false
         }
     },
 });
 
-export const { setToken, clearToken, setUser, clearUser, setReferer, clearReferer, setRoles } = authSlice.actions;
+export const { setToken, clearToken, setUser, clearUser, setReferer, clearReferer, setRoles, clearRoles, setIsAuthenticated, clearIsAuthenticated } = authSlice.actions;
 export default authSlice.reducer;
 export type { AuthState };
 export { initialState }
