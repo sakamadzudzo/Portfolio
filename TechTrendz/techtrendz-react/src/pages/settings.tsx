@@ -32,6 +32,11 @@ export const Settings = () => {
         }
     }, [navigate, roles])
 
+    // Must remove later on
+    useEffect(() => {
+        setEmpty(false)
+    }, [setEmpty])
+
     return (
         <div className="wrapper flex-col">
             <div className="h-full w-full md:w-96 landscape:w-96">
