@@ -14,15 +14,17 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     const checkAuthentication = async () => {
       const isAuth = await checkAuth(token!);
-      if (!isAuth && !['/login', '/about'].includes(location.pathname)) {
+      alert(isAuth)
+      dispatch(setIsAuthenticated(isAuth))
+      if (!isAuth && !['/login', '/about', '/'].includes(location.pathname)) {
         dispatch(setReferer(location.pathname))
-        dispatch(setIsAuthenticated(false))
+        // dispatch(setIsAuthenticated(false))
         navigate('/login');
       }
-      dispatch(setIsAuthenticated(true))
     };
 
-    if (!['/login', '/about'].includes(location.pathname)) {
+    dispatch(setIsAuthenticated(false))
+    if (!['/login', '/about', '/'].includes(location.pathname)) {
       checkAuthentication();
     }
   }, [location.pathname, token, navigate, dispatch]);
