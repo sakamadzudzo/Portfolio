@@ -1,3 +1,5 @@
+import { Address, BankAccount, User } from "../../types/types";
+
 export const ProductStatus = ({ product }: { product: any }) => {
     const getStatus = () => {
         let items: any[] = product.productItems
@@ -113,4 +115,63 @@ export const jsonToFormData = (data: any) => {
     buildFormData(formData, data, null);
 
     return formData;
+}
+
+export const userFullname = (user: User) => {
+    // {user?.salutation.title}. {user?.forename} {user?.otherNames} {user?.lastname}
+    let fullname = ""
+    if (user) {
+        if (user.salutation) {
+            fullname += user.salutation.title + "."
+        }
+        if (user.forename) {
+            fullname += (fullname === "" ? "" : " ") + user.forename
+        }
+        if (user.otherNames) {
+            fullname += (fullname === "" ? "" : " ") + user.otherNames
+        }
+        if (user.lastname) {
+            fullname += (fullname === "" ? "" : " ") + user.lastname
+        }
+    }
+    return fullname
+}
+
+export const fullAddress = (a: Address) => {
+    let address = ""
+    if (a) {
+        if (a.houseNumber) {
+            address += (address === "" ? "" : " - ") + a.houseNumber
+        }
+        if (a.street) {
+            address += (address === "" ? "" : " - ") + a.street
+        }
+        if (a.line1 && a.line1 !== a.street) {
+            address += (address === "" ? "" : " - ") + a.line1
+        }
+        if (a.city) {
+            address += (address === "" ? "" : " - ") + a.city
+        }
+        if (a.province) {
+            address += (address === "" ? "" : " - ") + a.province
+        }
+        if (a.line2 && a.line2 !== a.province) {
+            address += (address === "" ? "" : " - ") + a.line2
+        }
+    }
+    return address
+}
+
+export const bankDetails = (account: BankAccount) => {
+    let details = ""
+    if (account) {
+        if (account.bankName) details += account.bankName
+        if (account.accountNumber) {
+            details += details ? " - " + account.accountNumber : account.accountNumber
+        }
+        if (account.branchName) {
+            details += (details ? " - " + account.branchName : account.branchName) + " branch"
+        }
+    }
+    return details
 }

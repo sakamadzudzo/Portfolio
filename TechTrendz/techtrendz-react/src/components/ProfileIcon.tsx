@@ -18,8 +18,11 @@ export const ProfileIcon = ({
     useEffect(() => {
         if (user?.profilePic) {
             setMediaFile({ id: user?.profilePic.id, token: token!, type: user?.profilePic.fileType, url: getFileLinkFromMediaId(user?.profilePic.id) })
+        } else {
+            setMediaFile(null)
         }
     }, [token, user])
+    
     return (
         <div className={`h-full aspect-square rounded-full overflow-hidden border ${className}`}>
             {mediaFile ?
