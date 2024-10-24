@@ -11,7 +11,7 @@ export const Section = ({
 }) => {
     return (
         <div className={`${className}`}>
-            {title && <h2 className="border-b mb-1 font-medium">{title}</h2>}
+            {title && <h2 className="border-b font-medium">{title}</h2>}
             {children}
         </div>
     )

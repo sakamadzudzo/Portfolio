@@ -3,13 +3,13 @@ import { Role, User } from '../../types/types';
 
 interface AuthState {
     token: string | null;
-    user: {} | null;
+    user: User | null;
     referer?: string;
     roles?: Role[];
     isAuthenticated?: boolean;
     auth?: {
         token: string | null;
-        user: {} | null;
+        user: User | null;
         referer?: string;
         roles?: Role[];
         isAuthenticated?: boolean;

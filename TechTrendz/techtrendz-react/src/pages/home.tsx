@@ -5,12 +5,14 @@ import { OverlayContextType } from "../components/Layout";
 const Home = () => {
     const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
 
-    setLoading(false)
-    setEmpty(false)
-
     useEffect(() => {
         document.title = 'TechBrandz - Home';
     }, []);
+
+    useEffect(() => {
+        setLoading(false)
+        setEmpty(false)
+    }, [setEmpty, setLoading])
 
     return (
         <>
@@ -53,12 +55,8 @@ const Home = () => {
                             <li>Home/Landing page (with multiple components)<br />
                                 1. new, hot (frequented), pick of the day
                             </li>
-                            <li>Settings page<br />
-                                1. Remove orphaned files button
-                            </li>
-                            <li>Profile page</li>
                             <li>Mobile apps</li>
-                            <li>Profile icon with circular pic</li>
+                            <li>Promotions</li>
                         </ul>
                     </div>
                 </div>
