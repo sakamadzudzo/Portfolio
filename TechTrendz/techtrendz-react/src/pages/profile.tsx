@@ -6,7 +6,7 @@ import { toast } from "react-toastify"
 import { useNavigate } from "react-router-dom"
 import { Section } from "../components/Section"
 import { ProfileIcon } from "../components/ProfileIcon"
-import { fullAddress, userFullname } from "../components/utils/misc"
+import { bankDetails, fullAddress, userFullname } from "../components/utils/misc"
 
 export const Profile = () => {
     const user: User | null = useSelector((state: AuthState) => state.auth ? state.auth.user : null)
@@ -93,6 +93,11 @@ export const Profile = () => {
                     </ul>
                 </Section>
                 <Section title="Bank Accounts">
+                    <ul className="">
+                        {bankAccounts.map((account, index) =>
+                            <li>{bankDetails(account)}</li>
+                        )}
+                    </ul>
                 </Section>
             </div>
         </div>

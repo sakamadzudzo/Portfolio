@@ -26,11 +26,12 @@ const RouteGuard: React.FC<Props> = ({ children }) => {
     };
 
     dispatch(setIsAuthenticated(true))
-    if (!['/login', '/'].includes(location.pathname)) {
-      checkAuthentication();
-    } else {
-      dispatch(setIsAuthenticated(false))
-    }
+    // if (!['/login', '/', '/about'].includes(location.pathname)) {
+    checkAuthentication();
+    // } 
+    // else {
+    //   dispatch(setIsAuthenticated(false))
+    // }
   }, [location.pathname, token, navigate, dispatch]);
 
   return <>{children}</>;

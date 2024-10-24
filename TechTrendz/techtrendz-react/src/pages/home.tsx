@@ -55,9 +55,8 @@ const Home = () => {
                             <li>Home/Landing page (with multiple components)<br />
                                 1. new, hot (frequented), pick of the day
                             </li>
-                            <li>Profile page</li>
                             <li>Mobile apps</li>
-                            <li>Profile icon with circular pic</li>
+                            <li>Promotions</li>
                         </ul>
                     </div>
                 </div>
