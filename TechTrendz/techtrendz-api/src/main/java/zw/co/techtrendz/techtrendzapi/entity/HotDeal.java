@@ -1,0 +1,43 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package zw.co.techtrendz.techtrendzapi.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
+
+/**
+ *
+ * @author smadzudzo
+ */
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Entity
+@Audited
+public class HotDeal {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    private Product product;
+
+    private LocalDateTime selectionDate = LocalDateTime.now();
+
+    private Boolean active = true;
+
+    public HotDeal(long id) {
+        this.id = id;
+    }
+}

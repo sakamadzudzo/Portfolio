@@ -11,8 +11,11 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import zw.co.techtrendz.techtrendzapi.entity.Featured;
+import zw.co.techtrendz.techtrendzapi.entity.HotDeal;
 import zw.co.techtrendz.techtrendzapi.entity.PagedProductsRequestDto;
 import zw.co.techtrendz.techtrendzapi.entity.Product;
+import zw.co.techtrendz.techtrendzapi.entity.Promotion;
 
 /**
  *
@@ -30,4 +33,24 @@ public interface ProductService {
     public List<Product> getProductAll();
 
     public Page<Product> getProductAllPaged(PagedProductsRequestDto pagedProductsRequestDto);
+
+    public HotDeal saveHotDeal(long productId);
+
+    public HotDeal saveHotDeal(HotDeal hotDeal);
+
+    public List<HotDeal> saveHotDeals(Long[] productIds);
+
+    public List<HotDeal> saveHotDeals(List<HotDeal> hotDeals);
+
+    public Featured saveFeatured(long productId);
+
+    public Featured saveFeatured(Featured featured);
+
+    public List<Featured> saveFeatureds(Long[] productIds);
+
+    public List<Featured> saveFeatureds(List<Featured> featureds);
+
+    public Promotion savePromotion(Promotion promotion);
+
+    public List<Promotion> savePromotions(List<Promotion> promotions);
 }
