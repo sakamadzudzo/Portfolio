@@ -41,6 +41,7 @@ import zw.co.techtrendz.techtrendzapi.entity.Product;
 import zw.co.techtrendz.techtrendzapi.entity.ProductItem;
 import zw.co.techtrendz.techtrendzapi.entity.ProductStatus;
 import zw.co.techtrendz.techtrendzapi.entity.ProductType;
+import zw.co.techtrendz.techtrendzapi.entity.Promotion;
 import zw.co.techtrendz.techtrendzapi.entity.Role;
 import zw.co.techtrendz.techtrendzapi.entity.Salutation;
 import zw.co.techtrendz.techtrendzapi.entity.Tag;
@@ -235,6 +236,19 @@ public class DummyDataServiceImpl {
         );
 
         productService.saveProducts(products);
+
+        List<Promotion> promotions = Arrays.asList(
+                new Promotion(1L, 5F, null, true, new Product(1L), LocalDateTime.now().minusMonths(2), LocalDateTime.now().plusDays(12), true),
+                new Promotion(2L, 5F, null, true, new Product(2L), LocalDateTime.now().minusMonths(2), LocalDateTime.now().plusDays(12), true),
+                new Promotion(3L, 15F, null, true, new Product(3L), LocalDateTime.now().minusMonths(2), LocalDateTime.now().plusDays(12), true),
+                new Promotion(4L, 5F, null, true, new Product(4L), LocalDateTime.now().minusMonths(2), LocalDateTime.now().plusDays(12), true),
+                new Promotion(5L, 5F, null, true, new Product(5L), LocalDateTime.now().minusMonths(2), LocalDateTime.now().plusDays(12), true),
+                new Promotion(6L, 5F, null, true, new Product(6L), LocalDateTime.now().minusMonths(2), LocalDateTime.now().plusDays(12), true),
+                new Promotion(7L, 5F, null, true, new Product(7L), LocalDateTime.now().minusMonths(2), LocalDateTime.now().plusDays(12), true),
+                new Promotion(8L, 5F, null, true, new Product(8L), LocalDateTime.now().minusMonths(2), LocalDateTime.now().plusDays(12), true)
+        );
+
+        productService.savePromotions(promotions);
 
         List<ProductItem> productItems = Arrays.asList(
                 new ProductItem(1l, new ProductStatus(1L), new Product(1L), null, "9PQ67890MNA01"),

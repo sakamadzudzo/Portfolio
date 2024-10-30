@@ -119,6 +119,11 @@ public class ProductServiceImpl implements ProductService {
         return savedHotDeals;
     }
 
+    public List<HotDeal> getHotDeals(HotDeal hotDeal) {
+        Example example = Example.of(hotDeal);
+        return hotDealDao.findAll(example);
+    }
+
     public Featured saveFeatured(long productId) {
         Featured FExample = new Featured();
         FExample.setProduct(new Product(productId));
@@ -158,6 +163,11 @@ public class ProductServiceImpl implements ProductService {
         return savedFeatureds;
     }
 
+    public List<Featured> getFeatureds(Featured featured) {
+        Example example = Example.of(featured);
+        return featuredDao.findAll(example);
+    }
+
     public Promotion savePromotion(Promotion promotion) {
         return promotionDao.save(promotion);
     }
@@ -171,4 +181,8 @@ public class ProductServiceImpl implements ProductService {
         return savedPromotions;
     }
 
+    public List<Promotion> getPromotions(Promotion promotion) {
+        Example example = Example.of(promotion);
+        return promotionDao.findAll(promotion.equals(new Promotion()) ? example : null);
+    }
 }

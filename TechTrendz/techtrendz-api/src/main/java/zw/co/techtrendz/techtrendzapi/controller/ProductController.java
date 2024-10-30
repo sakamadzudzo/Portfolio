@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import zw.co.techtrendz.techtrendzapi.entity.Featured;
+import zw.co.techtrendz.techtrendzapi.entity.HotDeal;
 import zw.co.techtrendz.techtrendzapi.entity.PagedProductsRequestDto;
 import zw.co.techtrendz.techtrendzapi.entity.Product;
+import zw.co.techtrendz.techtrendzapi.entity.Promotion;
 import zw.co.techtrendz.techtrendzapi.service.ProductService;
 import zw.co.techtrendz.techtrendzapi.views.View;
 
@@ -55,4 +58,69 @@ public class ProductController {
         return productService.getProductAllPaged(pagedProductsRequestDto);
     }
 
+    @RequestMapping(name = "/savehotdealbyproductid", value = "/savehotdealbyproductid", method = RequestMethod.POST)
+    public HotDeal saveHotDeal(@RequestParam long productId) {
+        return productService.saveHotDeal(productId);
+    }
+
+    @RequestMapping(name = "/savehotdeal", value = "/savehotdeal", method = RequestMethod.POST)
+    public HotDeal saveHotDeal(@RequestBody HotDeal hotDeal) {
+        return productService.saveHotDeal(hotDeal);
+    }
+
+    @RequestMapping(name = "/savehotdealsbyproductids", value = "/savehotdealsbyproductids", method = RequestMethod.POST)
+    public List<HotDeal> saveHotDeals(@RequestParam Long[] productIds) {
+        return productService.saveHotDeals(productIds);
+    }
+
+    @RequestMapping(name = "/savehotdeals", value = "/savehotdeals", method = RequestMethod.POST)
+    public List<HotDeal> saveHotDeals(@RequestBody List<HotDeal> hotDeals) {
+        return productService.saveHotDeals(hotDeals);
+    }
+
+    @RequestMapping(name = "/gethotdeals", value = "/gethotdeals", method = RequestMethod.GET)
+    public List<HotDeal> getHotDeals(HotDeal hotDeal) {
+        return productService.getHotDeals(hotDeal);
+    }
+
+    @RequestMapping(name = "/savefeaturedbyproductid", value = "/savefeaturedbyproductid", method = RequestMethod.POST)
+    public Featured saveFeatured(@RequestParam long productId) {
+        return productService.saveFeatured(productId);
+    }
+
+    @RequestMapping(name = "/savefeatured", value = "/savefeatured", method = RequestMethod.POST)
+    public Featured saveFeatured(@RequestBody Featured featured) {
+        return productService.saveFeatured(featured);
+    }
+
+    @RequestMapping(name = "/savefeaturedsbyproductids", value = "/savefeaturedsbyproductids", method = RequestMethod.POST)
+    public List<Featured> saveFeatureds(@RequestParam Long[] productIds) {
+        return productService.saveFeatureds(productIds);
+    }
+
+    @RequestMapping(name = "/savefeatureds", value = "/savefeatureds", method = RequestMethod.POST)
+    public List<Featured> saveFeatureds(@RequestBody List<Featured> featureds) {
+        return productService.saveFeatureds(featureds);
+    }
+
+    @RequestMapping(name = "/getfeatureds", value = "/getfeatureds", method = RequestMethod.GET)
+    public List<Featured> getFeatureds(Featured featured) {
+        return productService.getFeatureds(featured);
+    }
+
+    @RequestMapping(name = "/savepromotion", value = "/savepromotion", method = RequestMethod.POST)
+    public Promotion savePromotion(@RequestBody Promotion promotion) {
+        return productService.savePromotion(promotion);
+    }
+
+    @RequestMapping(name = "/savepromotions", value = "/savepromotions", method = RequestMethod.POST)
+    public List<Promotion> savePromotions(@RequestBody List<Promotion> promotions) {
+        return productService.savePromotions(promotions);
+    }
+
+    @JsonView({View.ProductView.class})
+    @RequestMapping(name = "/getpromotions", value = "/getpromotions", method = RequestMethod.GET)
+    public List<Promotion> getPromotions(Promotion promotion) {
+        return productService.getPromotions(promotion);
+    }
 }

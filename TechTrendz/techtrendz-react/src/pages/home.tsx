@@ -1,54 +1,79 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import { Product, ProductType } from "../types/types"; // Assuming you have types defined for products and productTypes
-import { getFeaturedProducts, getHotDeals, getProductTypes } from "../components/service/homepageService"; // Example services to fetch homepage data
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { Featured, HotDeal, Product, ProductType, Promotion } from "../types/types";
 import { MediaViewer } from "../components/MediaViewer"; // For displaying product images
 import "../assets/css/Homepage.css"; // Optional: styles for the homepage
+import { getFeatured, getHotDeals, getPromotions } from "../components/service/productService";
+import { useSelector } from "react-redux";
+import { OverlayContextType } from "../components/Layout";
+import { AuthState } from "../components/utils/authSlice";
+import { getProductTypeAll } from "../components/service/productTypeService";
+import { getFileLinkFromMediaId } from "../components/service/fileService";
 
-const Home = () => {
+export const Home = () => {
+    const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
+    const { setLoading, setEmpty } = useOutletContext<OverlayContextType>();
     const navigate = useNavigate();
     const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
     const [productTypes, setProductTypes] = useState<ProductType[]>([]);
     const [hotDeals, setHotDeals] = useState<Product[]>([]);
-    
+    const [promotions, setPromotions] = useState<Promotion[]>([]);
+
     const loadFeaturedProducts = useCallback(async () => {
-        const products = await getFeaturedProducts();
+        const hotdeals = await getFeatured(token!, {} as Featured);
+        const products: Product[] = hotdeals ? hotdeals.map(deal => { return deal.product }) : [] as Product[]
         setFeaturedProducts(products);
-    }, []);
+    }, [token]);
 
     const loadProductTypes = useCallback(async () => {
-        const categoriesList = await getProductTypes();
+        const categoriesList = await getProductTypeAll(token!);
         setProductTypes(categoriesList);
-    }, []);
+    }, [token]);
 
     const loadHotDeals = useCallback(async () => {
-        const deals = await getHotDeals();
-        setHotDeals(deals);
-    }, []);
+        const featureds = await getHotDeals(token!, {} as HotDeal);
+        const products: Product[] = featureds ? featureds.map(feat => { return feat.product }) : [] as Product[]
+        setHotDeals(products);
+    }, [token]);
+
+    const loadPromotions = useCallback(async () => {
+        const promotions = await getPromotions(token!, {} as Promotion);
+        setPromotions(promotions ? promotions : [] as Promotion[]);
+    }, [token]);
+
+    useEffect(() => {
+        loadHotDeals();
+    }, [loadHotDeals]);
 
     useEffect(() => {
         loadFeaturedProducts();
+    }, [loadFeaturedProducts])
+
+    useEffect(() => {
         loadProductTypes();
-        loadHotDeals();
-    }, [loadFeaturedProducts, loadProductTypes, loadHotDeals]);
+    }, [loadProductTypes])
+
+    useEffect(() => {
+        loadPromotions()
+    }, [loadPromotions])
 
     const openProduct = (id: number) => {
         navigate(`/product/${id}`);
     };
 
     return (
-        <div className="homepage">
+        <div className="homepage overflow-auto">
             {/* Hero Section */}
-            <div className="hero">
+            {/* <div className="hero">
                 <img src="/assets/adventure-banner.png" alt="Adventure Banner" className="hero-image" />
                 <div className="hero-text">
                     <h1>Ready for a new adventure?</h1>
                     <p>Start the season with the latest in clothing and equipment.</p>
                 </div>
-            </div>
+            </div> */}
 
             {/* Featured Products */}
-            <div className="section featured-products">
+            {/* <div className="section featured-products">
                 <h2>Featured Products</h2>
                 <div className="product-grid">
                     {featuredProducts.map((product) => (
@@ -59,7 +84,7 @@ const Home = () => {
                         >
                             <MediaViewer
                                 id={`featured-product-${product.id}`}
-                                value={{ url: product.imageUrl, type: "image", token: "" }} // Customize how you manage images
+                                value={{ url: getFileLinkFromMediaId(product.pictures[0].id), type: "image", token: token! }}
                                 className="product-image"
                             />
                             <div className="product-info">
@@ -69,10 +94,10 @@ const Home = () => {
                         </div>
                     ))}
                 </div>
-            </div>
+            </div> */}
 
             {/* ProductTypes Section */}
-            <div className="section categories">
+            {/* <div className="section categories">
                 <h2>Shop by ProductType</h2>
                 <div className="productType-grid">
                     {productTypes.map((productType) => (
@@ -82,7 +107,7 @@ const Home = () => {
                         </div>
                     ))}
                 </div>
-            </div>
+            </div> */}
 
             {/* Hot Deals Section */}
             <div className="section hot-deals">
@@ -92,12 +117,32 @@ const Home = () => {
                         <div key={deal.id} className="product-card" onClick={() => openProduct(deal.id)}>
                             <MediaViewer
                                 id={`hot-deal-${deal.id}`}
-                                value={{ url: deal.imageUrl, type: "image", token: "" }}
+                                value={{ url: getFileLinkFromMediaId(deal.pictures[0].id), type: "image", token: token! }}
                                 className="product-image"
                             />
                             <div className="product-info">
                                 <div className="product-name">{deal.name}</div>
-                                <div className="product-price">${deal.price} <span className="discount">-{deal.discount}%</span></div>
+                                <div className="product-price">${deal.price} <span className="discount">-{0}%</span></div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Promotions Section */}
+            <div className="section promotion">
+                <h2>Promotions</h2>
+                <div className="product-grid">
+                    {promotions.map((promo) => (
+                        <div key={promo.product.id} className="product-card" onClick={() => openProduct(promo.product.id)}>
+                            <MediaViewer
+                                id={`hot-deal-${promo.id}`}
+                                value={{ url: getFileLinkFromMediaId(promo.product.pictures[0].id), type: "image", token: token! }}
+                                className="product-image"
+                            />
+                            <div className="product-info">
+                                <div className="product-name">{promo.product.name}</div>
+                                <div className="product-price">${promo.product.price} <span className="discount">-{promo.discount}%</span></div>
                             </div>
                         </div>
                     ))}
@@ -106,5 +151,3 @@ const Home = () => {
         </div>
     );
 };
-
-export default Home;

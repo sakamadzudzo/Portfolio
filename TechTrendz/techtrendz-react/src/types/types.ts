@@ -133,4 +133,33 @@ export type MyFile = {
   type: string
 }
 
-export type SelectOption = { value: string | number, label: string, description?: string }
+export type SelectOption = {
+  value: string | number
+  label: string
+  description?: string
+}
+
+export type HotDeal = {
+  id: number
+  product: Product
+  selectionDate: Date
+  active: boolean
+}
+
+export type Featured = {
+  id: number
+  product: Product
+  selectionDate: Date
+  active: boolean
+}
+
+export type Promotion = {
+  id: number
+  discount: number
+  deduction: number
+  usePercentage: boolean
+  product: Product
+  startDate: Date
+  endDate: Date
+  active: boolean
+}

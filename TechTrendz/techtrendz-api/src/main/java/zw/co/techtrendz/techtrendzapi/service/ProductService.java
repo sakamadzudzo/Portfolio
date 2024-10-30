@@ -41,6 +41,8 @@ public interface ProductService {
     public List<HotDeal> saveHotDeals(Long[] productIds);
 
     public List<HotDeal> saveHotDeals(List<HotDeal> hotDeals);
+    
+    public List<HotDeal> getHotDeals(HotDeal hotDeal);
 
     public Featured saveFeatured(long productId);
 
@@ -49,8 +51,12 @@ public interface ProductService {
     public List<Featured> saveFeatureds(Long[] productIds);
 
     public List<Featured> saveFeatureds(List<Featured> featureds);
+    
+    public List<Featured> getFeatureds(Featured featured);
 
     public Promotion savePromotion(Promotion promotion);
 
     public List<Promotion> savePromotions(List<Promotion> promotions);
+    
+    public List<Promotion> getPromotions(Promotion promotion);
 }

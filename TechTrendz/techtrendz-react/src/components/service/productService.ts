@@ -2,7 +2,7 @@ import axios from "axios"
 import API from "./../utils/constants"
 import { toast } from "react-toastify"
 import { authOrReload } from "./authService"
-import { Product } from "../../types/types"
+import { Featured, HotDeal, Product, Promotion } from "../../types/types"
 import { uploadFiles } from "./fileService"
 
 export const getProductAllPaged = async (token: string, pagedProductsRequestDto: any) => {
@@ -127,6 +127,81 @@ export const removeMediaFiles = async (token: string, productId: number, mediaFi
             console.log(error);
             toast(error.response.data)
             data = false
+        })
+        .finally(() => {
+            return data;
+        })
+    return data
+}
+
+export const getHotDeals = async (token: string, hotDealExample: HotDeal): Promise<HotDeal[] | null> => {
+    await authOrReload(token)
+    let data: any = null
+    await axios.get(API + "gethotdeals", {
+        params: {
+            hotDealExample
+        },
+        headers: {
+            Authorization: token
+        }
+    })
+        .then((response) => {
+            data = response.data
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+            data = null
+        })
+        .finally(() => {
+            return data;
+        })
+    return data
+}
+
+export const getFeatured = async (token: string, featuredExample: Featured): Promise<Featured[] | null> => {
+    await authOrReload(token)
+    let data: any = null
+    await axios.get(API + "getfeatureds", {
+        params: {
+            featuredExample
+        },
+        headers: {
+            Authorization: token
+        }
+    })
+        .then((response) => {
+            data = response.data
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+            data = null
+        })
+        .finally(() => {
+            return data;
+        })
+    return data
+}
+
+export const getPromotions = async (token: string, promotionExample: Promotion): Promise<Promotion[] | null> => {
+    await authOrReload(token)
+    let data: any = null
+    await axios.get(API + "getpromotions", {
+        params: {
+            promotionExample
+        },
+        headers: {
+            Authorization: token
+        }
+    })
+        .then((response) => {
+            data = response.data
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error.response.data)
+            data = null
         })
         .finally(() => {
             return data;
