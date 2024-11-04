@@ -1,0 +1,7 @@
+FROM mysql:8.0
+
+# Set permissions for MySQL data directory
+RUN chown -R 1001:1001 /var/lib/mysql
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["mysqld"]
