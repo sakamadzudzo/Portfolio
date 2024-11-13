@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { NavLink, useNavigate, useOutletContext } from "react-router-dom";
 import { Featured, HotDeal, Product, ProductType, Promotion } from "../types/types";
 import { MediaViewer } from "../components/MediaViewer"; // For displaying product images
 import "../assets/css/Homepage.css"; // Optional: styles for the homepage
@@ -9,6 +9,7 @@ import { OverlayContextType } from "../components/Layout";
 import { AuthState } from "../components/utils/authSlice";
 import { getProductTypeAll } from "../components/service/productTypeService";
 import { getFileLinkFromMediaId } from "../components/service/fileService";
+import { Hero } from "../components/Hero";
 
 export const Home = () => {
     const token = useSelector((state: AuthState) => state.auth ? state.auth.token : "")
@@ -62,91 +63,21 @@ export const Home = () => {
     };
 
     return (
-        <div className="homepage overflow-auto">
-            {/* Hero Section */}
-            {/* <div className="hero">
-                <img src="/assets/adventure-banner.png" alt="Adventure Banner" className="hero-image" />
-                <div className="hero-text">
-                    <h1>Ready for a new adventure?</h1>
-                    <p>Start the season with the latest in clothing and equipment.</p>
-                </div>
-            </div> */}
-
-            {/* Featured Products */}
-            {/* <div className="section featured-products">
-                <h2>Featured Products</h2>
-                <div className="product-grid">
-                    {featuredProducts.map((product) => (
-                        <div
-                            key={product.id}
-                            className="product-card"
-                            onClick={() => openProduct(product.id)}
-                        >
-                            <MediaViewer
-                                id={`featured-product-${product.id}`}
-                                value={{ url: getFileLinkFromMediaId(product.pictures[0].id), type: "image", token: token! }}
-                                className="product-image"
-                            />
-                            <div className="product-info">
-                                <div className="product-name">{product.name}</div>
-                                <div className="product-price">${product.price}</div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div> */}
-
-            {/* ProductTypes Section */}
-            {/* <div className="section categories">
-                <h2>Shop by ProductType</h2>
-                <div className="productType-grid">
-                    {productTypes.map((productType) => (
-                        <div key={productType.id} className="productType-card" onClick={() => navigate(`/productType/${productType.id}`)}>
-                            <img src={productType.imageUrl} alt={productType.name} className="productType-image" />
-                            <div className="productType-name">{productType.name}</div>
-                        </div>
-                    ))}
-                </div>
-            </div> */}
-
-            {/* Hot Deals Section */}
-            <div className="section hot-deals">
-                <h2>Hot Deals</h2>
-                <div className="product-grid">
-                    {hotDeals.map((deal) => (
-                        <div key={deal.id} className="product-card" onClick={() => openProduct(deal.id)}>
-                            <MediaViewer
-                                id={`hot-deal-${deal.id}`}
-                                value={{ url: getFileLinkFromMediaId(deal.pictures[0].id), type: "image", token: token! }}
-                                className="product-image"
-                            />
-                            <div className="product-info">
-                                <div className="product-name">{deal.name}</div>
-                                <div className="product-price">${deal.price} <span className="discount">-{0}%</span></div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+        <div className="wrapper h-full block justify-start overflow-y-auto divide-yn divide-dark-50 dark:divide-light-50">
+            <div className="h-2/3 w-full bg-light-50 dark:bg-dark-50 flex">
+                <Hero className="h-full w-full">
+                    <div className="flex flex-col gap-3 justify-center w-full h-full px-8">
+                        <div className="font-bold text-4xl">Sit back and relax</div>
+                        <div className="font-light text-lg">And enjoy hastle-free shopping from the comfort of your home.</div>
+                        <NavLink to={`products`} className={`btn-hollow p-2 rounded-md w-fit`}>View products</NavLink>
+                    </div>
+                </Hero>
             </div>
-
-            {/* Promotions Section */}
-            <div className="section promotion">
-                <h2>Promotions</h2>
-                <div className="product-grid">
-                    {promotions.map((promo) => (
-                        <div key={promo.product.id} className="product-card" onClick={() => openProduct(promo.product.id)}>
-                            <MediaViewer
-                                id={`hot-deal-${promo.id}`}
-                                value={{ url: getFileLinkFromMediaId(promo.product.pictures[0].id), type: "image", token: token! }}
-                                className="product-image"
-                            />
-                            <div className="product-info">
-                                <div className="product-name">{promo.product.name}</div>
-                                <div className="product-price">${promo.product.price} <span className="discount">-{promo.discount}%</span></div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+            <div className="h-2/3 w-full bg-light-200 dark:bg-dark-100/30 text-3xl flex justify-center items-center">
+                TechTrendz
+            </div>
+            <div className="h-2/3 w-full bg-light-50 dark:bg-dark-50 text-3xl flex justify-center items-center">
+                TechTrendz
             </div>
         </div>
     );
