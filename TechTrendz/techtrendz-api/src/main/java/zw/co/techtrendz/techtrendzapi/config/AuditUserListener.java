@@ -46,5 +46,4 @@ public class AuditUserListener implements RevisionListener {
         auditEntity.setUserId(user.getId());
         auditEntity.setUsername(user.getUsername().toUpperCase());
     }
-
 }
